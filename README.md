@@ -8,4 +8,4 @@ Step 3: git checkout -b yourname_branch
 
 Step 3: Import Project into Android Studio.
 
-Thats it, good to start coding. Happy Coding !!!
+Thats it, good to start coding. Happy Coding !!! :)
