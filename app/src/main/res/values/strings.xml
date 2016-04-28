@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">HZTBApplication</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_home_screen">HomeScreen</string>
+    <string name="title_activity_mobile_phone_registration">Registration</string>
 </resources>
