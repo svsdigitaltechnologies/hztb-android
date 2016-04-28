@@ -7,12 +7,12 @@ import android.view.MenuItem;
 
 import com.svs.hztb.R;
 
-public class MobilePhoneRegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mobile_phone_registration);
+        setContentView(R.layout.activity_registration);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class SplashScreenActivity extends AbstractActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                pushActivity(MobilePhoneRegistrationActivity.class);
+                pushActivity(RegistrationActivity.class);
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);

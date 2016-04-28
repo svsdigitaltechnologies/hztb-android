@@ -24,7 +24,7 @@
             android:label="@string/title_activity_home_screen" >
         </activity>
         <activity
-            android:name=".Activities.MobilePhoneRegistrationActivity"
+            android:name=".Activities.RegistrationActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_mobile_phone_registration" >
         </activity>
