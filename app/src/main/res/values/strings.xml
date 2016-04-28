@@ -10,7 +10,7 @@
     <string name="string_confirmRegistration">Confirm Registration</string>
     <string name="string_enter_your_otp_code">Enter your verification code</string>
     <string name="string_registration_button_verify">VERIFY</string>
-
+    <string name="string_registration_timer_warning">If you do not receive your access code within 60 seconds, Press Send Again</string>
     <string name="string_confirm_Registration_warning">Phone Number Verification  \n is  this  your  Correct  number ?</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_home_screen">HomeScreen</string>
