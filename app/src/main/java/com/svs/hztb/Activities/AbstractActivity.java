@@ -11,12 +11,12 @@ import com.svs.hztb.Utils.LoadingBar;
 
 
 /**
- * Created by bharathmaheshwaram on 22/04/16.
+ * Created by Venu Nalla on 22/04/16.
  */
 public abstract class AbstractActivity extends AppCompatActivity {
 
     protected LoadingBar _loader;
-    protected String BASE_URL = "http://singletomingle.esy.es/registrations.php?";
+    protected String BASE_URL = "";
 
 
     @Override
