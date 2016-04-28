@@ -10,8 +10,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".Activities.SplashScreenActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_splash_screen" >
+            android:label="@string/title_activity_splash_screen"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,13 +20,17 @@
         </activity>
         <activity
             android:name=".Activities.HomeScreenActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_home_screen" >
+            android:label="@string/title_activity_home_screen"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Activities.RegistrationActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_mobile_phone_registration" >
+            android:label="@string/title_activity_mobile_phone_registration"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Activities.ConfirmRegistration"
+            android:label="@string/title_activity_confirm_registration" >
         </activity>
     </application>
 

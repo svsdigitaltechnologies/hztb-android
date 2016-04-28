@@ -7,8 +7,13 @@
     <string name="string_registration_content_otp">(Country code followed by phone number)</string>
     <string name="string_registration_vertification_content">Verification code will be sent to your phone as SMS</string>
     <string name="string_submit">Submit</string>
+    <string name="string_confirmRegistration">Confirm Registration</string>
+    <string name="string_enter_your_otp_code">Enter your verification code</string>
+    <string name="string_registration_button_verify">VERIFY</string>
 
+    <string name="string_confirm_Registration_warning">Phone Number Verification  \n is  this  your  Correct  number ?</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_mobile_phone_registration">Registration</string>
+    <string name="title_activity_confirm_registration">ConfirmRegistration</string>
 </resources>
