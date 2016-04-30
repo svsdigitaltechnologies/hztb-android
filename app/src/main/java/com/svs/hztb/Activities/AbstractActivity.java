@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.svs.hztb.R;
 import com.svs.hztb.Utils.LoadingBar;
 
 
@@ -50,6 +52,12 @@ public abstract class AbstractActivity extends AppCompatActivity {
         if(_loader!=null && _loader.isShowing()){
             _loader.cancel();
         }
+    }
+
+    protected void setActionBarTitle(String title){
+        View v = getSupportActionBar().getCustomView();
+        TextView titleTxtView = (TextView) v.findViewById(R.id.textview_actionbarTitle);
+        titleTxtView.setText(title);
     }
 
 
