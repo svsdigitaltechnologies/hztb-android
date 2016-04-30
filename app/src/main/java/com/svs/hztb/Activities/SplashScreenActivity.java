@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.svs.hztb.R;
 
@@ -17,6 +18,8 @@ public class SplashScreenActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        getSupportActionBar().hide();
+
 
          /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/

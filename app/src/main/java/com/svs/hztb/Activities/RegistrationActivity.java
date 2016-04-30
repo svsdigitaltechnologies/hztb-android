@@ -1,39 +1,52 @@
 package com.svs.hztb.Activities;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.svs.hztb.R;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AbstractActivity {
+
+    private EditText mobileNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.actionbar_title);
+        setActionBarTitle(getString(R.string.title_activity_mobile_phone_registration));
+        mobileNumber = getView(R.id.editText_mobilePhoneNo);
     }
 
+    /*
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_mobile_phone_registration, menu);
-        return true;
-    }
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyaction = event.getAction();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        if(keyaction == KeyEvent.ACTION_DOWN)
+        {
+            int keycode = event.getKeyCode();
+            int keyunicode = event.getUnicodeChar(event.getMetaState() );
+            char character = (char) keyunicode;
+            if (mobileNumber.getText().toString().length() == 0){
+                String number ="+"+mobileNumber.getText().toString();
+                Log.d(getPackageName().toString(),number);
+                mobileNumber.setText(number);
+            }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.dispatchKeyEvent(event);
     }
+    */ 
 }
