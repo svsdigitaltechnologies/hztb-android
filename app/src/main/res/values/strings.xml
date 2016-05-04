@@ -17,4 +17,14 @@
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_mobile_phone_registration">Registration</string>
     <string name="title_activity_confirm_registration">ConfirmRegistration</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="signUp_title">Sign Up</string>
+    <string name="signUp_name">Name</string>
+    <string name="signUp_email">Email</string>
+    <string name="signUp_phone">Phone</string>
+    <string name="signUp_or">or</string>
+    <string name="signUp_facebook">Facebook</string>
+    <string name="signUp_google">Google +</string>
+    <string name="signUp_twitter">Twitter</string>
+    <string name="signup_Done">Done</string>
 </resources>
