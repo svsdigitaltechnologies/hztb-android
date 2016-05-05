@@ -1,6 +1,8 @@
 package com.svs.hztb.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -71,6 +73,20 @@ public abstract class AbstractActivity extends AppCompatActivity {
             _loader.cancel();
         }
     }
+
+    protected String getDeviceToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("HZTB", Activity.MODE_PRIVATE);
+        String token = sharedPreferences.getString("TOKEN", "");
+        return token;
+    }
+
+    protected void saveToken(String key,String value){
+        SharedPreferences sharedPreferences = getSharedPreferences("HZTB", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString(key,value);
+        edit.commit();
+    }
+
 
     protected void setActionBarTitle(String title){
         View v = getSupportActionBar().getCustomView();

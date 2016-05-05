@@ -1,12 +1,16 @@
 package com.svs.hztb.Activities;
 
+import android.content.Context;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.svs.hztb.Bean.RegisterResponse;
@@ -27,7 +31,7 @@ import rx.schedulers.Schedulers;
 public class ConfirmRegistration extends AbstractActivity {
 
     private String mobileNumber;
-
+    private EditText otpText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,7 @@ public class ConfirmRegistration extends AbstractActivity {
         TextView mobileNum = getView(R.id.textView_mobileNumber);
         mobileNumber = getIntent().getStringExtra("NUMBER");
         mobileNum.setText("+" +mobileNumber);
+        otpText = getView(R.id.edittext_verification_code);
     }
 
     /**
@@ -59,8 +64,13 @@ public class ConfirmRegistration extends AbstractActivity {
     private void postDataForOTPVerification() {
         showLoader();
 
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        Log.d("IMEI",telephonyManager.getDeviceId());
+        Log.d("TOKEN",getDeviceToken());
+
+
         RegisterService registerService = new RegisterService();
-        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate("919032556825","737532","123456","123");
+        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate(mobileNumber,otpText.getText().toString(),telephonyManager.getDeviceId(),getDeviceToken());
 
         validateOTPResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<ValidateOTPResponse>>() {

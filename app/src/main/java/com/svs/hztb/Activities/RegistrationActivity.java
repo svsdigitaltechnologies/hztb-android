@@ -71,7 +71,7 @@ public class RegistrationActivity extends AbstractActivity {
      */
     private boolean isValidMobile()
     {
-        if (mobileNumber.getText().toString().length() > 9 && mobileNumber.getText().toString().length() <=12){
+        if (mobileNumber.getText().toString().length() > 9 && mobileNumber.getText().toString().length() <=13){
             return true;
         }else return false;
     }
