@@ -1,11 +1,13 @@
 package com.svs.hztb.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.svs.hztb.PushNotifications.RegistrationIntentService;
 import com.svs.hztb.R;
 
 
@@ -20,6 +22,7 @@ public class SplashScreenActivity extends AbstractActivity {
         setContentView(R.layout.activity_splash_screen);
         getSupportActionBar().hide();
 
+        checkForDeviceRegistrationToken();
 
          /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
@@ -32,6 +35,16 @@ public class SplashScreenActivity extends AbstractActivity {
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+    }
+
+    /**
+     * Method used to get the Device Registration Id .
+     */
+    private void checkForDeviceRegistrationToken() {
+        if (getDeviceToken().equalsIgnoreCase("")) {
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
     }
 
     @Override

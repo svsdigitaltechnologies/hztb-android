@@ -12,9 +12,21 @@
     <string name="string_registration_button_verify">VERIFY</string>
     <string name="string_registration_timer_warning">If you do not receive your access code within 60 seconds, Press Send Again</string>
     <string name="string_confirm_Registration_warning">Phone Number Verification  \n is  this  your  Correct  number ?</string>
+    <string name="confirm_sendagain">Send OTP Again</string>
     <string name="hello_world">Hello world!</string>
     <string name="actionbar_title">Title</string>
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_mobile_phone_registration">Registration</string>
     <string name="title_activity_confirm_registration">ConfirmRegistration</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="signUp_title">Sign Up</string>
+    <string name="signUp_name">Name</string>
+    <string name="signUp_email">Email</string>
+    <string name="signUp_phone">Phone</string>
+    <string name="signUp_or">or</string>
+    <string name="signUp_facebook">Facebook</string>
+    <string name="signUp_google">Google +</string>
+    <string name="signUp_twitter">Twitter</string>
+    <string name="signup_Done">Done</string>
+    <string name="gcm_defaultSenderId">24397121204</string>
 </resources>
