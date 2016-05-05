@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.RegistrationActivity">
+    tools:context=".Activities.RegistrationActivity"
+    android:background="@mipmap/registration_bg">
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,9 +11,22 @@
         android:text="@string/string_howzBuddy_overview"
         android:id="@+id/textView2"
         android:layout_alignParentStart="true"
+        android:textColor="@android:color/white"
         android:layout_alignParentEnd="true"
         android:gravity="center"
         android:padding="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/string_content_phone"
+        android:id="@+id/textView4"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:padding="20dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,37 +34,59 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/string_phoneNumber"
         android:id="@+id/textView3"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="25dp"
-        android:layout_below="@+id/textView2"
-        android:layout_alignEnd="@+id/editText_mobilePhoneNo"
-        android:layout_marginTop="20dp" />
+        android:paddingLeft="20dp"
 
-    <EditText
-        android:layout_width="wrap_content"
+        android:textColor="@android:color/darker_gray"
+
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/editText_mobilePhoneNo"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentStart="true"
-        android:textSize="18sp"
-        android:layout_alignParentEnd="true"
+        android:id="@+id/spinner"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:drawSelectorOnTop="true"
+        android:layout_marginRight="20dp"
+        android:spinnerMode="dropdown"
+
+        android:background="@android:color/transparent"
+        android:layout_below="@+id/textView3"
+
+ />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/string_registration_content_otp"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/editText_mobilePhoneNo"
-        android:layout_alignStart="@+id/editText_mobilePhoneNo"
-        android:layout_marginTop="20dp"
-        android:layout_alignEnd="@+id/editText_mobilePhoneNo"
-        android:gravity="center"
-        android:textSize="18dp" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="+1"
+        android:id="@+id/textview_registration_countryCode"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="5dp"
+        android:textSize="24dp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/spinner"
+        android:layout_alignStart="@+id/spinner" />
+
+    <ImageView
+        android:layout_width="2dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@mipmap/divider"
+        android:layout_below="@+id/spinner"
+        android:layout_toEndOf="@+id/textview_registration_countryCode" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:layout_marginRight="20dp"
+        android:id="@+id/editText_mobilePhoneNo"
+        android:textSize="24sp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/spinner"
+        android:layout_toEndOf="@+id/textView3" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,12 +94,14 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/string_registration_vertification_content"
         android:id="@+id/textView5"
-        android:layout_below="@+id/textView4"
-        android:layout_alignStart="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4"
         android:layout_marginTop="25dp"
         android:gravity="center"
-        android:textSize="18dp" />
+        android:textSize="18dp"
+        android:textColor="@android:color/white"
+
+        android:layout_below="@+id/editText_mobilePhoneNo"
+        android:layout_alignEnd="@+id/editText_mobilePhoneNo"
+        android:layout_alignStart="@+id/textview_registration_countryCode" />
 
     <Button
         android:layout_width="wrap_content"
@@ -72,7 +110,9 @@
         android:id="@+id/button_submit"
         android:layout_below="@+id/textView5"
         android:onClick="onSubmitClicked"
+        android:background="@mipmap/submit_background"
         android:layout_marginTop="25dp"
         android:layout_alignEnd="@+id/textView5"
-        android:layout_alignStart="@+id/textView5" />
+        android:layout_alignStart="@+id/textView5"
+     />
 </RelativeLayout>

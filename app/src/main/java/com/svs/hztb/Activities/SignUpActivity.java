@@ -43,7 +43,7 @@ public class SignUpActivity extends AbstractActivity {
     private void initView() {
         mobileNumber = getIntent().getStringExtra("NUMBER");
         EditText mobileNum = getView(R.id.editText_mobileNumber);
-        mobileNum.setText(mobileNumber);
+        mobileNum.setText("+"+mobileNumber);
         emailEditText = getView(R.id.editText_email);
         nameEditText = getView(R.id.editText_name);
     }

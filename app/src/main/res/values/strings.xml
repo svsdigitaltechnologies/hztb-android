@@ -7,6 +7,7 @@
     <string name="string_registration_content_otp">(Country code followed by phone number)</string>
     <string name="string_registration_vertification_content">Verification code will be sent to your phone as SMS</string>
     <string name="string_submit">Submit</string>
+    <string name="string_content_phone">Please confirm your country code and enter your phone number</string>
     <string name="string_confirmRegistration">Confirm Registration</string>
     <string name="string_enter_your_otp_code">Enter your verification code</string>
     <string name="string_registration_button_verify">VERIFY</string>

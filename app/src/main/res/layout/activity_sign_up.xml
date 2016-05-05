@@ -2,50 +2,49 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.svs.hztb.Activities.SignUpActivity"
-    android:focusable="false">
+    android:background="@mipmap/registration_bg">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/signUp_facebook"
         android:id="@+id/button_facebook"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:onClick="onFacebookButtonClicked"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:contextClickable="true" />
+        android:contextClickable="true"
+        android:background="@mipmap/facebook_button" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/signUp_twitter"
         android:id="@+id/button_twitter"
         android:layout_below="@+id/button_google"
         android:layout_alignStart="@+id/button_google"
         android:layout_alignEnd="@+id/button_google"
         android:onClick="onGooglePlusButtonClicked"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:background="@mipmap/twitterbutton" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/signUp_google"
         android:id="@+id/button_google"
         android:layout_below="@+id/button_facebook"
         android:layout_alignStart="@+id/button_facebook"
         android:layout_alignEnd="@+id/button_facebook"
         android:onClick="onTwitterButtonClicked"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:background="@mipmap/google_button" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/signUp_or"
+        android:src="@mipmap/or_image"
         android:id="@+id/textView"
         android:layout_alignEnd="@+id/button_twitter"
         android:layout_below="@+id/button_twitter"
@@ -126,5 +125,7 @@
         android:onClick="onSignUpDoneButtonClicked"
         android:layout_below="@+id/editText_mobileNumber"
         android:layout_alignEnd="@+id/editText_mobileNumber"
-        android:layout_alignStart="@+id/editText_mobileNumber" />
+        android:layout_alignStart="@+id/editText_mobileNumber"
+        android:background="@mipmap/submit_background"
+        android:textColor="#ffffff" />
 </RelativeLayout>

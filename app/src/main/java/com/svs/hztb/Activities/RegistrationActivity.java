@@ -2,30 +2,20 @@ package com.svs.hztb.Activities;
 
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
-import com.svs.hztb.Bean.RegisterResponse;
+import com.svs.hztb.Adapters.SpinnerAdapter;
 import com.svs.hztb.R;
-import com.svs.hztb.RestService.ErrorStatus;
-import com.svs.hztb.RestService.RegisterService;
-import com.svs.hztb.RestService.ServiceGenerator;
-import com.svs.hztb.Utils.TextDrawable;
-
-import java.util.List;
-
-import retrofit2.Response;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class RegistrationActivity extends AbstractActivity {
 
     private EditText mobileNumber;
-
+    private Spinner countrySpinner;
+    // Declaring the String Array with the Text Data for the Spinners
+    String[] Countries = { "United States", "India" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +28,10 @@ public class RegistrationActivity extends AbstractActivity {
      * Initialize the views
      */
     private void initViews() {
-        mobileNumber = getView(R.id.editText_mobilePhoneNo);
-        String code = "+ ";
-        mobileNumber.setCompoundDrawablesWithIntrinsicBounds(new TextDrawable(code), null, null, null);
-        mobileNumber.setCompoundDrawablePadding(code.length() * 10);
+//        mobileNumber = getView(R.id.editText_mobilePhoneNo);
+        countrySpinner = getView(R.id.spinner);
+        countrySpinner.setAdapter(new SpinnerAdapter(RegistrationActivity.this,R.layout.custom_spinner_item,
+                Countries));
     }
    /**
       Action bar settings are updated
@@ -63,6 +53,11 @@ public class RegistrationActivity extends AbstractActivity {
       }
    }
 
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog alertDialog = alertDialog();
+        alertDialog.show();
+    }
 
     /**
      * Check if the mobile number entered is valid or not.

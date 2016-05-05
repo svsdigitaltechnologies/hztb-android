@@ -70,7 +70,9 @@
         android:text="@string/string_registration_button_verify"
         android:id="@+id/button_verify"
         android:onClick="onVerifyButtonClicked"
+        android:background="@mipmap/submit_background"
         android:layout_below="@+id/textView_timerWarning"
+        android:layout_marginBottom="10dp"
         android:layout_alignStart="@+id/edittext_verification_code"
         android:layout_alignEnd="@+id/edittext_verification_code"
         android:textSize="20dp" />
@@ -82,6 +84,7 @@
         android:id="@+id/button"
         android:layout_below="@+id/button_verify"
         android:onClick="onSendOTPAgainButtonClicked"
+        android:background="@mipmap/submit_background"
         android:layout_alignStart="@+id/button_verify"
         android:layout_alignEnd="@+id/button_verify"
         android:textSize="20dp" />
