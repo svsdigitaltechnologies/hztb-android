@@ -3,6 +3,8 @@ package com.svs.hztb.Interfaces;
 
 import com.svs.hztb.Bean.RegisterRequest;
 import com.svs.hztb.Bean.RegisterResponse;
+import com.svs.hztb.Bean.UserProfileRequest;
+import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.ValidateOTPRequest;
 import com.svs.hztb.Bean.ValidateOTPResponse;
 
@@ -21,8 +23,7 @@ public interface UserRepository {
     @POST("/user/validateOTP")
     Observable<Response<ValidateOTPResponse>> validateOTPResponse(@Body ValidateOTPRequest validateOTPRequest);
 
-/*
+
     @POST("/user/updateUserProfile")
     Observable<Response<UserProfileResponse>> updateUserProfile(@Body UserProfileRequest userProfileRequest);
-*/
 }

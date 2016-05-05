@@ -2,6 +2,8 @@ package com.svs.hztb.RestService;
 
 import com.svs.hztb.Bean.RegisterRequest;
 import com.svs.hztb.Bean.RegisterResponse;
+import com.svs.hztb.Bean.UserProfileRequest;
+import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.ValidateOTPRequest;
 import com.svs.hztb.Bean.ValidateOTPResponse;
 import com.svs.hztb.Interfaces.UserRepository;
@@ -36,11 +38,13 @@ public class RegisterService {
         return dataService.validateOTPResponse(validateOTPRequest);
     }
 
-    /*
-    public Observable<Response<UserProfileResponse>> updateUserProfile(UserProfileRequest userProfileRequest) {
 
-
+    public Observable<Response<UserProfileResponse>> updateUserProfile(String mobileNumber,String name,String emailID) {
+        UserProfileRequest userProfileRequest = new UserProfileRequest();
+        userProfileRequest.setMobileNumber(mobileNumber);
+        userProfileRequest.setName(name);
+        userProfileRequest.setEmailAddress(emailID);
         return dataService.updateUserProfile(userProfileRequest);
     }
-    */
+
 }

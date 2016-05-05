@@ -1,6 +1,7 @@
 package com.svs.hztb.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -102,7 +105,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
     /**
      * Post data for the registration
      */
-    protected void postDataForRegistration(final String mobileNumber) {
+    protected void postDataForRegistration(final String mobileNumber,final boolean sendAgain) {
         showLoader();
 
         RegisterService registerService = new RegisterService();
@@ -125,7 +128,11 @@ public abstract class AbstractActivity extends AppCompatActivity {
 
                 cancelLoader();
                 if (registerResponse.isSuccessful()) {
-                    pushActivity(ConfirmRegistration.class,mobileNumber);
+                    if (!sendAgain) {
+                        pushActivity(ConfirmRegistration.class, mobileNumber);
+                    }else {
+                        displayMessage("OTP Successfully Sent Again");
+                    }
                 }
                 else {
                     List<ErrorStatus> listErrorStatus = ServiceGenerator.parseErrorBody(registerResponse);
@@ -140,6 +147,4 @@ public abstract class AbstractActivity extends AppCompatActivity {
 
         });
     }
-
-
 }

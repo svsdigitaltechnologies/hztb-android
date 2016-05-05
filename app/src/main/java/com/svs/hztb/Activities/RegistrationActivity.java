@@ -42,7 +42,6 @@ public class RegistrationActivity extends AbstractActivity {
         String code = "+ ";
         mobileNumber.setCompoundDrawablesWithIntrinsicBounds(new TextDrawable(code), null, null, null);
         mobileNumber.setCompoundDrawablePadding(code.length() * 10);
-
     }
    /**
       Action bar settings are updated
@@ -58,7 +57,7 @@ public class RegistrationActivity extends AbstractActivity {
      */
    public void onSubmitClicked(View view){
       if (isValidMobile()){
-            postDataForRegistration(mobileNumber.getText().toString());
+            postDataForRegistration(mobileNumber.getText().toString(),false);
       }else {
           displayMessage("Mobile Number Invalid");
       }

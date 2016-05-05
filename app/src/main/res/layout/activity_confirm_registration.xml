@@ -74,4 +74,15 @@
         android:layout_alignStart="@+id/edittext_verification_code"
         android:layout_alignEnd="@+id/edittext_verification_code"
         android:textSize="20dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_sendagain"
+        android:id="@+id/button"
+        android:layout_below="@+id/button_verify"
+        android:onClick="onSendOTPAgainButtonClicked"
+        android:layout_alignStart="@+id/button_verify"
+        android:layout_alignEnd="@+id/button_verify"
+        android:textSize="20dp" />
 </RelativeLayout>

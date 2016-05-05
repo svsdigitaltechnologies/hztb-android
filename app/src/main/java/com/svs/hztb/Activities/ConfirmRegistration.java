@@ -57,10 +57,28 @@ public class ConfirmRegistration extends AbstractActivity {
         setActionBarTitle(getString(R.string.string_confirmRegistration));
     }
 
+
+    /**
+     * OnClick Functionality for the Send OTP
+     * @param view
+     */
+    public void onSendOTPAgainButtonClicked(View view){
+        postDataForRegistration(mobileNumber,true);
+    }
+
+
+    /**
+     * On Click button
+     * @param view
+     */
     public void onVerifyButtonClicked(View view){
         postDataForOTPVerification();
     }
 
+
+    /**
+     * Post data to server
+     */
     private void postDataForOTPVerification() {
         showLoader();
 
@@ -100,8 +118,6 @@ public class ConfirmRegistration extends AbstractActivity {
 
                 }
             }
-
-
         });
     }
 

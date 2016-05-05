@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.svs.hztb.Activities.SignUpActivity"
-   >
+    android:focusable="false">
 
     <Button
         android:layout_width="wrap_content"
@@ -14,8 +14,10 @@
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:onClick="onFacebookButtonClicked"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:contextClickable="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -25,6 +27,7 @@
         android:layout_below="@+id/button_google"
         android:layout_alignStart="@+id/button_google"
         android:layout_alignEnd="@+id/button_google"
+        android:onClick="onGooglePlusButtonClicked"
         android:layout_marginBottom="10dp" />
 
     <Button
@@ -35,6 +38,7 @@
         android:layout_below="@+id/button_facebook"
         android:layout_alignStart="@+id/button_facebook"
         android:layout_alignEnd="@+id/button_facebook"
+        android:onClick="onTwitterButtonClicked"
         android:layout_marginBottom="10dp" />
 
     <TextView
@@ -65,7 +69,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText_signUpName"
+        android:id="@+id/editText_name"
         android:layout_below="@+id/textView_name"
         android:layout_alignStart="@+id/textView_name"
         android:layout_alignEnd="@+id/textView"
@@ -76,8 +80,8 @@
         android:layout_height="wrap_content"
         android:text="@string/signUp_email"
         android:id="@+id/textView_email"
-        android:layout_below="@+id/editText_signUpName"
-        android:layout_alignStart="@+id/editText_signUpName"
+        android:layout_below="@+id/editText_name"
+        android:layout_alignStart="@+id/editText_name"
         android:textSize="14dp"
         android:paddingLeft="5dp" />
 
@@ -86,10 +90,10 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/editText_email"
         android:layout_below="@+id/textView_email"
         android:layout_alignStart="@+id/textView_email"
-        android:layout_alignEnd="@+id/editText_signUpName"
+        android:layout_alignEnd="@+id/editText_name"
         android:layout_marginBottom="5dp" />
 
     <TextView
@@ -98,8 +102,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/signUp_phone"
         android:id="@+id/textView11"
-        android:layout_below="@+id/editText"
-        android:layout_alignStart="@+id/editText"
+        android:layout_below="@+id/editText_email"
+        android:layout_alignStart="@+id/editText_email"
         android:paddingLeft="5dp" />
 
     <EditText
@@ -107,18 +111,20 @@
         android:layout_height="wrap_content"
         android:inputType="phone"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/editText_mobileNumber"
         android:layout_below="@+id/textView11"
         android:layout_alignStart="@+id/textView11"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_marginBottom="10dp" />
+        android:layout_alignEnd="@+id/editText_email"
+        android:layout_marginBottom="10dp"
+        android:enabled="false" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signup_Done"
-        android:id="@+id/button"
-        android:layout_below="@+id/editText2"
-        android:layout_alignEnd="@+id/editText2"
-        android:layout_alignStart="@+id/editText2" />
+        android:id="@+id/button_done"
+        android:onClick="onSignUpDoneButtonClicked"
+        android:layout_below="@+id/editText_mobileNumber"
+        android:layout_alignEnd="@+id/editText_mobileNumber"
+        android:layout_alignStart="@+id/editText_mobileNumber" />
 </RelativeLayout>
