@@ -2,6 +2,7 @@ package com.svs.hztb.Activities;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class ConfirmRegistration extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_registration);
-        actionBarSettings();
+        actionBarSettings(R.string.string_confirmRegistration);
         initViews();
 
     }
@@ -48,15 +49,6 @@ public class ConfirmRegistration extends AbstractActivity {
         otpText = getView(R.id.edittext_verification_code);
     }
 
-    /**
-     Action bar settings are updated
-     */
-    private void actionBarSettings() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.actionbar_title);
-        setActionBarTitle(getString(R.string.string_confirmRegistration));
-    }
-
 
     /**
      * OnClick Functionality for the Send OTP
@@ -66,6 +58,11 @@ public class ConfirmRegistration extends AbstractActivity {
         postDataForRegistration(mobileNumber,true);
     }
 
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog alertDialog = alertDialog();
+        alertDialog.show();
+    }
 
     /**
      * On Click button
@@ -108,6 +105,7 @@ public class ConfirmRegistration extends AbstractActivity {
                 cancelLoader();
                 if (validateOTPResponseResponse.isSuccessful()) {
                     pushActivity(SignUpActivity.class,mobileNumber);
+                    finish();
                 }
                 else {
                     List<ErrorStatus> listErrorStatus = ServiceGenerator.parseErrorBody(validateOTPResponseResponse);

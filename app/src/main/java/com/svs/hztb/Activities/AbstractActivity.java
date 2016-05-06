@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
@@ -45,6 +47,15 @@ public abstract class AbstractActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         _loader=new LoadingBar(this);
     }
+    /**
+     * Action bar settings are updated
+     */
+    protected void actionBarSettings(int title) {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.actionbar_title);
+        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
+        setActionBarTitle(getString(R.string.title_activity_mobile_phone_registration));
+    }
 
 
     protected <T extends View> T getView(int id) {
@@ -80,13 +91,18 @@ public abstract class AbstractActivity extends AppCompatActivity {
     }
 
     protected String getDeviceToken() {
-        SharedPreferences sharedPreferences = getSharedPreferences("HZTB", Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.shared_pref_app), Activity.MODE_PRIVATE);
         String token = sharedPreferences.getString("TOKEN", "");
         return token;
     }
 
+    protected boolean getLoginState() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.shared_pref_app), Activity.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(getResources().getString(R.string.login_success), false);
+    }
+
     protected void saveToken(String key,String value){
-        SharedPreferences sharedPreferences = getSharedPreferences("HZTB", Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.shared_pref_app), Activity.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key,value);
         edit.commit();
@@ -132,6 +148,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
                 if (registerResponse.isSuccessful()) {
                     if (!sendAgain) {
                         pushActivity(ConfirmRegistration.class, mobileNumber);
+                        finish();
                     }else {
                         displayMessage("OTP Successfully Sent Again");
                     }

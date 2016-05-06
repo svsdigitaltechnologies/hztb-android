@@ -1,10 +1,13 @@
 package com.svs.hztb.Activities;
 
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.svs.hztb.Adapters.SpinnerAdapter;
 import com.svs.hztb.R;
@@ -14,13 +17,13 @@ public class RegistrationActivity extends AbstractActivity {
 
     private EditText mobileNumber;
     private Spinner countrySpinner;
-    // Declaring the String Array with the Text Data for the Spinners
-    String[] Countries = { "United States", "India" };
+    private int selectedIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        actionBarSettings();
+        actionBarSettings(R.string.title_activity_mobile_phone_registration);
         initViews();
     }
 
@@ -28,30 +31,37 @@ public class RegistrationActivity extends AbstractActivity {
      * Initialize the views
      */
     private void initViews() {
-//        mobileNumber = getView(R.id.editText_mobilePhoneNo);
+        mobileNumber = getView(R.id.editText_mobilePhoneNo);
+        final TextView countryCode = getView(R.id.textview_registration_countryCode);
         countrySpinner = getView(R.id.spinner);
-        countrySpinner.setAdapter(new SpinnerAdapter(RegistrationActivity.this,R.layout.custom_spinner_item,
-                Countries));
-    }
-   /**
-      Action bar settings are updated
-    */
-    private void actionBarSettings() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.actionbar_title);
-        setActionBarTitle(getString(R.string.title_activity_mobile_phone_registration));
+        countrySpinner.setAdapter(new SpinnerAdapter(RegistrationActivity.this, R.layout.custom_spinner_item,
+                getResources().getStringArray(R.array.countries)));
+        countrySpinner.setBackgroundResource(android.R.color.transparent);
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String plus = getResources().getString(R.string.string_plus);
+                countryCode.setText(plus + String.valueOf(getResources().getIntArray(R.array.countryCodeArray)[i]));
+                selectedIndex = i;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
     }
 
     /**
-    On click action performed
+     * On click action performed
      */
-   public void onSubmitClicked(View view){
-      if (isValidMobile()){
-            postDataForRegistration(mobileNumber.getText().toString(),false);
-      }else {
-          displayMessage("Mobile Number Invalid");
-      }
-   }
+    public void onSubmitClicked(View view) {
+        if (isValidMobile()) {
+            String phoneNum = String.valueOf(getResources().getIntArray(R.array.countryCodeArray)[selectedIndex]) + mobileNumber.getText().toString().trim();
+            postDataForRegistration(phoneNum, false);
+        } else {
+            displayMessage(getResources().getString(R.string.alert_mobilenumber_invalid));
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -61,12 +71,12 @@ public class RegistrationActivity extends AbstractActivity {
 
     /**
      * Check if the mobile number entered is valid or not.
+     *
      * @return
      */
-    private boolean isValidMobile()
-    {
-        if (mobileNumber.getText().toString().length() > 9 && mobileNumber.getText().toString().length() <=13){
+    private boolean isValidMobile() {
+        if (mobileNumber.getText().toString().length() == 10) {
             return true;
-        }else return false;
+        } else return false;
     }
 }

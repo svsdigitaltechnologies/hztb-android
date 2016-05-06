@@ -126,6 +126,6 @@
         android:layout_below="@+id/editText_mobileNumber"
         android:layout_alignEnd="@+id/editText_mobileNumber"
         android:layout_alignStart="@+id/editText_mobileNumber"
-        android:background="@mipmap/submit_background"
+        android:background="@color/picton_blue"
         android:textColor="#ffffff" />
 </RelativeLayout>

@@ -41,7 +41,7 @@ public class RegistrationIntentService extends IntentService {
     }
 
     private void saveToken(String token){
-        SharedPreferences sharedPreferences = getSharedPreferences("HZTB", Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.shared_pref_app), Activity.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString("TOKEN",token);
         edit.commit();

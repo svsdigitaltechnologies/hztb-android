@@ -20,8 +20,6 @@ public class SplashScreenActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        getSupportActionBar().hide();
-
         checkForDeviceRegistrationToken();
 
          /* New Handler to start the Menu-Activity
@@ -31,7 +29,11 @@ public class SplashScreenActivity extends AbstractActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                pushActivity(RegistrationActivity.class);
+                if (getLoginState()){
+                     pushActivity(HomeScreenActivity.class);
+                }else {
+                      pushActivity(RegistrationActivity.class);
+                }
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);

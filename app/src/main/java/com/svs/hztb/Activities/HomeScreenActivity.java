@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.svs.hztb.R;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AbstractActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +35,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog alertDialog = alertDialog();
+        alertDialog.show();
     }
 }

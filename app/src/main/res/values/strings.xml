@@ -16,6 +16,9 @@
     <string name="confirm_sendagain">Send OTP Again</string>
     <string name="hello_world">Hello world!</string>
     <string name="actionbar_title">Title</string>
+    <string name="string_plus">+</string>
+    <string name="shared_pref_app">HZTB</string>
+
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_mobile_phone_registration">Registration</string>
     <string name="title_activity_confirm_registration">ConfirmRegistration</string>
@@ -24,6 +27,12 @@
     <string name="signUp_name">Name</string>
     <string name="signUp_email">Email</string>
     <string name="signUp_phone">Phone</string>
+    <string name="login_success">Success</string>
+    <string name="alert_email_invalid">Please Enter Valid Email ID</string>
+    <string name="alert_mobilenumber_invalid">Please Enter Valid Name</string>
+    <string name="toast_userprofile_update_success">User Profile Updated Successfully</string>
+
+
     <string name="signUp_or">or</string>
     <string name="signUp_facebook">Facebook</string>
     <string name="signUp_google">Google +</string>

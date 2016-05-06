@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="countries">
+        <item>United States</item>
+        <item>India</item>
+
+    </string-array>
+
+    <integer-array name="countryCodeArray">
+        <item>1</item>
+        <item>91</item>
+    </integer-array>
+</resources>
