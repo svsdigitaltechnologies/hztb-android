@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.svs.hztb.PushNotifications.RegistrationIntentService;
 import com.svs.hztb.R;
@@ -19,8 +20,13 @@ public class SplashScreenActivity extends AbstractActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
         checkForDeviceRegistrationToken();
+
+
+
 
          /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/

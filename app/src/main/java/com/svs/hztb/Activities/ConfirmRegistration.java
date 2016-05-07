@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -46,8 +47,32 @@ public class ConfirmRegistration extends AbstractActivity {
         TextView mobileNum = getView(R.id.textView_mobileNumber);
         mobileNumber = getIntent().getStringExtra("NUMBER");
         mobileNum.setText("+" +mobileNumber);
+        mobileNum.setTypeface(custom_font);
         otpText = getView(R.id.edittext_verification_code);
+
+        setupCustomFontForTextviews();
+
     }
+
+    private void setupCustomFontForTextviews() {
+        TextView cRegHeader = getView(R.id.textview_confirmRegistrationHeader);
+        TextView cRegHeader2 = getView(R.id.textview_enterOTP);
+        TextView cRegHeader3 = getView(R.id.textView_timerWarning);
+        TextView cRegPhoneText = getView(R.id.registration_phoneNum);
+        Button cRegSubmit = getView(R.id.button_verify);
+        Button cRegSendOtp = getView(R.id.button_sendOTP);
+
+        otpText.setTypeface(custom_font);
+        cRegHeader.setTypeface(custom_font);
+        cRegHeader2.setTypeface(custom_font);
+        cRegHeader3.setTypeface(custom_font);
+        cRegPhoneText.setTypeface(custom_font);
+        cRegSendOtp.setTypeface(custom_font);
+        cRegSubmit.setTypeface(custom_font);
+
+
+    }
+
 
 
     /**

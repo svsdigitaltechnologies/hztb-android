@@ -7,7 +7,9 @@ import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.Bean.UserProfileResponse;
@@ -43,10 +45,30 @@ public class SignUpActivity extends AbstractActivity {
         mobileNumber = getIntent().getStringExtra("NUMBER");
         EditText mobileNum = getView(R.id.editText_mobileNumber);
         mobileNum.setText(getResources().getString(R.string.string_plus) + mobileNumber);
+        mobileNum.setTypeface(custom_font);
         emailEditText = getView(R.id.editText_email);
         nameEditText = getView(R.id.editText_name);
+
+        setupCustomFontForTextviews();
     }
 
+
+    private void setupCustomFontForTextviews() {
+        TextView emailText = getView(R.id.textView_email);
+        TextView phoneText = getView(R.id.textView_phone);
+        TextView nameText = getView(R.id.textView_name);
+        Button doneButton = getView(R.id.button_done);
+
+
+        emailText.setTypeface(custom_font);
+        phoneText.setTypeface(custom_font);
+        nameText.setTypeface(custom_font);
+        doneButton.setTypeface(custom_font);
+        emailEditText.setTypeface(custom_font);
+        nameEditText.setTypeface(custom_font);
+
+
+    }
 
     /**
      * OnClick event for Facebook Login

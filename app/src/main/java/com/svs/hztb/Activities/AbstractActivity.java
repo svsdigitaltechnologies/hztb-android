@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
@@ -41,11 +42,12 @@ public abstract class AbstractActivity extends AppCompatActivity {
 
     protected LoadingBar _loader;
     protected String BASE_URL = "http://hztb-dev.us-east-1.elasticbeanstalk.com";
-
+    protected Typeface custom_font;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _loader=new LoadingBar(this);
+        custom_font = Typeface.createFromAsset(getAssets(),  "fonts/walkway_ultrabold.ttf");
     }
     /**
      * Action bar settings are updated

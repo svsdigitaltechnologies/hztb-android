@@ -2,6 +2,7 @@ package com.svs.hztb.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,10 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
 
         inflater = LayoutInflater.from(mContext);
         View row=inflater.inflate(R.layout.custom_spinner_item, parent, false);
+        Typeface custom_font = Typeface.createFromAsset(mContext.getAssets(),  "fonts/walkway_ultrabold.ttf");
         TextView label=(TextView)row.findViewById(R.id.custom_spinner_label);
         label.setText(countries[position]);
+        label.setTypeface(custom_font);
         return row;
     }
 }

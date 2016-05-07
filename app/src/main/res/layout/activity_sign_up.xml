@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/signUp_phone"
-        android:id="@+id/textView11"
+        android:id="@+id/textView_phone"
         android:layout_below="@+id/editText_email"
         android:layout_alignStart="@+id/editText_email"
         android:paddingLeft="5dp" />
@@ -111,8 +111,8 @@
         android:inputType="phone"
         android:ems="10"
         android:id="@+id/editText_mobileNumber"
-        android:layout_below="@+id/textView11"
-        android:layout_alignStart="@+id/textView11"
+        android:layout_below="@+id/textView_phone"
+        android:layout_alignStart="@+id/textView_phone"
         android:layout_alignEnd="@+id/editText_email"
         android:layout_marginBottom="10dp"
         android:enabled="false" />
