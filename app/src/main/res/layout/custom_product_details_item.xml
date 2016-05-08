@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:text="CAPTURE SELFIE"
+        android:text="VIEW SELFIE"
         android:background="@color/picton_blue"
         android:layout_below="@+id/custom_product_item"
         android:layout_alignParentRight="true"
