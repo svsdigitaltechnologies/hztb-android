@@ -114,6 +114,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
     protected void setActionBarTitle(String title){
         View v = getSupportActionBar().getCustomView();
         TextView titleTxtView = (TextView) v.findViewById(R.id.textview_actionbarTitle);
+        titleTxtView.setTypeface(custom_font);
         titleTxtView.setText(title);
     }
 

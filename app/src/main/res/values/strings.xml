@@ -39,4 +39,9 @@
     <string name="signUp_twitter">Twitter</string>
     <string name="signup_Done">Done</string>
     <string name="gcm_defaultSenderId">24397121204</string>
+    <string name="permissions_not_granted_read_phone_state">Permission Not Granted</string>
+    <string name="permission_read_phone_state_rationale">Read Phone State</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
