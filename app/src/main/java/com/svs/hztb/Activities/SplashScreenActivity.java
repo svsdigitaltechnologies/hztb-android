@@ -25,9 +25,6 @@ public class SplashScreenActivity extends AbstractActivity {
         setContentView(R.layout.activity_splash_screen);
         checkForDeviceRegistrationToken();
 
-
-
-
          /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
 

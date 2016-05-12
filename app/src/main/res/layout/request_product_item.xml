@@ -9,7 +9,7 @@
         android:layout_marginLeft="10dp"
         layout="@layout/custom_product_item"/>
 
-    <Button
+    <com.svs.hztb.CustomViews.WalkWayButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"

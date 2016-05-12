@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:baselineAlignBottom="true"/>
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jumba Sports Shoes"
@@ -27,7 +27,7 @@
         android:layout_toRightOf="@+id/product_thumb"
         />
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
@@ -41,7 +41,7 @@
         android:paddingBottom="5dp"
         android:layout_toRightOf="@+id/product_thumb"/>
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
@@ -68,7 +68,7 @@
         android:layout_toRightOf="@+id/product_thumb"
         ></View>
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"

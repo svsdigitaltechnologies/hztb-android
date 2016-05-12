@@ -44,18 +44,15 @@ public class SlideMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater mInflater = (LayoutInflater)
                 mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        Typeface custom_font = Typeface.createFromAsset(mContext.getAssets(), "fonts/walkway_ultrabold.ttf");
 
         if (position == 0){
             convertView = mInflater.inflate(R.layout.drawer_image_thumb, null);
             TextView name = (TextView) (convertView).findViewById(R.id.thumb_image);
-            name.setTypeface(custom_font);
         }
         else {
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
             TextView menuItem = (TextView) (convertView).findViewById(R.id.drawer_list_item_textview);
             menuItem.setText(menuItems[position]);
-            menuItem.setTypeface(custom_font);
         }
         return convertView;
     }

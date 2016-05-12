@@ -5,7 +5,7 @@
     android:background="@mipmap/registration_bg"
     tools:context=".Activities.RegistrationActivity">
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:id="@+id/registration_header1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white" />
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:id="@+id/registration_header2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white" />
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:id="@+id/registration_phoneNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
-        <TextView
+        <com.svs.hztb.CustomViews.WalkWayTextView
             android:id="@+id/textview_registration_countryCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:layout_toRightOf="@+id/textview_registration_countryCode"
             android:background="@android:color/background_light"></View>
 
-        <EditText
+        <com.svs.hztb.CustomViews.WalkWayEditText
             android:id="@+id/editText_mobilePhoneNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
     </RelativeLayout>
 
 
-    <TextView
+    <com.svs.hztb.CustomViews.WalkWayTextView
         android:id="@+id/registration_header3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
         android:layout_marginTop="10dp"
         android:textSize="18dp" />
 
-    <Button
+    <com.svs.hztb.CustomViews.WalkWayButton
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/string_submit"

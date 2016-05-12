@@ -59,13 +59,11 @@ public abstract class AbstractActivity extends AppCompatActivity {
     private ListView mDrawerList;
     protected LoadingBar _loader;
     protected String BASE_URL = "http://hztb-dev.us-east-1.elasticbeanstalk.com";
-    protected Typeface custom_font;
     protected SlideMenuAdapter slideMenuAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _loader=new LoadingBar(this);
-        custom_font = Typeface.createFromAsset(getAssets(),  "fonts/walkway_ultrabold.ttf");
     }
 
     protected void intalizeDrawer(){
@@ -180,7 +178,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
     protected void setActionBarTitle(String title){
         View v = getSupportActionBar().getCustomView();
         TextView titleTxtView = (TextView) v.findViewById(R.id.textview_actionbarTitle);
-        titleTxtView.setTypeface(custom_font);
         titleTxtView.setText(title);
     }
 

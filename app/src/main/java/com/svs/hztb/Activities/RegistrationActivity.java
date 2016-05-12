@@ -42,7 +42,6 @@ public class RegistrationActivity extends AbstractActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String plus = getResources().getString(R.string.string_plus);
-                countryCode.setTypeface(custom_font);
                 countryCode.setText(plus + String.valueOf(getResources().getIntArray(R.array.countryCodeArray)[i]));
                 selectedIndex = i;
             }
@@ -50,26 +49,9 @@ public class RegistrationActivity extends AbstractActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
-        setupCustomFontForTextviews();
-
     }
 
-    private void setupCustomFontForTextviews() {
-        mobileNumber.setTypeface(custom_font);
-        TextView regHeader = getView(R.id.registration_header1);
-        TextView regHeader2 = getView(R.id.registration_header2);
-        TextView regHeader3 = getView(R.id.registration_header3);
-        TextView regPhoneText = getView(R.id.registration_phoneNum);
-        Button regSubmit = getView(R.id.button_submit);
 
-        regSubmit.setTypeface(custom_font);
-        regHeader.setTypeface(custom_font);
-        regHeader2.setTypeface(custom_font);
-        regHeader3.setTypeface(custom_font);
-        regPhoneText.setTypeface(custom_font);
-
-     }
 
     /**
      * On click action performed

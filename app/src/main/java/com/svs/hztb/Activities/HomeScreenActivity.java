@@ -47,7 +47,7 @@ public class HomeScreenActivity extends AbstractActivity {
             case R.id.settings:
 
                 if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                    mDrawerLayout.closeDrawer(Gravity.END);
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 }
                 else {
                     mDrawerLayout.openDrawer(Gravity.LEFT);
