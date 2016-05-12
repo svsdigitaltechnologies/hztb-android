@@ -9,16 +9,30 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionMenuView;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.svs.hztb.Adapters.SlideMenuAdapter;
 import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
@@ -40,15 +54,67 @@ import rx.schedulers.Schedulers;
  */
 public abstract class AbstractActivity extends AppCompatActivity {
 
+    protected DrawerLayout mDrawerLayout;
+    private String[] menuItems;
+    private ListView mDrawerList;
     protected LoadingBar _loader;
     protected String BASE_URL = "http://hztb-dev.us-east-1.elasticbeanstalk.com";
     protected Typeface custom_font;
+    protected SlideMenuAdapter slideMenuAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _loader=new LoadingBar(this);
         custom_font = Typeface.createFromAsset(getAssets(),  "fonts/walkway_ultrabold.ttf");
     }
+
+    protected void intalizeDrawer(){
+
+
+        moveDrawerToTop();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        menuItems = getResources().getStringArray(R.array.side_menu_items);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        // set a custom shadow that overlays the main content when the drawer opens
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        slideMenuAdapter = new SlideMenuAdapter(getApplicationContext(),menuItems);
+        mDrawerList.setAdapter(slideMenuAdapter);
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+
+    }
+
+    private void moveDrawerToTop() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null); // "null" is important.
+
+        // HACK: "steal" the first child of decor view
+        ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+        View child = decor.getChildAt(0);
+        decor.removeView(child);
+        RelativeLayout container = (RelativeLayout) drawer.findViewById(R.id.content_frame); // This is the container we defined just now.
+        container.addView(child, 0);
+        drawer.findViewById(R.id.left_drawer).setPadding(0, getStatusBarHeight(), 0, 0);
+
+        // Make the drawer replace the first child
+        decor.addView(drawer);
+    }
+
+
+
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+
     /**
      * Action bar settings are updated
      */
@@ -190,4 +256,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
         return alertDialog;
 
     }
+
+
 }

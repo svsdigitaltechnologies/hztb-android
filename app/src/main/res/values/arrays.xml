@@ -8,6 +8,7 @@
 
 
     <string-array name="side_menu_items">
+        <item>""</item>
         <item>Coupon</item>
         <item>Profile</item>
         <item>Settings</item>

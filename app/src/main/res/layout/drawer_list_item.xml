@@ -11,7 +11,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="15dp"
         android:paddingTop="10dp"
-        android:id="@+id/drawer_list_item"
+        android:id="@+id/drawer_list_item_textview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"/>
