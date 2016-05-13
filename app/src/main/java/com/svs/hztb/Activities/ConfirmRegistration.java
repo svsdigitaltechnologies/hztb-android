@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.svs.hztb.Bean.ValidateOTPResponse;
@@ -45,9 +44,7 @@ public class ConfirmRegistration extends AbstractActivity {
     }
 
     private void initViews() {
-        TextView mobileNum = getView(R.id.textView_mobileNumber);
         mobileNumber = getIntent().getStringExtra("NUMBER");
-        mobileNum.setText("+" +mobileNumber);
         otpText = getView(R.id.edittext_verification_code);
     }
 
@@ -198,7 +195,7 @@ public class ConfirmRegistration extends AbstractActivity {
 
                 cancelLoader();
                 if (validateOTPResponseResponse.isSuccessful()) {
-                    pushActivity(SignUpActivity.class,mobileNumber);
+                    pushActivity(ProfileActivity.class,mobileNumber);
                     finish();
                 }
                 else {

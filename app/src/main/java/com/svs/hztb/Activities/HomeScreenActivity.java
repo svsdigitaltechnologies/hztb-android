@@ -19,7 +19,6 @@ public class HomeScreenActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         intalizeDrawer();
-
     }
 
     @Override

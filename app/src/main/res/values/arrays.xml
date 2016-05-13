@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="countries">
-        <item>United States</item>
+        <item>Australia</item>
+        <item>Bangladesh</item>
+        <item>Belgium</item>
+        <item>Canada</item>
+        <item>China</item>
+        <item>Denmark</item>
+        <item>France</item>
         <item>India</item>
-
+        <item>Mauritius</item>
+        <item>United Kingdom</item>
+        <item>United States</item>
+        <item>Zimbabwe</item>
     </string-array>
 
 
@@ -17,7 +26,17 @@
     </string-array>
 
     <integer-array name="countryCodeArray">
+        <item>61</item>
+        <item>880</item>
+        <item>32</item>
         <item>1</item>
+        <item>86</item>
+        <item>45</item>
+        <item>33</item>
         <item>91</item>
+        <item>230</item>
+        <item>44</item>
+        <item>1</item>
+        <item>263</item>
     </integer-array>
 </resources>

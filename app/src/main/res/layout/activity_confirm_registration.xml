@@ -1,44 +1,24 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/registration_bg"
     tools:context="com.svs.hztb.Activities.ConfirmRegistration">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.svs.hztb.CustomViews.WalkWayTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/string_confirm_Registration_warning"
-        android:id="@+id/textview_confirmRegistrationHeader"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:padding="15dp" />
-
-    <com.svs.hztb.CustomViews.WalkWayTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="+91 987-654-3210"
-        android:id="@+id/textView_mobileNumber"
-        android:layout_below="@+id/textview_confirmRegistrationHeader"
-        android:padding="20dp"
-        android:layout_alignEnd="@+id/textview_confirmRegistrationHeader"
-        android:layout_alignStart="@+id/textview_confirmRegistrationHeader"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="26dp" />
-
-    <com.svs.hztb.CustomViews.WalkWayTextView
-        android:layout_width="wrap_content"
+        <com.svs.hztb.CustomViews.WalkWayTextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/string_enter_your_otp_code"
         android:id="@+id/textview_enterOTP"
-        android:layout_below="@+id/textView_mobileNumber"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
         android:paddingLeft="20dp"
-        android:textSize="14dp" />
+        android:textSize="20dp" />
 
     <com.svs.hztb.CustomViews.WalkWayEditText
         android:layout_width="wrap_content"
@@ -88,4 +68,5 @@
         android:layout_alignStart="@+id/button_verify"
         android:layout_alignEnd="@+id/button_verify"
         android:textSize="20dp" />
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

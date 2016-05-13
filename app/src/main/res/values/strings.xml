@@ -19,11 +19,18 @@
     <string name="string_plus">+</string>
     <string name="shared_pref_app">HZTB</string>
 
+
+    <string name="verify_phone_number">We Will be verifying the phone number:</string>
+    <string name="verify_ok_or_not">Is this OK, or Would you like to edit the number ?</string>
+
+    <string name="verify_edit">Edit</string>
+    <string name="verify_ok">Ok</string>
+
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_mobile_phone_registration">Registration</string>
     <string name="title_activity_confirm_registration">ConfirmRegistration</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
-    <string name="signUp_title">Sign Up</string>
+    <string name="profile_title">Profile</string>
     <string name="signUp_name">Name</string>
     <string name="signUp_email">Email</string>
     <string name="signUp_phone">Phone</string>
@@ -38,6 +45,8 @@
     <string name="signUp_google">Google +</string>
     <string name="signUp_twitter">Twitter</string>
     <string name="signup_Done">Done</string>
+    <string name="signup_Edit">Edit</string>
+
     <string name="gcm_defaultSenderId">24397121204</string>
     <string name="permissions_not_granted_read_phone_state">Permission Not Granted</string>
     <string name="permission_read_phone_state_rationale">Read Phone State</string>

@@ -2,16 +2,12 @@ package com.svs.hztb.Activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
@@ -26,7 +22,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class SignUpActivity extends AbstractActivity {
+public class ProfileActivity extends AbstractActivity {
 
     private String mobileNumber;
     private EditText emailEditText;
@@ -36,44 +32,17 @@ public class SignUpActivity extends AbstractActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        actionBarSettings(R.string.signUp_title);
+        setContentView(R.layout.activity_profile);
+        actionBarSettings(R.string.profile_title);
         initView();
     }
 
     private void initView() {
         mobileNumber = getIntent().getStringExtra("NUMBER");
-        EditText mobileNum = getView(R.id.editText_mobileNumber);
+        TextView mobileNum = getView(R.id.editText_mobileNumber);
         mobileNum.setText(getResources().getString(R.string.string_plus) + mobileNumber);
         emailEditText = getView(R.id.editText_email);
         nameEditText = getView(R.id.editText_name);
-    }
-
-    /**
-     * OnClick event for Facebook Login
-     *
-     * @param view
-     */
-    public void onFacebookButtonClicked(View view) {
-
-    }
-
-    /**
-     * OnClick event for Google+ Login
-     *
-     * @param view
-     */
-    public void onGooglePlusButtonClicked(View view) {
-
-    }
-
-    /**
-     * OnClick event for Twitter Login
-     *
-     * @param view
-     */
-    public void onTwitterButtonClicked(View view) {
-
     }
 
     /**
@@ -95,7 +64,7 @@ public class SignUpActivity extends AbstractActivity {
         showLoader();
 
         RegisterService registerService = new RegisterService();
-        Observable<Response<UserProfileResponse>> userProfileResponseObservable = registerService.updateUserProfile(mobileNumber, nameEditText.getText().toString(), emailEditText.getText().toString());
+        Observable<Response<UserProfileResponse>> userProfileResponseObservable = registerService.updateUserProfile(mobileNumber, nameEditText.getText().toString().trim(), emailEditText.getText().toString().trim());
 
         userProfileResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<UserProfileResponse>>() {

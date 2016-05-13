@@ -67,8 +67,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
     }
 
     protected void intalizeDrawer(){
-
-
         moveDrawerToTop();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuItems = getResources().getStringArray(R.array.side_menu_items);
@@ -77,16 +75,11 @@ public abstract class AbstractActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         slideMenuAdapter = new SlideMenuAdapter(getApplicationContext(),menuItems);
         mDrawerList.setAdapter(slideMenuAdapter);
-
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
-
     }
 
     private void moveDrawerToTop() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null); // "null" is important.
+         DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null); // "null" is important.
 
         // HACK: "steal" the first child of decor view
         ViewGroup decor = (ViewGroup) getWindow().getDecorView();
@@ -118,9 +111,29 @@ public abstract class AbstractActivity extends AppCompatActivity {
      */
     protected void actionBarSettings(int title) {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_title, null);
+        getSupportActionBar().setCustomView(mCustomView);
+        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
+        setActionBarTitle(getString(title));
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    /**
+     * Action bar settings are updated
+     */
+    protected void actionBarSettingswithButtons(int title,boolean isBackEnabled) {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.actionbar_title);
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
         setActionBarTitle(getString(R.string.title_activity_mobile_phone_registration));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        if (isBackEnabled){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
     }
 
 
@@ -228,8 +241,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
 
                 }
             }
-
-
         });
     }
 
