@@ -1,12 +1,13 @@
 package com.svs.hztb.Activities;
 
-import android.support.v7.app.ActionBar;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
@@ -21,7 +22,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class SignUpActivity extends AbstractActivity {
+public class ProfileActivity extends AbstractActivity {
 
     private String mobileNumber;
     private EditText emailEditText;
@@ -31,74 +32,39 @@ public class SignUpActivity extends AbstractActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-
-        actionBarSettings();
-
+        setContentView(R.layout.activity_profile);
+        actionBarSettings(R.string.profile_title);
         initView();
-
-
     }
 
     private void initView() {
         mobileNumber = getIntent().getStringExtra("NUMBER");
-        EditText mobileNum = getView(R.id.editText_mobileNumber);
-        mobileNum.setText(mobileNumber);
+        TextView mobileNum = getView(R.id.editText_mobileNumber);
+        mobileNum.setText(getResources().getString(R.string.string_plus) + mobileNumber);
         emailEditText = getView(R.id.editText_email);
         nameEditText = getView(R.id.editText_name);
     }
 
     /**
-     * Action bar settings are updated
-     */
-    private void actionBarSettings() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.actionbar_title);
-        setActionBarTitle(getString(R.string.signUp_title));
-    }
-
-    /**
-     * OnClick event for Facebook Login
-     * @param view
-     */
-    public void onFacebookButtonClicked(View view){
-
-    }
-    /**
-     * OnClick event for Google+ Login
-     * @param view
-     */
-    public void onGooglePlusButtonClicked(View view){
-
-    }
-
-    /**
-     * OnClick event for Twitter Login
-     * @param view
-     */
-    public void onTwitterButtonClicked(View view){
-
-    }
-
-    /**
      * OnClick event for Sign Up
+     *
      * @param view
      */
-    public void onSignUpDoneButtonClicked(View view){
-        if (isNotEmpty(nameEditText)){
-            if(isEmailValid(emailEditText.getText().toString())){
+    public void onSignUpDoneButtonClicked(View view) {
+        if (isNotEmpty(nameEditText)) {
+            if (isEmailValid(emailEditText.getText().toString())) {
                 postDataForUpdateUserProfile();
-            }else
-                displayMessage("Please Enter Valid Email ID ");
-        }else
-            displayMessage("Please Enter Valid Name");
-        }
+            } else
+                displayMessage(getResources().getString(R.string.alert_email_invalid));
+        } else
+            displayMessage(getResources().getString(R.string.alert_mobilenumber_invalid));
+    }
 
     private void postDataForUpdateUserProfile() {
         showLoader();
 
         RegisterService registerService = new RegisterService();
-        Observable<Response<UserProfileResponse>> userProfileResponseObservable = registerService.updateUserProfile(mobileNumber,nameEditText.getText().toString(),emailEditText.getText().toString());
+        Observable<Response<UserProfileResponse>> userProfileResponseObservable = registerService.updateUserProfile(mobileNumber, nameEditText.getText().toString().trim(), emailEditText.getText().toString().trim());
 
         userProfileResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<UserProfileResponse>>() {
@@ -117,33 +83,47 @@ public class SignUpActivity extends AbstractActivity {
 
                 cancelLoader();
                 if (userProfileResponseObservable.isSuccessful()) {
-                        displayMessage("User Profile Updated Successfully");
-                  }
-                else {
+                    displayMessage(getResources().getString(R.string.toast_userprofile_update_success));
+                    pushActivity(HomeScreenActivity.class);
+                    storeSuccessLoginInSharedPreferences();
+                    finish();
+                } else {
                     List<ErrorStatus> listErrorStatus = ServiceGenerator.parseErrorBody(userProfileResponseObservable);
                     for (ErrorStatus listErrorState : listErrorStatus) {
                         Log.d("Error Message : ", listErrorState.getMessage() + " " + listErrorState.getStatus());
-                        displayMessage(listErrorState.getMessage()+"Status :"+listErrorState.getStatus());
+                        displayMessage(listErrorState.getMessage() + "Status :" + listErrorState.getStatus());
                     }
 
                 }
             }
-
-
         });
     }
 
+    private void storeSuccessLoginInSharedPreferences() {
+        SharedPreferences sharedpref = getSharedPreferences(getResources().getString(R.string.shared_pref_app), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpref.edit();
+        editor.putBoolean(getResources().getString(R.string.login_success),true);
+        editor.commit();
+    }
+
     /**
-     *  Check if name field is empty or not
+     * Check if name field is empty or not
+     *
      * @param name
      * @return
      */
-    private boolean isNotEmpty(EditText name){
+    private boolean isNotEmpty(EditText name) {
 
-       if (name.getText().toString().trim().equals(""))
+        if (name.getText().toString().trim().equals(""))
             return false;
         else
             return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog alertDialog = alertDialog();
+        alertDialog.show();
     }
 
 }

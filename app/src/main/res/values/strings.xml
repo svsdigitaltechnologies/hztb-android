@@ -7,6 +7,7 @@
     <string name="string_registration_content_otp">(Country code followed by phone number)</string>
     <string name="string_registration_vertification_content">Verification code will be sent to your phone as SMS</string>
     <string name="string_submit">Submit</string>
+    <string name="string_content_phone">Please confirm your country code and enter your phone number</string>
     <string name="string_confirmRegistration">Confirm Registration</string>
     <string name="string_enter_your_otp_code">Enter your verification code</string>
     <string name="string_registration_button_verify">VERIFY</string>
@@ -15,18 +16,41 @@
     <string name="confirm_sendagain">Send OTP Again</string>
     <string name="hello_world">Hello world!</string>
     <string name="actionbar_title">Title</string>
+    <string name="string_plus">+</string>
+    <string name="shared_pref_app">HZTB</string>
+
+
+    <string name="verify_phone_number">We Will be verifying the phone number:</string>
+    <string name="verify_ok_or_not">Is this OK, or Would you like to edit the number ?</string>
+
+    <string name="verify_edit">Edit</string>
+    <string name="verify_ok">Ok</string>
+
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_mobile_phone_registration">Registration</string>
     <string name="title_activity_confirm_registration">ConfirmRegistration</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
-    <string name="signUp_title">Sign Up</string>
+    <string name="profile_title">Profile</string>
     <string name="signUp_name">Name</string>
     <string name="signUp_email">Email</string>
     <string name="signUp_phone">Phone</string>
+    <string name="login_success">Success</string>
+    <string name="alert_email_invalid">Please Enter Valid Email ID</string>
+    <string name="alert_mobilenumber_invalid">Please Enter Valid Name</string>
+    <string name="toast_userprofile_update_success">User Profile Updated Successfully</string>
+
+
     <string name="signUp_or">or</string>
     <string name="signUp_facebook">Facebook</string>
     <string name="signUp_google">Google +</string>
     <string name="signUp_twitter">Twitter</string>
     <string name="signup_Done">Done</string>
+    <string name="signup_Edit">Edit</string>
+
     <string name="gcm_defaultSenderId">24397121204</string>
+    <string name="permissions_not_granted_read_phone_state">Permission Not Granted</string>
+    <string name="permission_read_phone_state_rationale">Read Phone State</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
