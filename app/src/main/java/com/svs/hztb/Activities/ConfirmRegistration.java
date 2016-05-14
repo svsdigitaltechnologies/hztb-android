@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -40,7 +41,6 @@ public class ConfirmRegistration extends AbstractActivity {
         setContentView(R.layout.activity_confirm_registration);
         actionBarSettings(R.string.string_confirmRegistration);
         initViews();
-        loadIMEI();
     }
 
     private void initViews() {
@@ -147,7 +147,6 @@ public class ConfirmRegistration extends AbstractActivity {
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // do somthing here
                     }
                 })
                 .show();
@@ -162,21 +161,18 @@ public class ConfirmRegistration extends AbstractActivity {
 
     }
 
-
-
     /**
      * Post data to server
      */
     private void postDataForOTPVerification() {
         showLoader();
 
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        Log.d("IMEI",telephonyManager.getDeviceId());
-        Log.d("TOKEN",getDeviceToken());
-
+        String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        Log.d("Id",android_id);
 
         RegisterService registerService = new RegisterService();
-        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate(mobileNumber,otpText.getText().toString(),telephonyManager.getDeviceId(),getDeviceToken());
+        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate(mobileNumber,otpText.getText().toString(),"",android_id,getDeviceToken());
 
         validateOTPResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<ValidateOTPResponse>>() {

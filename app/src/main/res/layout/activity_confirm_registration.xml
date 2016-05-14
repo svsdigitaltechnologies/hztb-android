@@ -1,72 +1,82 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/registration_bg"
     tools:context="com.svs.hztb.Activities.ConfirmRegistration">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.svs.hztb.CustomViews.WalkWayTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/string_enter_your_otp_code"
-        android:id="@+id/textview_enterOTP"
-        android:layout_marginTop="100dp"
-        android:gravity="center"
-            android:paddingTop="10dp"
+            android:id="@+id/textview_enterOTP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
             android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:textSize="20dp" />
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:text="@string/string_enter_your_otp_code"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
 
-    <com.svs.hztb.CustomViews.WalkWayEditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/edittext_verification_code"
-        android:layout_below="@+id/textview_enterOTP"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp" />
+        <com.svs.hztb.CustomViews.WalkWayEditText
+            android:id="@+id/edittext_verification_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textview_enterOTP"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="25dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:inputType="phone"
+            android:textColor="@android:color/white" />
 
-    <com.svs.hztb.CustomViews.WalkWayTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/string_registration_timer_warning"
-        android:id="@+id/textView_timerWarning"
-        android:layout_below="@+id/edittext_verification_code"
-        android:layout_centerHorizontal="true"
-        android:padding="20dp"
-        android:gravity="center" />
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:id="@+id/textView_timerWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <com.svs.hztb.CustomViews.WalkWayButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/string_registration_button_verify"
-        android:id="@+id/button_verify"
-        android:onClick="onVerifyButtonClicked"
-        android:background="@color/picton_blue"
-        android:layout_below="@+id/textView_timerWarning"
-        android:layout_marginBottom="10dp"
-        android:layout_alignStart="@+id/edittext_verification_code"
-        android:layout_alignEnd="@+id/edittext_verification_code"
-        android:textSize="20dp" />
+            android:layout_below="@+id/edittext_verification_code"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/string_registration_timer_warning"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
 
-    <com.svs.hztb.CustomViews.WalkWayButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm_sendagain"
-        android:id="@+id/button_sendOTP"
-        android:layout_below="@+id/button_verify"
-        android:onClick="onSendOTPAgainButtonClicked"
-        android:background="@color/picton_blue"
-        android:layout_alignStart="@+id/button_verify"
-        android:layout_alignEnd="@+id/button_verify"
-        android:textSize="20dp" />
+        <com.svs.hztb.CustomViews.WalkWayButton
+            android:id="@+id/button_verify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/edittext_verification_code"
+            android:layout_alignStart="@+id/edittext_verification_code"
+            android:layout_below="@+id/textView_timerWarning"
+            android:layout_marginBottom="10dp"
+
+            android:background="@color/picton_blue"
+            android:onClick="onVerifyButtonClicked"
+            android:text="@string/string_registration_button_verify"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
+
+        <com.svs.hztb.CustomViews.WalkWayButton
+            android:id="@+id/button_sendOTP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/button_verify"
+            android:layout_alignStart="@+id/button_verify"
+            android:layout_below="@+id/button_verify"
+            android:background="@color/picton_blue"
+            android:onClick="onSendOTPAgainButtonClicked"
+            android:text="@string/confirm_sendagain"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
     </RelativeLayout>
 </ScrollView>

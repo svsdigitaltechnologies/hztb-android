@@ -29,12 +29,13 @@ public class RegisterService {
     }
 
 
-    public Observable<Response<ValidateOTPResponse>> validate(String mobileNumber,String otpCode,String imei,String deviceID) {
+    public Observable<Response<ValidateOTPResponse>> validate(String mobileNumber,String otpCode,String imei,String localDeviceID,String deviceID) {
         ValidateOTPRequest validateOTPRequest = new ValidateOTPRequest();
         validateOTPRequest.setMobileNumber(mobileNumber);
         validateOTPRequest.setOtpCode(otpCode);
         validateOTPRequest.setImei(imei);
         validateOTPRequest.setDeviceRegId(deviceID);
+        validateOTPRequest.setLocalDeviceID(localDeviceID);
         return dataService.validateOTPResponse(validateOTPRequest);
     }
 

@@ -60,6 +60,8 @@ public abstract class AbstractActivity extends AppCompatActivity {
     protected LoadingBar _loader;
     protected String BASE_URL = "http://hztb-dev.us-east-1.elasticbeanstalk.com";
     protected SlideMenuAdapter slideMenuAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
         RelativeLayout container = (RelativeLayout) drawer.findViewById(R.id.content_frame); // This is the container we defined just now.
         container.addView(child, 0);
         drawer.findViewById(R.id.left_drawer).setPadding(0, getStatusBarHeight(), 0, 0);
-
         // Make the drawer replace the first child
         decor.addView(drawer);
     }
@@ -117,8 +118,11 @@ public abstract class AbstractActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
         setActionBarTitle(getString(title));
         getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+
+
 
     /**
      * Action bar settings are updated
