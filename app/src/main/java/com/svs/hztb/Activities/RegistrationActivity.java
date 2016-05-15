@@ -33,6 +33,8 @@ public class RegistrationActivity extends AbstractActivity {
         mobileNumber = getView(R.id.editText_mobilePhoneNo);
         countryCodeButton = getView(R.id.country_code_button);
         countryCode = getView(R.id.textview_registration_countryCode);
+        countryCode.setText(getResources().getString(R.string.string_plus)+String.valueOf(getResources().getIntArray(R.array.countryCodeArray)[7]));
+        countryCodeButton.setText(getResources().getStringArray(R.array.countries)[7]);
     }
 
     private void showAlertDialog(){

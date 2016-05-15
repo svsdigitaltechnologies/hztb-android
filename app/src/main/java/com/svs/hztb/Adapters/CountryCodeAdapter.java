@@ -27,12 +27,12 @@ public class CountryCodeAdapter extends BaseAdapter {
     private ArrayList<CountryItem> countries;
     private ArrayList<CountryItem> countryList = null;
 
-     public CountryCodeAdapter(Context context,
-                               ArrayList<CountryItem> countryItemArrayList) {
+    public CountryCodeAdapter(Context context,
+                              ArrayList<CountryItem> countryItemArrayList) {
         mContext = context;
-         countries = countryItemArrayList;
-         countryList = new ArrayList<>();
-         countryList.addAll(countries);
+        countries = countryItemArrayList;
+        countryList = new ArrayList<>();
+        countryList.addAll(countries);
     }
 
     @Override
@@ -54,6 +54,7 @@ public class CountryCodeAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater mInflater = (LayoutInflater)
                 mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
         convertView = mInflater.inflate(R.layout.custom_countrycode_item, null);
 
         TextView label=(TextView) convertView.findViewById(R.id.custom_spinner_label);
@@ -63,7 +64,7 @@ public class CountryCodeAdapter extends BaseAdapter {
         return convertView;
     }
 
-//
+    //
     // Filter Class
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());

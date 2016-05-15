@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.svs.hztb.Bean.ValidateOTPResponse;
+import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.RegisterService;
@@ -172,7 +173,7 @@ public class ConfirmRegistration extends AbstractActivity {
         Log.d("Id",android_id);
 
         RegisterService registerService = new RegisterService();
-        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate(mobileNumber,otpText.getText().toString(),"",android_id,getDeviceToken());
+        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate(mobileNumber,otpText.getText().toString(),"XXX",android_id,getDeviceToken());
 
         validateOTPResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<ValidateOTPResponse>>() {
@@ -191,6 +192,8 @@ public class ConfirmRegistration extends AbstractActivity {
 
                 cancelLoader();
                 if (validateOTPResponseResponse.isSuccessful()) {
+                    new AppSharedPreference().storeUserID(validateOTPResponseResponse.body().getUserId(),getApplicationContext());
+                    Log.d("UserID",validateOTPResponseResponse.body().getUserId());
                     pushActivity(ProfileActivity.class,mobileNumber);
                     finish();
                 }

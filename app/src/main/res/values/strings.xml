@@ -40,6 +40,10 @@
     <string name="alert_mobilenumber_invalid">Please Enter Valid Name</string>
     <string name="toast_userprofile_update_success">User Profile Updated Successfully</string>
 
+    <string name="profile_camera">Camera</string>
+    <string name="profile_gallery">Gallery</string>
+    <string name="profile_cancel">Cancel</string>
+    <string name="profile_choose_from">Choose From </string>
 
     <string name="signUp_or">or</string>
     <string name="signUp_facebook">Facebook</string>

@@ -61,6 +61,8 @@ public class HomeScreenActivity extends AbstractActivity {
 
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        alertDialog();
+    }
 }

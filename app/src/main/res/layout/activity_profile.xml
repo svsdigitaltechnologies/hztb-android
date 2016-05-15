@@ -23,6 +23,7 @@
         android:scaleType="fitCenter"
         android:clickable="true"
         app:civ_border="true"
+        android:onClick="onProfileThumbClicked"
         android:layout_marginTop="20dp"
         app:civ_selector="true"
         app:civ_selectorColor="@android:color/holo_blue_bright"
@@ -126,11 +127,10 @@
         android:layout_marginRight="20dp"
         android:weightSum="2">
         <com.svs.hztb.CustomViews.WalkWayButton
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/signup_Done"
             android:id="@+id/button_done"
-            android:layout_weight="1"
             android:layout_marginRight="10dp"
             android:textSize="24dp"
             android:layout_alignParentLeft="true"
@@ -140,11 +140,12 @@
             android:background="@color/picton_blue"
             />
         <com.svs.hztb.CustomViews.WalkWayButton
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/signup_Edit"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:visibility="gone"
             android:textSize="24dp"
             android:id="@+id/edittext_edit_button"
             android:textColor="@android:color/white"

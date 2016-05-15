@@ -40,11 +40,12 @@ public class RegisterService {
     }
 
 
-    public Observable<Response<UserProfileResponse>> updateUserProfile(String mobileNumber,String name,String emailID) {
+    public Observable<Response<UserProfileResponse>> updateUserProfile(String mobileNumber,String name,String emailID,byte[] picArray) {
         UserProfileRequest userProfileRequest = new UserProfileRequest();
         userProfileRequest.setMobileNumber(mobileNumber);
         userProfileRequest.setName(name);
         userProfileRequest.setEmailAddress(emailID);
+        userProfileRequest.setProfilePic(picArray);
         return dataService.updateUserProfile(userProfileRequest);
     }
 
