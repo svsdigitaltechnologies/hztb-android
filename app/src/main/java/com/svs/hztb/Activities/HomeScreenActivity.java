@@ -37,30 +37,6 @@ public class HomeScreenActivity extends AbstractActivity {
         return true;
     }
 
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-
-        switch(item.getItemId()) {
-
-            case R.id.settings:
-
-                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }
-                else {
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
-                }
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-
     @Override
     public void onBackPressed() {
         alertDialog();

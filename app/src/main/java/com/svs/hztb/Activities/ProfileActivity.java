@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
@@ -26,7 +27,9 @@ import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.RegisterService;
 import com.svs.hztb.RestService.ServiceGenerator;
+import com.svs.hztb.Utils.ConnectionDetector;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +49,7 @@ public class ProfileActivity extends AbstractActivity {
     private ImageView profilePic;
     private static final int RESULT_CAMERA = 0;
     private static final int RESULT_GALLERY = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +130,11 @@ public class ProfileActivity extends AbstractActivity {
                         Uri selectedImage = imageReturnedIntent.getData();
                         Bitmap bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
                         profilePic.setImageBitmap(getRotatedBitmap(selectedImage, bitmap));
-                    }else displayMessage("Error");
+                    }else {
+                       Bitmap bitmap = (Bitmap)imageReturnedIntent.getExtras().get("data");
+                        profilePic.setImageBitmap(bitmap);
+
+                    }
                 }
 
                 break;
@@ -145,6 +153,9 @@ public class ProfileActivity extends AbstractActivity {
         matrix.postRotate(getImageOrientation(selectedImage.toString()));
         Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight(), matrix, true);
+
+        long d = rotatedBitmap.getByteCount();
+        Log.d("Bytes",String.valueOf(d));
         return rotatedBitmap;
     }
 
@@ -184,7 +195,10 @@ public class ProfileActivity extends AbstractActivity {
      * @param view
      */
     public void onSignUpDoneButtonClicked(View view) {
-                postDataForUpdateUserProfile();
+        ConnectionDetector c = new ConnectionDetector(getApplicationContext());
+        if(c.isConnectingToInternet()) {
+            postDataForUpdateUserProfile();
+        }else displayMessage("No Network");
     }
 
     private void postDataForUpdateUserProfile() {
@@ -202,7 +216,7 @@ public class ProfileActivity extends AbstractActivity {
         }
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ((BitmapDrawable)profilePic.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+        ((BitmapDrawable)profilePic.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, stream);
         final byte[] picArray = stream.toByteArray();
 
         RegisterService registerService = new RegisterService();

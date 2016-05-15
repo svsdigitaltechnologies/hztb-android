@@ -20,6 +20,7 @@ import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.RegisterService;
 import com.svs.hztb.RestService.ServiceGenerator;
+import com.svs.hztb.Utils.ConnectionDetector;
 
 import java.util.List;
 
@@ -55,7 +56,10 @@ public class ConfirmRegistration extends AbstractActivity {
      * @param view
      */
     public void onSendOTPAgainButtonClicked(View view){
-        postDataForRegistration(mobileNumber,true);
+        ConnectionDetector c = new ConnectionDetector(getApplicationContext());
+        if(c.isConnectingToInternet()) {
+            postDataForRegistration(mobileNumber,true);
+        }else displayMessage("No Network");
     }
 
     @Override
@@ -69,6 +73,7 @@ public class ConfirmRegistration extends AbstractActivity {
      * @param view
      */
     public void onVerifyButtonClicked(View view){
+
         postDataForOTPVerification();
     }
 

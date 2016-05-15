@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.R;
+import com.svs.hztb.Utils.ConnectionDetector;
 
 
 public class RegistrationActivity extends AbstractActivity {
@@ -66,7 +67,10 @@ public class RegistrationActivity extends AbstractActivity {
             public void onClick(View v) {
                 alertDialog.cancel();
                 String phoneNum = countryCode.getText().toString().replace("+","").trim() + mobileNumber.getText().toString().trim();
-                postDataForRegistration(phoneNum, false);
+                ConnectionDetector c = new ConnectionDetector(getApplicationContext());
+                if(c.isConnectingToInternet()) {
+                    postDataForRegistration(phoneNum, false);
+                }else displayMessage("No Network");
             }
         });
 
