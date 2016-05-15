@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="10dp"
+    android:background="@android:color/white"
+    android:layout_height="match_parent">
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/picton_blue"
+        android:textColor="@android:color/white"
+        android:padding="20dp"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:text="@string/profile_camera"
+        android:id="@+id/button_camera_pic" />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/picton_blue"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:text="@string/profile_gallery"
+        android:id="@+id/button_gallery_pic" />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:text="@string/profile_cancel"
+        android:id="@+id/button_cancel" />
+</LinearLayout>

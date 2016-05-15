@@ -43,23 +43,29 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/darker_gray" />
 
-    <Spinner
-        android:id="@+id/spinner"
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:id="@+id/country_code_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/registration_phoneNum"
         android:layout_marginLeft="20dp"
+        android:text="INDIA"
         android:layout_marginRight="20dp"
+        android:textSize="25dp"
+        android:textColor="@android:color/white"
+        android:gravity="left|center"
+        android:drawableRight="@mipmap/right_arrow"
+        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:onClick="onCountryCodeClick"
         android:background="@android:color/transparent"
-        android:drawSelectorOnTop="true"
-        android:popupBackground="@android:color/black"
-        android:spinnerMode="dropdown" />
+     />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner"
+        android:layout_below="@+id/country_code_button"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
@@ -73,7 +79,7 @@
             android:padding="10dp"
             android:textColor="@android:color/white"
             android:textSize="24sp"
-            android:text="+1" />
+            android:text="+91" />
 
         <View
             android:id="@+id/line_separator"

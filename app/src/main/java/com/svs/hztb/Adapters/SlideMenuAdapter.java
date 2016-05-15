@@ -2,13 +2,17 @@ package com.svs.hztb.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 
 /**
@@ -48,6 +52,10 @@ public class SlideMenuAdapter extends BaseAdapter {
         if (position == 0){
             convertView = mInflater.inflate(R.layout.drawer_image_thumb, null);
             TextView name = (TextView) (convertView).findViewById(R.id.thumb_image);
+            name.setText(new AppSharedPreference().getUserName(mContext));
+            Bitmap picBitmap = new AppSharedPreference().getUserBitmap(mContext);
+            ImageView profileImage= (ImageView) (convertView).findViewById(R.id.drawer_layout_thumbImage);
+            profileImage.setImageBitmap(picBitmap);
         }
         else {
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);

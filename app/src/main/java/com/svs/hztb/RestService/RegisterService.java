@@ -29,21 +29,23 @@ public class RegisterService {
     }
 
 
-    public Observable<Response<ValidateOTPResponse>> validate(String mobileNumber,String otpCode,String imei,String deviceID) {
+    public Observable<Response<ValidateOTPResponse>> validate(String mobileNumber,String otpCode,String imei,String localDeviceID,String deviceID) {
         ValidateOTPRequest validateOTPRequest = new ValidateOTPRequest();
         validateOTPRequest.setMobileNumber(mobileNumber);
         validateOTPRequest.setOtpCode(otpCode);
         validateOTPRequest.setImei(imei);
         validateOTPRequest.setDeviceRegId(deviceID);
+        validateOTPRequest.setLocalDeviceID(localDeviceID);
         return dataService.validateOTPResponse(validateOTPRequest);
     }
 
 
-    public Observable<Response<UserProfileResponse>> updateUserProfile(String mobileNumber,String name,String emailID) {
+    public Observable<Response<UserProfileResponse>> updateUserProfile(String mobileNumber,String name,String emailID,byte[] picArray) {
         UserProfileRequest userProfileRequest = new UserProfileRequest();
         userProfileRequest.setMobileNumber(mobileNumber);
         userProfileRequest.setName(name);
         userProfileRequest.setEmailAddress(emailID);
+        userProfileRequest.setProfilePic(picArray);
         return dataService.updateUserProfile(userProfileRequest);
     }
 

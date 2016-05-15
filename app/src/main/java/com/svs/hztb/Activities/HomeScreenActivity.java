@@ -19,6 +19,8 @@ public class HomeScreenActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         intalizeDrawer();
+
+
     }
 
     @Override
@@ -35,30 +37,8 @@ public class HomeScreenActivity extends AbstractActivity {
         return true;
     }
 
-
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-
-        switch(item.getItemId()) {
-
-            case R.id.settings:
-
-                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }
-                else {
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
-                }
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
+    public void onBackPressed() {
+        alertDialog();
     }
-
-
-
 }

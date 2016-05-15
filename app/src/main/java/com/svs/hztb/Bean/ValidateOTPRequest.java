@@ -7,7 +7,7 @@ public class ValidateOTPRequest {
 	private String mobileNumber;
 	private String otpCode;
 	private String imei;
-
+	private String deviceId;
 	private String deviceRegId;
 
 	public String getMobileNumber() {
@@ -42,4 +42,11 @@ public class ValidateOTPRequest {
 		this.deviceRegId = deviceRegId;
 	}
 
+	public String getLocalDeviceID() {
+		return deviceId;
+	}
+
+	public void setLocalDeviceID(String localDeviceID) {
+		this.deviceId = localDeviceID;
+	}
 }

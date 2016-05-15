@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -60,10 +61,13 @@ public abstract class AbstractActivity extends AppCompatActivity {
     protected LoadingBar _loader;
     protected String BASE_URL = "http://hztb-dev.us-east-1.elasticbeanstalk.com";
     protected SlideMenuAdapter slideMenuAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _loader=new LoadingBar(this);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     protected void intalizeDrawer(){
@@ -88,7 +92,6 @@ public abstract class AbstractActivity extends AppCompatActivity {
         RelativeLayout container = (RelativeLayout) drawer.findViewById(R.id.content_frame); // This is the container we defined just now.
         container.addView(child, 0);
         drawer.findViewById(R.id.left_drawer).setPadding(0, getStatusBarHeight(), 0, 0);
-
         // Make the drawer replace the first child
         decor.addView(drawer);
     }
@@ -120,21 +123,8 @@ public abstract class AbstractActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    /**
-     * Action bar settings are updated
-     */
-    protected void actionBarSettingswithButtons(int title,boolean isBackEnabled) {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.actionbar_title);
-        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
-        setActionBarTitle(getString(R.string.title_activity_mobile_phone_registration));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
-        if (isBackEnabled){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
-    }
+
+
 
 
     protected <T extends View> T getView(int id) {

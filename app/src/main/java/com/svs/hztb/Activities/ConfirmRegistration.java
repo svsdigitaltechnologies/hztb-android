@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -14,10 +15,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.svs.hztb.Bean.ValidateOTPResponse;
+import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.RegisterService;
 import com.svs.hztb.RestService.ServiceGenerator;
+import com.svs.hztb.Utils.ConnectionDetector;
 
 import java.util.List;
 
@@ -40,7 +43,6 @@ public class ConfirmRegistration extends AbstractActivity {
         setContentView(R.layout.activity_confirm_registration);
         actionBarSettings(R.string.string_confirmRegistration);
         initViews();
-        loadIMEI();
     }
 
     private void initViews() {
@@ -54,7 +56,10 @@ public class ConfirmRegistration extends AbstractActivity {
      * @param view
      */
     public void onSendOTPAgainButtonClicked(View view){
-        postDataForRegistration(mobileNumber,true);
+        ConnectionDetector c = new ConnectionDetector(getApplicationContext());
+        if(c.isConnectingToInternet()) {
+            postDataForRegistration(mobileNumber,true);
+        }else displayMessage("No Network");
     }
 
     @Override
@@ -68,6 +73,7 @@ public class ConfirmRegistration extends AbstractActivity {
      * @param view
      */
     public void onVerifyButtonClicked(View view){
+
         postDataForOTPVerification();
     }
 
@@ -147,7 +153,6 @@ public class ConfirmRegistration extends AbstractActivity {
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // do somthing here
                     }
                 })
                 .show();
@@ -162,21 +167,18 @@ public class ConfirmRegistration extends AbstractActivity {
 
     }
 
-
-
     /**
      * Post data to server
      */
     private void postDataForOTPVerification() {
         showLoader();
 
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        Log.d("IMEI",telephonyManager.getDeviceId());
-        Log.d("TOKEN",getDeviceToken());
-
+        String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        Log.d("Id",android_id);
 
         RegisterService registerService = new RegisterService();
-        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate(mobileNumber,otpText.getText().toString(),telephonyManager.getDeviceId(),getDeviceToken());
+        Observable<Response<ValidateOTPResponse>> validateOTPResponseObservable = registerService.validate(mobileNumber,otpText.getText().toString(),"XXX",android_id,getDeviceToken());
 
         validateOTPResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<ValidateOTPResponse>>() {
@@ -195,6 +197,8 @@ public class ConfirmRegistration extends AbstractActivity {
 
                 cancelLoader();
                 if (validateOTPResponseResponse.isSuccessful()) {
+                    new AppSharedPreference().storeUserID(validateOTPResponseResponse.body().getUserId(),getApplicationContext());
+                    Log.d("UserID",validateOTPResponseResponse.body().getUserId());
                     pushActivity(ProfileActivity.class,mobileNumber);
                     finish();
                 }

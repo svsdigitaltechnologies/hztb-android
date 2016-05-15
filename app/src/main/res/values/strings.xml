@@ -18,7 +18,8 @@
     <string name="actionbar_title">Title</string>
     <string name="string_plus">+</string>
     <string name="shared_pref_app">HZTB</string>
-
+    <string name="country_search_hint">Search </string>
+    <string name="country_choose">"Choose A Country</string>
 
     <string name="verify_phone_number">We Will be verifying the phone number:</string>
     <string name="verify_ok_or_not">Is this OK, or Would you like to edit the number ?</string>
@@ -39,6 +40,10 @@
     <string name="alert_mobilenumber_invalid">Please Enter Valid Name</string>
     <string name="toast_userprofile_update_success">User Profile Updated Successfully</string>
 
+    <string name="profile_camera">Camera</string>
+    <string name="profile_gallery">Gallery</string>
+    <string name="profile_cancel">Cancel</string>
+    <string name="profile_choose_from">Choose From </string>
 
     <string name="signUp_or">or</string>
     <string name="signUp_facebook">Facebook</string>
