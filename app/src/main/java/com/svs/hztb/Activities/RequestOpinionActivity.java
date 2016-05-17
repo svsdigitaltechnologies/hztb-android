@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,28 +30,26 @@ public class RequestOpinionActivity extends AbstractActivity {
         initView();
         initialiseHeaderThumb();
 
-        String []items = {"Family","Friends"};
+        String []items = {"Select From Contacts"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1,items);
-
-        // Assign adapter to ListView
         groupsList.setAdapter(adapter);
+        groupsList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                displayMessage("Working");
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 
     private void initView() {
-
-
-        View footerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.request_opinion_select_contact_footer, null, false);
-        Button selectContactsButton = (Button) footerView.findViewById(R.id.button_select_contacts);
-        selectContactsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                displayMessage("Working");
-            }
-        });
-        groupsList.addFooterView(footerView);
+        displayMessage("Working");
 
 //        View headerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.request_opinion_header, null, false);
 //        groupsList.addHeaderView(headerView);
