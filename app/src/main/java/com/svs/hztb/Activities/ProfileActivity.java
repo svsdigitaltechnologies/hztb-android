@@ -1,5 +1,6 @@
 package com.svs.hztb.Activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.CustomViews.WalkWayButton;
@@ -47,8 +49,11 @@ public class ProfileActivity extends AbstractActivity {
     private EditText emailEditText;
     private EditText nameEditText;
     private ImageView profilePic;
-    private static final int RESULT_CAMERA = 0;
-    private static final int RESULT_GALLERY = 1;
+    private final int RESULT_CAMERA = 0;
+    private final int RESULT_GALLERY = 1;
+    private final int CROP_PIC = 2;
+
+
 
 
     @Override
@@ -67,14 +72,11 @@ public class ProfileActivity extends AbstractActivity {
         mobileNum.setText(getResources().getString(R.string.string_plus) + mobileNumber);
         emailEditText = getView(R.id.editText_email);
         nameEditText = getView(R.id.editText_name);
-        profilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
 
-                showProfilePicSelectionDialog();
+    public void onProfileThumbClicked(View view){
+        showProfilePicSelectionDialog();
 
-            }
-        });
     }
 
     private void showProfilePicSelectionDialog(){
@@ -124,29 +126,69 @@ public class ProfileActivity extends AbstractActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
-            case 0:
+
+            case RESULT_CAMERA:
                 if(resultCode == RESULT_OK){
                     if (imageReturnedIntent.getData() != null) {
                         Uri selectedImage = imageReturnedIntent.getData();
-                        Bitmap bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
-                        profilePic.setImageBitmap(getRotatedBitmap(selectedImage, bitmap));
+                        performCrop(selectedImage);
                     }else {
-                       Bitmap bitmap = (Bitmap)imageReturnedIntent.getExtras().get("data");
+                        Bitmap bitmap= (Bitmap)imageReturnedIntent.getExtras().get("data");
                         profilePic.setImageBitmap(bitmap);
-
                     }
                 }
 
                 break;
-            case 1:
+            case RESULT_GALLERY:
                 if(resultCode == RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    profilePic.setImageURI(selectedImage);
+                    if (imageReturnedIntent.getData() != null) {
+                        Uri selectedImage = imageReturnedIntent.getData();
+                        performCrop(selectedImage);
+                    }
                 }
                 break;
+            case CROP_PIC:{
+                // get the returned data
+                Bundle extras = imageReturnedIntent.getExtras();
+                if (extras != null){
+                    // get the cropped bitmap
+                    Bitmap bitmapPic = extras.getParcelable("data");
+                    profilePic.setImageBitmap(bitmapPic);
+                }
+            }
         }
     }
 
+
+    /**
+     * this function does the crop operation.
+     */
+    private void performCrop(Uri picUri) {
+        // take care of exceptions
+        try {
+            // call the standard crop action intent (the user device may not
+            // support it)
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties
+            cropIntent.putExtra("crop", "true");
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 256);
+            cropIntent.putExtra("outputY", 256);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, CROP_PIC);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            displayMessage( "This device doesn't support the crop action!");
+        }
+    }
 
     private Bitmap getRotatedBitmap(Uri selectedImage,Bitmap bitmap){
         Matrix matrix = new Matrix();

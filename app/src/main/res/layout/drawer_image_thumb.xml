@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <Button
@@ -10,7 +11,9 @@
         android:text="X"
         android:id="@+id/button"
         android:layout_margin="5dp"
+        android:background="@color/picton_blue"
         android:layout_alignParentTop="true"
+        android:textColor="@android:color/white"
         android:layout_alignParentEnd="true" />
 
     <com.svs.hztb.CustomViews.CircularImageView
@@ -21,6 +24,11 @@
         android:layout_below="@+id/button"
         android:src="@mipmap/thumb"
         android:scaleType="fitCenter"
+        app:civ_border="true"
+        app:civ_selector="true"
+        app:civ_selectorColor="@android:color/holo_blue_bright"
+        app:civ_selectorStrokeColor="@android:color/white"
+        app:civ_selectorStrokeWidth="6dp"
         android:layout_centerHorizontal="true" />
 
     <com.svs.hztb.CustomViews.WalkWayTextView

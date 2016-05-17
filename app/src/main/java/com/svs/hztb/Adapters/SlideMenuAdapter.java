@@ -9,10 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.svs.hztb.Activities.AbstractActivity;
+import com.svs.hztb.Activities.HomeScreenActivity;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Interfaces.IDrawerClosed;
 import com.svs.hztb.R;
 
 /**
@@ -22,10 +26,11 @@ public class SlideMenuAdapter extends BaseAdapter {
 
     private Context mContext;
     private String[] menuItems;
-
-    public SlideMenuAdapter(Context context, String[] items){
+    private IDrawerClosed drawerClosed;
+    public SlideMenuAdapter(Context context, String[] items,IDrawerClosed iDrawerClosed){
         this.mContext = context;
         this.menuItems = items;
+        drawerClosed = iDrawerClosed;
     }
 
 
@@ -56,6 +61,14 @@ public class SlideMenuAdapter extends BaseAdapter {
             Bitmap picBitmap = new AppSharedPreference().getUserBitmap(mContext);
             ImageView profileImage= (ImageView) (convertView).findViewById(R.id.drawer_layout_thumbImage);
             profileImage.setImageBitmap(picBitmap);
+            Button closeDrawer = (Button)(convertView).findViewById(R.id.button);
+            closeDrawer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        drawerClosed.onDrawerClosedClicked();
+                }
+            });
+
         }
         else {
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);

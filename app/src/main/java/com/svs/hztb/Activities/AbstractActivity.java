@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -26,6 +27,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -35,6 +37,8 @@ import android.widget.Toast;
 
 import com.svs.hztb.Adapters.SlideMenuAdapter;
 import com.svs.hztb.Bean.RegisterResponse;
+import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Interfaces.IDrawerClosed;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.RegisterService;
@@ -53,7 +57,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Venu Nalla on 22/04/16.
  */
-public abstract class AbstractActivity extends AppCompatActivity {
+public abstract class AbstractActivity extends AppCompatActivity implements IDrawerClosed {
 
     protected DrawerLayout mDrawerLayout;
     private String[] menuItems;
@@ -62,13 +66,15 @@ public abstract class AbstractActivity extends AppCompatActivity {
     protected String BASE_URL = "http://hztb-dev.us-east-1.elasticbeanstalk.com";
     protected SlideMenuAdapter slideMenuAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _loader=new LoadingBar(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+
+
 
     protected void intalizeDrawer(){
         moveDrawerToTop();
@@ -77,8 +83,12 @@ public abstract class AbstractActivity extends AppCompatActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        slideMenuAdapter = new SlideMenuAdapter(getApplicationContext(),menuItems);
+        slideMenuAdapter = new SlideMenuAdapter(getApplicationContext(),menuItems,this);
         mDrawerList.setAdapter(slideMenuAdapter);
+    }
+
+    public void onDrawerClosedClicked(){
+        mDrawerLayout.closeDrawers();
     }
 
     private void moveDrawerToTop() {
@@ -119,6 +129,37 @@ public abstract class AbstractActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(mCustomView);
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
         setActionBarTitle(getString(title));
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    /**
+     * Action bar settings are updated
+     */
+    protected void actionBarSettingswithNavigation(int title) {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_title, null);
+        getSupportActionBar().setCustomView(mCustomView);
+
+        TextView titleView = (TextView) mCustomView.findViewById(R.id.textview_actionbarTitle);
+        titleView.setVisibility(View.INVISIBLE);
+
+        RelativeLayout actionBarWithoutNavigation =  (RelativeLayout) mCustomView.findViewById(R.id.layout_back_actionbar);
+        actionBarWithoutNavigation.setVisibility(View.VISIBLE);
+
+        final ImageView navDrawer = (ImageView)mCustomView.findViewById(R.id.button_nav);
+        navDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        TextView customTitle = (TextView) mCustomView.findViewById(R.id.titleView);
+        customTitle.setText(getResources().getString(title));
+
+        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
@@ -166,8 +207,10 @@ public abstract class AbstractActivity extends AppCompatActivity {
     }
 
     protected boolean getLoginState() {
-        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.shared_pref_app), Activity.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(getResources().getString(R.string.login_success), false);
+        String userId = new AppSharedPreference().getUserID(getApplicationContext());
+        if (!userId.isEmpty() || userId.trim().length() > 0 ){
+            return true;
+        }else return false;
     }
 
     protected void saveToken(String key,String value){
@@ -175,6 +218,15 @@ public abstract class AbstractActivity extends AppCompatActivity {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key,value);
         edit.commit();
+    }
+
+    protected void initialiseHeaderThumb(){
+        Bitmap picBitmap = new AppSharedPreference().getUserBitmap(getApplicationContext());
+        String userName = new AppSharedPreference().getUserName(getApplicationContext());
+        ImageView thumb = getView(R.id.imageview_pic_thumb);
+        thumb.setImageBitmap(picBitmap);
+        TextView nameview = getView(R.id.textview_username);
+        nameview.setText(userName);
     }
 
 
