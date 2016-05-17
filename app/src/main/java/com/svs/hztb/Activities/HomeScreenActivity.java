@@ -18,9 +18,8 @@ public class HomeScreenActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        actionBarSettingswithNavigation(R.string.title_activity_home_screen);
         intalizeDrawer();
-
-
     }
 
     @Override

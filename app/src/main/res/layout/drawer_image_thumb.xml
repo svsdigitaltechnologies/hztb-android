@@ -10,7 +10,9 @@
         android:text="X"
         android:id="@+id/button"
         android:layout_margin="5dp"
+        android:background="@color/picton_blue"
         android:layout_alignParentTop="true"
+        android:textColor="@android:color/white"
         android:layout_alignParentEnd="true" />
 
     <com.svs.hztb.CustomViews.CircularImageView
