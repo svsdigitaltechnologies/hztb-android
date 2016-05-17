@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.svs.hztb.R;
@@ -25,9 +26,34 @@ public class HomeScreenActivity extends AbstractActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mDrawerLayout.openDrawer(Gravity.LEFT);
+    }
+
+    /**
+     * OnClick Functionality for the requestOpinion
+     * @param view
+     */
+    public void requestOpinionOnClick(View view){
+        pushActivity(RequestOpinionActivity.class);
+    }
+
+
+    /**
+     * OnClick Functionality for the respondOpinion
+     * @param view
+     */
+    public void respondOpinionOnClick(View view){
 
     }
+
+    /**
+     * OnClick Functionality for the inStore
+     * @param view
+     */
+    public void inStoreButtonOnClick(View view){
+
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

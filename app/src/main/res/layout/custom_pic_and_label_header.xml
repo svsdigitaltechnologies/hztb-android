@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/profile_name_layout"
+    android:background="@color/mischka"
+    android:orientation="vertical">
+
+    <com.svs.hztb.CustomViews.CircularImageView
+        android:id="@+id/imageview_pic_thumb"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="20dp"
+        app:civ_border="true"
+        app:civ_selector="true"
+        app:civ_selectorColor="@android:color/black"
+        app:civ_selectorStrokeColor="@color/cerise"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/thumb" />
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:id="@+id/textview_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageview_pic_thumb"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/imageview_pic_thumb"
+        android:layout_toEndOf="@+id/imageview_pic_thumb"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:scaleType="fitCenter"
+        android:text="Venu Nalla"
+        android:textSize="22dp"
+
+
+        app:civ_selectorStrokeWidth="6dp" />
+</RelativeLayout>

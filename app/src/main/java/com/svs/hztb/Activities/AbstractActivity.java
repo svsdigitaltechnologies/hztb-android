@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -217,6 +218,15 @@ public abstract class AbstractActivity extends AppCompatActivity implements IDra
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key,value);
         edit.commit();
+    }
+
+    protected void initialiseHeaderThumb(){
+        Bitmap picBitmap = new AppSharedPreference().getUserBitmap(getApplicationContext());
+        String userName = new AppSharedPreference().getUserName(getApplicationContext());
+        ImageView thumb = getView(R.id.imageview_pic_thumb);
+        thumb.setImageBitmap(picBitmap);
+        TextView nameview = getView(R.id.textview_username);
+        nameview.setText(userName);
     }
 
 

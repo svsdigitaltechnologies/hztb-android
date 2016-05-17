@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/registration_bg"
+>
+
+    <include
+        android:id="@+id/custom_image_name_layout"
+        layout="@layout/custom_pic_and_label_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        android:id="@+id/custom_product_item"
+        layout="@layout/custom_product_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/custom_image_name_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:id="@+id/button_capture_selfie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/custom_product_item"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_background"
+        android:text="@string/capture_selfie"
+        android:textColor="@android:color/white" />
+
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/listview_groups"
+        android:background="@android:color/white"
+        android:layout_below="@+id/button_capture_selfie"
+        android:layout_above="@+id/relativeLayout2"
+ />
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/concord"
+        android:layout_alignParentBottom="true">
+
+        <com.svs.hztb.CustomViews.WalkWayButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_background"
+            android:text="@string/invite_buddy"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+</RelativeLayout>
