@@ -80,8 +80,8 @@ public class CountryCodeActivity extends AbstractActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent();
-                intent.putExtra("COUNTRYNAME",getResources().getStringArray(R.array.countries)[position]);
-                intent.putExtra("CODE",getResources().getIntArray(R.array.countryCodeArray)[position]);
+                intent.putExtra("COUNTRYNAME",countryItemList.get(position).getCountryName());
+                intent.putExtra("CODE",countryItemList.get(position).getCountryCode());
                 setResult(100,intent);
                 finish();
             }
@@ -94,8 +94,8 @@ public class CountryCodeActivity extends AbstractActivity {
     public void onBackPressed() {
 
         Intent intent=new Intent();
-        intent.putExtra("COUNTRYNAME",countryItemList.get(7).getCountryName());
-        intent.putExtra("CODE",countryItemList.get(7).getCountryCode());
+        intent.putExtra("COUNTRYNAME",getResources().getStringArray(R.array.countries)[7]);
+        intent.putExtra("CODE",getResources().getIntArray(R.array.countryCodeArray)[7]);
         setResult(100,intent);
         finish();
         super.onBackPressed();

@@ -129,14 +129,14 @@ public class ContactsActivity extends AbstractActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             //re-request
                             ActivityCompat.requestPermissions(ContactsActivity.this,
-                                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                                    new String[]{Manifest.permission.READ_CONTACTS},
                                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
                         }
                     })
                     .show();
         } else {
             // READ_PHONE_STATE permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE},
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
     }
@@ -157,7 +157,7 @@ public class ContactsActivity extends AbstractActivity {
                 doPermissionGrantedStuffs();
             } else {
                 alertAlert(getString(R.string.permissions_not_granted_read_phone_state));
-                finish();
+
             }
         }
     }
@@ -169,6 +169,7 @@ public class ContactsActivity extends AbstractActivity {
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        finish();
                     }
                 })
                 .show();

@@ -56,6 +56,7 @@
     <string name="permissions_not_granted_read_phone_state">Permission Not Granted</string>
     <string name="permission_read_phone_state_rationale">Read Phone State</string>
 
+    <string name="permission_read_contact">Read Contacts</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
