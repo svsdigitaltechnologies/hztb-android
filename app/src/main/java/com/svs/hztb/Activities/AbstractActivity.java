@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -85,6 +86,18 @@ public abstract class AbstractActivity extends AppCompatActivity implements IDra
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         slideMenuAdapter = new SlideMenuAdapter(getApplicationContext(),menuItems,this);
         mDrawerList.setAdapter(slideMenuAdapter);
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 5){
+                    if (mDrawerLayout.isDrawerOpen(Gravity.LEFT))
+                    {
+                        mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    }
+                    pushActivity(RequestOpinionActivity.class);
+                }
+            }
+        });
     }
 
     public void onDrawerClosedClicked(){

@@ -13,7 +13,7 @@
     <permission
         android:name="com.androidhive.pushnotifications.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="com.androidhive.pushnotifications.permission.C2D_MESSAGE" />
 
     <!-- This app has permission to register and receive data message. -->
@@ -91,7 +91,10 @@
         <activity android:name=".Activities.CountryCodeActivity" />
         <activity
             android:name=".Activities.RequestOpinionActivity"
-            android:label="@string/title_activity_request_opinion"></activity>
+            android:label="@string/title_activity_request_opinion" />
+        <activity
+            android:name=".Activities.ContactsActivity"
+            android:label="@string/title_activity_contacts"></activity>
     </application>
 
 </manifest>

@@ -35,14 +35,10 @@ public class RequestOpinionActivity extends AbstractActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1,items);
         groupsList.setAdapter(adapter);
-        groupsList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        groupsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                displayMessage("Working");
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                pushActivity(ContactsActivity.class);
             }
         });
 
