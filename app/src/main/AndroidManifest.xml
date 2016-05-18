@@ -91,7 +91,10 @@
         <activity android:name=".Activities.CountryCodeActivity" />
         <activity
             android:name=".Activities.RequestOpinionActivity"
-            android:label="@string/title_activity_request_opinion"></activity>
+            android:label="@string/title_activity_request_opinion" />
+        <activity
+            android:name=".Activities.ContactsActivity"
+            android:label="@string/title_activity_contacts"></activity>
     </application>
 
 </manifest>
