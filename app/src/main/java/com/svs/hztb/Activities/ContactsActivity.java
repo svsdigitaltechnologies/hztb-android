@@ -47,7 +47,20 @@ public class ContactsActivity extends AbstractActivity {
 
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
             readContactInBackground();
-        }else requestReadPhoneStatePermission();
+        }else {
+            checkIfPermissionIsGranted();
+        }
+    }
+
+    private void checkIfPermissionIsGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                readContactInBackground();
+            }
+            else {
+                requestReadPhoneStatePermission();
+            }
+        }
     }
 
     private void readContactInBackground() {
