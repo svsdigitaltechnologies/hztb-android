@@ -33,7 +33,8 @@ public class HomeScreenActivity extends AbstractActivity {
      * @param view
      */
     public void requestOpinionOnClick(View view){
-        pushActivity(RequestOpinionActivity.class);
+
+
     }
 
 

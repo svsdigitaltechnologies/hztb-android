@@ -63,5 +63,6 @@
     <string name="capture_selfie">CAPTURE SELFIE</string>
     <string name="invite_buddy">INVITE BUDDY</string>
     <string name="string_select_from_contacts">Select From Contacts</string>
-    <string name="title_activity_contacts">ContactsActivity</string>
+    <string name="title_activity_contacts">Select Buddy</string>
+    <string name="search_contacts">   Search contacts</string>
 </resources>
