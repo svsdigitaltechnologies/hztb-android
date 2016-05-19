@@ -2,6 +2,9 @@ package com.svs.hztb.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.CountryItem;
 import com.svs.hztb.R;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -53,12 +58,25 @@ public class ContactsAdapter extends BaseAdapter {
                 mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.custom_contact_item, null);
 
-        ImageView tick = (ImageView)convertView.findViewById(R.id.imageview_tick);
-        if (contactArrayList.get(position).isSelected()){
+        ImageView tick = (ImageView) convertView.findViewById(R.id.imageview_tick);
+        if (contactArrayList.get(position).isSelected()) {
             tick.setVisibility(View.VISIBLE);
-        }else tick.setVisibility(View.GONE);
+        } else tick.setVisibility(View.GONE);
         TextView contactName = (TextView) convertView.findViewById(R.id.textview_select_contacts);
         contactName.setText(contactArrayList.get(position).getContactName());
+        ImageView contactImage = (ImageView)convertView.findViewById(R.id.contact_image);
+        String contactPath = contactArrayList.get(position).getContactImagePath();
+        if (contactPath != null) {
+            Bitmap bitmap;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(contactPath));
+                contactImage.setImageBitmap(bitmap);
+                System.out.println(bitmap);
+            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return convertView;
     }
 

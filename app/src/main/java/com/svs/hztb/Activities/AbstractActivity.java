@@ -7,30 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionMenuView;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -94,7 +85,7 @@ public abstract class AbstractActivity extends AppCompatActivity implements IDra
                     {
                         mDrawerLayout.closeDrawer(Gravity.LEFT);
                     }
-                    pushActivity(RequestOpinionActivity.class);
+                    pushActivity(NewRequestActivity.class);
                 }
             }
         });
@@ -231,15 +222,6 @@ public abstract class AbstractActivity extends AppCompatActivity implements IDra
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key,value);
         edit.commit();
-    }
-
-    protected void initialiseHeaderThumb(){
-        Bitmap picBitmap = new AppSharedPreference().getUserBitmap(getApplicationContext());
-        String userName = new AppSharedPreference().getUserName(getApplicationContext());
-        ImageView thumb = getView(R.id.imageview_pic_thumb);
-        thumb.setImageBitmap(picBitmap);
-        TextView nameview = getView(R.id.textview_username);
-        nameview.setText(userName);
     }
 
 

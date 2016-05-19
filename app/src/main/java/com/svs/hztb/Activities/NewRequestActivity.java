@@ -13,12 +13,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.svs.hztb.Adapters.RetriveGroupsAdapter;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 
-public class RequestOpinionActivity extends AbstractActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class NewRequestActivity extends AbstractActivity {
 
     private ListView groupsList;
+    private ArrayList<String> groupsArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,20 +33,23 @@ public class RequestOpinionActivity extends AbstractActivity {
         groupsList = getView(R.id.listview_groups);
 
         initView();
-        initialiseHeaderThumb();
 
-        String []items = {"Select From Contacts"};
+        groupsArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.group_items)));
+        groupsArrayList.add("Select From Contacts");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1,items);
+//
+//        String []items = {"Select From Contacts"};
+        RetriveGroupsAdapter adapter = new RetriveGroupsAdapter(getApplicationContext(),groupsArrayList);
         groupsList.setAdapter(adapter);
         groupsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                pushActivity(ContactsActivity.class);
+                if(groupsArrayList.size()-1 == i){
+                    pushActivity(ContactsActivity.class);
+
+                }
             }
         });
-
     }
 
     private void initView() {
