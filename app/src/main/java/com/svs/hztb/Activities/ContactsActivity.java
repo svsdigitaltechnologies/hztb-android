@@ -1,9 +1,11 @@
 package com.svs.hztb.Activities;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
@@ -29,6 +31,9 @@ import com.svs.hztb.R;
 
 import java.util.ArrayList;
 import android.os.Handler;
+
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.LogRecord;
 
 public class ContactsActivity extends AbstractActivity {
@@ -44,13 +49,8 @@ public class ContactsActivity extends AbstractActivity {
         setContentView(R.layout.activity_contacts);
         actionBarSettingswithNavigation(R.string.title_activity_contacts);
         intalizeDrawer();
-
-        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            readContactInBackground();
-        }else {
-            checkIfPermissionIsGranted();
+        checkIfPermissionIsGranted();
         }
-    }
 
     private void checkIfPermissionIsGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -60,6 +60,8 @@ public class ContactsActivity extends AbstractActivity {
             else {
                 requestReadPhoneStatePermission();
             }
+        }else {
+            readContactInBackground();
         }
     }
 
