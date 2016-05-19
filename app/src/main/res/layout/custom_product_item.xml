@@ -27,6 +27,7 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/product_thumb"
         android:paddingLeft="10dp"
+        android:textColor="@android:color/white"
         android:paddingRight="10dp"
         android:text="Jumba Sports Shoes"
         android:textSize="16sp" />
@@ -39,6 +40,8 @@
         android:layout_below="@+id/textView2"
         android:layout_toRightOf="@+id/product_thumb"
         android:paddingBottom="5dp"
+        android:textColor="@android:color/white"
+
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
@@ -56,6 +59,8 @@
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:textColor="@android:color/white"
+
         android:paddingTop="5dp"
         android:text="Sed auctor newueu rhonous ut elafienft nibh partition. Ut in nulia enuim"
         android:textSize="12sp" />
@@ -86,6 +91,8 @@
         android:text="Price: $ 98.99"
         android:id="@+id/product_price"
         android:paddingLeft="10dp"
+        android:textColor="@android:color/white"
+
         android:layout_toRightOf="@+id/product_thumb"
         android:layout_above="@+id/separator_bottom"
         />

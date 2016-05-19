@@ -4,15 +4,14 @@
     <com.svs.hztb.CustomViews.WalkWayTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
         android:paddingRight="20dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
         android:textSize="18dp"
         android:background="@color/light_grey"
-        android:text="@string/string_select_from_contacts"
         android:gravity="left|center"
-        android:textColor="@color/picton_blue"
+        android:textColor="@android:color/white"
         android:id="@+id/textview_select_contacts" />
 
     <ImageView

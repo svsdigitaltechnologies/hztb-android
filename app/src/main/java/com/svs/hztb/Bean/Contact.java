@@ -7,6 +7,16 @@ public class Contact {
 
     private String contactName;
     private String number;
+
+    public String getContactImagePath() {
+        return contactImagePath;
+    }
+
+    public void setContactImagePath(String contactImagePath) {
+        this.contactImagePath = contactImagePath;
+    }
+
+    private String contactImagePath;
     private boolean isSelected;
 
 

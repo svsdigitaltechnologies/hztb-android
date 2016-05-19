@@ -6,18 +6,13 @@
     android:background="@mipmap/registration_bg"
 >
 
-    <include
-        android:id="@+id/custom_image_name_layout"
-        layout="@layout/custom_pic_and_label_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 
     <include
         android:id="@+id/custom_product_item"
         layout="@layout/custom_product_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/custom_image_name_layout"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp" />
@@ -33,7 +28,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/button_background"
+        android:background="@color/picton_blue"
         android:text="@string/capture_selfie"
         android:textColor="@android:color/white" />
 
@@ -44,7 +39,7 @@
         android:id="@+id/listview_groups"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         android:layout_below="@+id/button_capture_selfie"
         android:layout_above="@+id/relativeLayout2"
  />
@@ -59,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/button_background"
+            android:background="@color/picton_blue"
             android:text="@string/invite_buddy"
             android:textColor="@android:color/white" />
     </RelativeLayout>

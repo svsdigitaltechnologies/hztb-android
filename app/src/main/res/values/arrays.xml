@@ -22,8 +22,16 @@
         <item>Profile</item>
         <item>Settings</item>
         <item>Groups</item>
-        <item>Reguest Opinion</item>
+        <item>New Request</item>
         <item>Logout</item>
+    </string-array>
+
+    <string-array name="group_items">
+        <item>Spouse</item>
+        <item>Parents</item>
+        <item>Family</item>
+        <item>Sibilings</item>
+        <item>Close Friends</item>
     </string-array>
 
     <integer-array name="countryCodeArray">

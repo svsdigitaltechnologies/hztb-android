@@ -98,6 +98,10 @@ public class ContactsActivity extends AbstractActivity {
                 String name = cur.getString(cur.getColumnIndex(
                         ContactsContract.Contacts.DISPLAY_NAME));
                 contact.setContactName(name);
+
+                contact.setContactImagePath(cur
+                        .getString(cur
+                                .getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI)));
                 if (Integer.parseInt(cur.getString(cur.getColumnIndex(
                         ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
                     Cursor pCur = cr.query(

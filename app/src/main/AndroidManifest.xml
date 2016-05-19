@@ -90,7 +90,7 @@
 
         <activity android:name=".Activities.CountryCodeActivity" />
         <activity
-            android:name=".Activities.RequestOpinionActivity"
+            android:name=".Activities.NewRequestActivity"
             android:label="@string/title_activity_request_opinion" />
         <activity
             android:name=".Activities.ContactsActivity"
