@@ -42,6 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:id="@+id/listview_groups"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:background="@android:color/white"
         android:layout_below="@+id/button_capture_selfie"
         android:layout_above="@+id/relativeLayout2"
