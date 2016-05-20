@@ -5,8 +5,10 @@ package com.svs.hztb.Bean;
  */
 public class Contact {
 
+    private String contactId;
     private String contactName;
     private String number;
+    private String contactImagePath;
 
     public String getContactImagePath() {
         return contactImagePath;
@@ -16,10 +18,15 @@ public class Contact {
         this.contactImagePath = contactImagePath;
     }
 
-    private String contactImagePath;
     private boolean isSelected;
 
+    public String getContactId() {
+        return contactId;
+    }
 
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
+    }
     public boolean isSelected() {
         return isSelected;
     }
