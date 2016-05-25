@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="30dp"
+    android:layout_height="match_parent">
+
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:id="@+id/textview_content"
+        android:text="Do you want to add 5 contacts as a group"
+        android:padding="8dp"
+        />
+
+    <com.svs.hztb.CustomViews.WalkWayEditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_content"
+        android:id="@+id/edittext_groupName"
+        android:layout_margin="7dp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:ems="15"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/group_name"/>
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@color/picton_blue"
+        android:id="@+id/button_add_groupName"
+        android:text="@string/add_grouptext"
+        android:layout_below="@+id/edittext_groupName"
+        android:layout_alignStart="@+id/edittext_groupName" />
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:textColor="@android:color/white"
+        android:background="@color/picton_blue"
+        android:id="@+id/button_add_sendButton"
+        android:text="@string/send_group_name"
+        android:layout_alignTop="@+id/button_add_groupName"
+        android:layout_alignEnd="@+id/textview_content" />
+</RelativeLayout>

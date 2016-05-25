@@ -19,15 +19,19 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.svs.hztb.Adapters.ContactsAdapter;
 import com.svs.hztb.Bean.Contact;
+import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.R;
+import com.svs.hztb.Utils.ConnectionDetector;
 
 import java.util.ArrayList;
 import android.os.Handler;
@@ -86,7 +90,7 @@ public class ContactsActivity extends AbstractActivity {
         contactList = new ArrayList<>();
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
+                null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
 
         if (cur.getCount() > 0) {
             while (cur.moveToNext()) {
@@ -223,6 +227,66 @@ public class ContactsActivity extends AbstractActivity {
         });
     }
 
+
+    public void onDoneButtonClicked(View view){
+        ArrayList<Contact> contactsSelected = getSelectedContactsList();
+        showAlertDialog(contactsSelected);
+    }
+
+    private ArrayList<Contact> getSelectedContactsList() {
+        ArrayList<Contact> selectedList = new ArrayList<>();
+        Iterator<Contact> iterator = contactList.iterator();
+        while (iterator.hasNext()){
+            Contact contactItem = iterator.next();
+            if (contactItem.isSelected() == true){
+                selectedList.add(contactItem);
+            }
+        }
+        return selectedList;
+    }
+
+    private void showAlertDialog(ArrayList<Contact> contactsSelected) {
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+
+            View dialog = inflater.inflate(R.layout.custom_group_selection_add_alert, null);
+            dialogBuilder.setView(dialog);
+
+            final AlertDialog alertDialog = dialogBuilder.create();
+
+            TextView contectText = (TextView) dialog.findViewById(R.id.textview_content);
+
+            String contactString = null;
+            if (contactsSelected.size()>1){
+                contactString = "Contacts";
+            }else {
+                contactString = "Contact";
+            }
+
+            contectText.setText("Do you want to add "+contactsSelected.size()+" "+contactString+" to the group");
+
+            WalkWayButton addButton = (WalkWayButton)dialog.findViewById(R.id.button_add_groupName);
+            WalkWayButton sendButton = (WalkWayButton)dialog.findViewById(R.id.button_add_sendButton);
+
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.cancel();
+                }
+            });
+
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.cancel();
+                }
+            });
+
+            alertDialog.show();
+
+
+    }
 
 
 }

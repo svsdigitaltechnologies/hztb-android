@@ -45,6 +45,7 @@
             android:layout_margin="10dp"
             android:background="@color/picton_blue"
             android:text="@string/signup_Done"
+            android:onClick="onDoneButtonClicked"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 

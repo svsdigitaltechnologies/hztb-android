@@ -66,4 +66,7 @@
     <string name="string_select_from_contacts">Select From Contacts</string>
     <string name="title_activity_contacts">Select Buddy</string>
     <string name="search_contacts">   Search contacts</string>
+    <string name="group_name">Group Name</string>
+    <string name="add_grouptext">Add</string>
+    <string name="send_group_name">Send</string>
 </resources>

@@ -55,7 +55,6 @@ public abstract class AbstractActivity extends AppCompatActivity implements IDra
     private String[] menuItems;
     private ListView mDrawerList;
     protected LoadingBar _loader;
-    protected String BASE_URL = "http://hztb-dev.us-east-1.elasticbeanstalk.com";
     protected SlideMenuAdapter slideMenuAdapter;
 
     @Override
