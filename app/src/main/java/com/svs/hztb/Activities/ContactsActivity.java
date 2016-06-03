@@ -51,8 +51,7 @@ public class ContactsActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-        actionBarSettingswithNavigation(R.string.title_activity_contacts);
-        intalizeDrawer();
+
         checkIfPermissionIsGranted();
         }
 

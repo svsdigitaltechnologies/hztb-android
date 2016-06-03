@@ -33,7 +33,6 @@ public class SlideMenuAdapter extends BaseAdapter {
         drawerClosed = iDrawerClosed;
     }
 
-
     @Override
     public int getCount() {
         return menuItems.length;

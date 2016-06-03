@@ -5,39 +5,44 @@
 
     android:orientation="vertical"
     android:id="@+id/main_content" >
-
-    <com.svs.hztb.CustomViews.WalkWayButton
-        android:layout_width="match_parent"
+    <fragment
         android:layout_height="match_parent"
-        android:text="Request Opinion"
-        android:id="@+id/button3"
-        android:layout_weight="1"
-        android:textSize="25dp"
-        android:layout_marginBottom="2dp"
-        android:onClick="requestOpinionOnClick"
-        android:background="@color/picton_blue"
-        android:layout_gravity="center_horizontal" />
-
-    <com.svs.hztb.CustomViews.WalkWayButton
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Respond Opinion"
-        android:id="@+id/button4"
-        android:layout_weight="1"
-        android:onClick="respondOpinionOnClick"
-        android:textSize="25dp"
-        android:background="@color/picton_blue"
-        android:layout_marginBottom="2dp"
-        android:layout_gravity="center_horizontal" />
+        class="com.svs.hztb.Fragments.HomeLaunchingFragment"
+        android:id="@+id/fragment"/>
 
-    <com.svs.hztb.CustomViews.WalkWayButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="In Store"
-        android:textSize="25dp"
-        android:id="@+id/button5"
-        android:onClick="inStoreButtonOnClick"
-        android:background="@color/picton_blue"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal" />
+    <!--<com.svs.hztb.CustomViews.WalkWayButton-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="Request Opinion"-->
+        <!--android:id="@+id/button3"-->
+        <!--android:layout_weight="1"-->
+        <!--android:textSize="25dp"-->
+        <!--android:layout_marginBottom="2dp"-->
+        <!--android:onClick="requestOpinionOnClick"-->
+        <!--android:background="@color/picton_blue"-->
+        <!--android:layout_gravity="center_horizontal" />-->
+
+    <!--<com.svs.hztb.CustomViews.WalkWayButton-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="Respond Opinion"-->
+        <!--android:id="@+id/button4"-->
+        <!--android:layout_weight="1"-->
+        <!--android:onClick="respondOpinionOnClick"-->
+        <!--android:textSize="25dp"-->
+        <!--android:background="@color/picton_blue"-->
+        <!--android:layout_marginBottom="2dp"-->
+        <!--android:layout_gravity="center_horizontal" />-->
+
+    <!--<com.svs.hztb.CustomViews.WalkWayButton-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="In Store"-->
+        <!--android:textSize="25dp"-->
+        <!--android:id="@+id/button5"-->
+        <!--android:onClick="inStoreButtonOnClick"-->
+        <!--android:background="@color/picton_blue"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_gravity="center_horizontal" />-->
 </LinearLayout>

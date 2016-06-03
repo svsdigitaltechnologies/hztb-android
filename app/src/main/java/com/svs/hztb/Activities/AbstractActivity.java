@@ -49,13 +49,10 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Venu Nalla on 22/04/16.
  */
-public abstract class AbstractActivity extends AppCompatActivity implements IDrawerClosed {
+public abstract class AbstractActivity extends AppCompatActivity{
 
-    protected DrawerLayout mDrawerLayout;
-    private String[] menuItems;
-    private ListView mDrawerList;
     protected LoadingBar _loader;
-    protected SlideMenuAdapter slideMenuAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,60 +63,6 @@ public abstract class AbstractActivity extends AppCompatActivity implements IDra
 
 
 
-
-    protected void intalizeDrawer(){
-        moveDrawerToTop();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        menuItems = getResources().getStringArray(R.array.side_menu_items);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        slideMenuAdapter = new SlideMenuAdapter(getApplicationContext(),menuItems,this);
-        mDrawerList.setAdapter(slideMenuAdapter);
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 5){
-                    if (mDrawerLayout.isDrawerOpen(Gravity.LEFT))
-                    {
-                        mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    }
-                    pushActivity(NewRequestActivity.class);
-                }
-            }
-        });
-    }
-
-    public void onDrawerClosedClicked(){
-        mDrawerLayout.closeDrawers();
-    }
-
-    private void moveDrawerToTop() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-         DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null); // "null" is important.
-
-        // HACK: "steal" the first child of decor view
-        ViewGroup decor = (ViewGroup) getWindow().getDecorView();
-        View child = decor.getChildAt(0);
-        decor.removeView(child);
-        RelativeLayout container = (RelativeLayout) drawer.findViewById(R.id.content_frame); // This is the container we defined just now.
-        container.addView(child, 0);
-        drawer.findViewById(R.id.left_drawer).setPadding(0, getStatusBarHeight(), 0, 0);
-        // Make the drawer replace the first child
-        decor.addView(drawer);
-    }
-
-
-
-
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
 
 
     /**
@@ -136,36 +79,6 @@ public abstract class AbstractActivity extends AppCompatActivity implements IDra
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    /**
-     * Action bar settings are updated
-     */
-    protected void actionBarSettingswithNavigation(int title) {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        LayoutInflater mInflater = LayoutInflater.from(this);
-        View mCustomView = mInflater.inflate(R.layout.actionbar_title, null);
-        getSupportActionBar().setCustomView(mCustomView);
-
-        TextView titleView = (TextView) mCustomView.findViewById(R.id.textview_actionbarTitle);
-        titleView.setVisibility(View.INVISIBLE);
-
-        RelativeLayout actionBarWithoutNavigation =  (RelativeLayout) mCustomView.findViewById(R.id.layout_back_actionbar);
-        actionBarWithoutNavigation.setVisibility(View.VISIBLE);
-
-        final ImageView navDrawer = (ImageView)mCustomView.findViewById(R.id.button_nav);
-        navDrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(Gravity.LEFT);
-            }
-        });
-
-        TextView customTitle = (TextView) mCustomView.findViewById(R.id.titleView);
-        customTitle.setText(getResources().getString(title));
-
-        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.action_bar_drawble, null));
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
 
 
 
