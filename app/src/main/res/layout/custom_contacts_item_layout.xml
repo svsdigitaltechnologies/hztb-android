@@ -9,9 +9,9 @@
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"
         android:textSize="18dp"
-        android:background="@color/light_grey"
         android:gravity="left|center"
-        android:textColor="@android:color/white"
+        android:background="@android:color/white"
+        android:textColor="@android:color/black"
         android:id="@+id/textview_select_contacts" />
 
     <ImageView
@@ -23,4 +23,5 @@
         android:paddingRight="20dp"
         android:layout_alignTop="@+id/textview_select_contacts"
         android:layout_alignBottom="@+id/textview_select_contacts"/>
+
 </RelativeLayout>

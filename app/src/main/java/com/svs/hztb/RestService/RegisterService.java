@@ -2,6 +2,8 @@ package com.svs.hztb.RestService;
 
 import com.svs.hztb.Bean.RegisterRequest;
 import com.svs.hztb.Bean.RegisterResponse;
+import com.svs.hztb.Bean.RequestOpinionInput;
+import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.UserProfileRequest;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.ValidateOTPRequest;
@@ -37,6 +39,10 @@ public class RegisterService {
         validateOTPRequest.setDeviceRegId(deviceID);
         validateOTPRequest.setLocalDeviceID(localDeviceID);
         return dataService.validateOTPResponse(validateOTPRequest);
+    }
+
+    public Observable<Response<RequestOpinionOutput>> requestOpinionForNewProduct(RequestOpinionInput requestOpinionInput) {
+        return dataService.requestOpinionForNewProduct(requestOpinionInput);
     }
 
 

@@ -3,6 +3,8 @@ package com.svs.hztb.Interfaces;
 
 import com.svs.hztb.Bean.RegisterRequest;
 import com.svs.hztb.Bean.RegisterResponse;
+import com.svs.hztb.Bean.RequestOpinionInput;
+import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.UserProfileRequest;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.ValidateOTPRequest;
@@ -22,6 +24,10 @@ public interface UserRepository {
 
     @POST("/user/validateOTP")
     Observable<Response<ValidateOTPResponse>> validateOTPResponse(@Body ValidateOTPRequest validateOTPRequest);
+
+
+    @POST("/opinion/requestOpinion")
+    Observable<Response<RequestOpinionOutput>> requestOpinionForNewProduct(@Body RequestOpinionInput requestOpinionInput);
 
 
     @POST("/user/updateUserProfile")

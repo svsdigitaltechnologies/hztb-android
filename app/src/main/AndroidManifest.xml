@@ -90,10 +90,10 @@
 
         <activity android:name=".Activities.CountryCodeActivity" />
         <activity
-            android:name=".Activities.NewRequestActivity"
+            android:name=".Fragments.NewRequestFragment"
             android:label="@string/title_activity_request_opinion" />
         <activity
-            android:name=".Activities.ContactsActivity"
+            android:name=".Fragments.ContactsFragment"
             android:label="@string/title_activity_contacts"></activity>
     </application>
 

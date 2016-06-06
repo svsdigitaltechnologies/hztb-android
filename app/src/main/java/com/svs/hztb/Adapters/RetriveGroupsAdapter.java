@@ -48,7 +48,8 @@ public class RetriveGroupsAdapter extends BaseAdapter {
                 mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.custom_contacts_item_layout, null);
             TextView groupName = (TextView) (convertView).findViewById(R.id.textview_select_contacts);
-            groupName.setText(groupList.get(position));
+            groupName.setText(groupList.get(position).toString());
+
         if (position == groupList.size()-1){
             groupName.setTextColor(mContext.getResources().getColor(R.color.picton_blue));
         }

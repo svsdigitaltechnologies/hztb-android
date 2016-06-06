@@ -1,63 +1,67 @@
-package com.svs.hztb.Activities;
+package com.svs.hztb.Fragments;
 
 import android.Manifest;
-import android.app.ActivityManager;
+import android.app.Fragment;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.Activity;
 import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.svs.hztb.Adapters.ContactsAdapter;
 import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.R;
-import com.svs.hztb.Utils.ConnectionDetector;
 
 import java.util.ArrayList;
 import android.os.Handler;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.LogRecord;
 
-public class ContactsActivity extends AbstractActivity {
+public class ContactsFragment extends Fragment {
 
     private ArrayList<Contact> contactList;
     private ListView contactsListView;
     private ContactsAdapter adapter;
+    EditText contactSearch;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2001;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_fragment, container, false);
 
+        // Inflate the layout for this fragment
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        contactSearch =(EditText)view.findViewById(R.id.edittext_search_contact);
+        contactsListView = (ListView)view.findViewById(R.id.listview_contacts);
         checkIfPermissionIsGranted();
-        }
+
+    }
 
     private void checkIfPermissionIsGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                 readContactInBackground();
             }
             else {
@@ -87,7 +91,7 @@ public class ContactsActivity extends AbstractActivity {
 
     private void searchForContactsAndDisplay() {
         contactList = new ArrayList<>();
-        ContentResolver cr = getContentResolver();
+        ContentResolver cr = getActivity().getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
 
@@ -112,11 +116,6 @@ public class ContactsActivity extends AbstractActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     /**
      * Requests the READ_PHONE_STATE permission.
@@ -124,19 +123,19 @@ public class ContactsActivity extends AbstractActivity {
      * permission, otherwise it is requested directly.
      */
     private void requestReadPhoneStatePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                 Manifest.permission.READ_CONTACTS)) {
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
             // For example if the user has previously denied the permission.
-            new AlertDialog.Builder(ContactsActivity.this)
+            new AlertDialog.Builder(getActivity())
                     .setTitle("Permission Request")
                     .setMessage(getString(R.string.permission_read_phone_state_rationale))
                     .setCancelable(false)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //re-request
-                            ActivityCompat.requestPermissions(ContactsActivity.this,
+                            ActivityCompat.requestPermissions(getActivity(),
                                     new String[]{Manifest.permission.READ_CONTACTS},
                                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
                         }
@@ -144,7 +143,7 @@ public class ContactsActivity extends AbstractActivity {
                     .show();
         } else {
             // READ_PHONE_STATE permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS},
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
     }
@@ -171,13 +170,13 @@ public class ContactsActivity extends AbstractActivity {
     }
 
     private void alertAlert(String msg) {
-        new AlertDialog.Builder(ContactsActivity.this)
+        new AlertDialog.Builder(getActivity())
                 .setTitle("Permission Request")
                 .setMessage(msg)
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        getActivity().finish();
                     }
                 })
                 .show();
@@ -190,8 +189,7 @@ public class ContactsActivity extends AbstractActivity {
 
 
     private void initviews() {
-        contactsListView = getView(R.id.listview_contacts);
-        adapter = new ContactsAdapter(getApplicationContext(),contactList);
+        adapter = new ContactsAdapter(getActivity().getApplicationContext(),contactList);
         contactsListView.setAdapter(adapter);
         contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -202,17 +200,15 @@ public class ContactsActivity extends AbstractActivity {
                 }else contactList.get(i).setSelected(true);
 
                 adapter.notifyDataSetChanged();
-                displayMessage(contactList.get(i).getNumber());
             }
         });
 
-        EditText contactSearch = getView(R.id.edittext_search_contact);
         contactSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-                ContactsActivity.this.adapter.filter(""+cs);
+                ContactsFragment.this.adapter.filter(""+cs);
             }
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
@@ -246,8 +242,8 @@ public class ContactsActivity extends AbstractActivity {
 
     private void showAlertDialog(ArrayList<Contact> contactsSelected) {
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = this.getLayoutInflater();
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
 
             View dialog = inflater.inflate(R.layout.custom_group_selection_add_alert, null);
             dialogBuilder.setView(dialog);
@@ -283,8 +279,6 @@ public class ContactsActivity extends AbstractActivity {
             });
 
             alertDialog.show();
-
-
     }
 
 
