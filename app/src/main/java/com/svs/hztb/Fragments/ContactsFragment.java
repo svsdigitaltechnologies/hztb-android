@@ -15,23 +15,44 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.svs.hztb.Activities.ConfirmRegistration;
 import com.svs.hztb.Adapters.ContactsAdapter;
 import com.svs.hztb.Bean.Contact;
+import com.svs.hztb.Bean.Product;
+import com.svs.hztb.Bean.RegisterResponse;
+import com.svs.hztb.Bean.RequestOpinionInput;
+import com.svs.hztb.Bean.RequestOpinionOutput;
+import com.svs.hztb.Bean.Status;
 import com.svs.hztb.CustomViews.WalkWayButton;
+import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
+import com.svs.hztb.RestService.ErrorStatus;
+import com.svs.hztb.RestService.RegisterService;
+import com.svs.hztb.RestService.ServiceGenerator;
+import com.svs.hztb.Utils.LoadingBar;
 
 import java.util.ArrayList;
 import android.os.Handler;
+import android.widget.Toast;
 
 import java.util.Iterator;
+import java.util.List;
+
+import retrofit2.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ContactsFragment extends Fragment {
 
@@ -39,7 +60,9 @@ public class ContactsFragment extends Fragment {
     private ListView contactsListView;
     private ContactsAdapter adapter;
     EditText contactSearch;
+    private Button doneButton;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2001;
+    protected LoadingBar _loader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,10 +78,30 @@ public class ContactsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         contactSearch =(EditText)view.findViewById(R.id.edittext_search_contact);
         contactsListView = (ListView)view.findViewById(R.id.listview_contacts);
+        doneButton = (Button)view.findViewById(R.id.doneButton);
+        _loader=new LoadingBar(getActivity());
+
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDoneButtonClicked();
+            }
+        });
         checkIfPermissionIsGranted();
 
     }
 
+    public void showLoader(){
+        if(_loader!=null && !_loader.isShowing()){
+            _loader.show();
+        }
+    }
+
+    public void cancelLoader(){
+        if(_loader!=null && _loader.isShowing()){
+            _loader.cancel();
+        }
+    }
     private void checkIfPermissionIsGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
@@ -223,7 +266,7 @@ public class ContactsFragment extends Fragment {
     }
 
 
-    public void onDoneButtonClicked(View view){
+    public void onDoneButtonClicked(){
         ArrayList<Contact> contactsSelected = getSelectedContactsList();
         showAlertDialog(contactsSelected);
     }
@@ -251,7 +294,7 @@ public class ContactsFragment extends Fragment {
             final AlertDialog alertDialog = dialogBuilder.create();
 
             TextView contectText = (TextView) dialog.findViewById(R.id.textview_content);
-
+            final EditText groupName = (EditText)dialog.findViewById(R.id.edittext_groupName);
             String contactString = null;
             if (contactsSelected.size()>1){
                 contactString = "Contacts";
@@ -267,7 +310,13 @@ public class ContactsFragment extends Fragment {
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    alertDialog.cancel();
+                    if (!groupName.getText().toString().isEmpty()){
+                        alertDialog.cancel();
+                        postDataForNewRequest(groupName.getText().toString());
+                    }else  groupName.setError("Field cannot be left blank.");
+
+
+
                 }
             });
 
@@ -279,6 +328,65 @@ public class ContactsFragment extends Fragment {
             });
 
             alertDialog.show();
+    }
+
+    private void postDataForNewRequest(String groupName) {
+        showLoader();
+
+        RegisterService registerService = new RegisterService();
+        RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
+        requestOpinionInput.setRequesterUserId(1);
+        requestOpinionInput.setGroupName(groupName);
+        Product product = new Product();
+        product.setName("Test606163");
+        product.setShortDesc("Awesome");
+        product.setLongDesc("brilliant");
+        product.setImageUrl("c:/ada/asdasd");
+        product.setPrice(22.0);
+        requestOpinionInput.setProduct(product);
+        List<Integer> userIDs = new ArrayList<>();
+        userIDs.add(1);
+        userIDs.add(5);
+        userIDs.add(7);
+        requestOpinionInput.setRequestedUserIds(userIDs);
+
+        Log.i(getActivity().getPackageName(),requestOpinionInput.toString());
+
+        Observable<Response<RequestOpinionOutput>> registerResponseObservable = registerService.requestOpinionForNewProduct(requestOpinionInput);
+
+        registerResponseObservable.observeOn(AndroidSchedulers.mainThread()).
+                subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<RequestOpinionOutput>>() {
+            @Override
+            public void onCompleted() {
+                cancelLoader();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                cancelLoader();
+            }
+
+            @Override
+            public void onNext(Response<RequestOpinionOutput> requestResponse) {
+
+                cancelLoader();
+                if (requestResponse.isSuccessful()) {
+
+                  if (requestResponse.body().getStatus() == Status.SUCCESS){
+                      Toast.makeText(getActivity().getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                  }else {
+                      Toast.makeText(getActivity().getApplicationContext(),"UNSUCCESSFUL",Toast.LENGTH_LONG).show();
+                  }
+                }
+                else {
+                    List<ErrorStatus> listErrorStatus = ServiceGenerator.parseErrorBody(requestResponse);
+                    for (ErrorStatus listErrorState : listErrorStatus) {
+                        Log.d("Error Message : ", listErrorState.getMessage() + " " + listErrorState.getStatus());
+                    }
+
+                }
+            }
+        });
     }
 
 

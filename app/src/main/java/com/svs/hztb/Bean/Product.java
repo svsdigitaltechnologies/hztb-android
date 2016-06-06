@@ -4,7 +4,18 @@ public class Product {
 	private String name;
 	private String longDesc;
 	private String shortDesc;
+	private String imageUrl;
 	private double price;
+
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 
 	public String getName() {
 		return name;
