@@ -31,7 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
-    private static final String KEY_GROUPNAME = "id";
+    private static final String KEY_GROUPNAME = "group_name";
     private static final String KEY_NAME = "name";
     private static final String KEY_PH_NO = "phone_number";
 
@@ -43,7 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_GROUP_WITH_CONTACT_TABLE = "CREATE TABLE " + TABLE_GROUPSWITHCONTACTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_GROUPNAME + " TEXT," + KEY_NAME + " TEXT,"
+                + KEY_ID + " INTEGER," + KEY_GROUPNAME + " TEXT," + KEY_NAME + " TEXT,"
                 + KEY_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_GROUP_WITH_CONTACT_TABLE);
         String CREATE_GROUP_TABLE = "CREATE TABLE " + TABLE_GROUPS + "("

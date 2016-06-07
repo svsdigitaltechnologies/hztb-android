@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.svs.hztb.Activities.ConfirmRegistration;
 import com.svs.hztb.Adapters.ContactsAdapter;
 import com.svs.hztb.Bean.Contact;
+import com.svs.hztb.Bean.ContactGroup;
 import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.Bean.RequestOpinionInput;
@@ -35,6 +36,7 @@ import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.Status;
 import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Database.DatabaseHandler;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.RegisterService;
@@ -225,7 +227,6 @@ public class ContactsFragment extends Fragment {
                 .show();
     }
 
-
     public void doPermissionGrantedStuffs() {
         readContactInBackground();
     }
@@ -277,6 +278,18 @@ public class ContactsFragment extends Fragment {
         while (iterator.hasNext()){
             Contact contactItem = iterator.next();
             if (contactItem.isSelected() == true){
+                Cursor phones = getActivity().getContentResolver().query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactItem.getContactId(),
+                        null, null);
+                while (phones.moveToNext()) {
+                    String phoneNumber = phones.getString(
+                            phones.getColumnIndex(
+                                    ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    contactItem.setNumber(phoneNumber);
+                }
+                phones.close();
                 selectedList.add(contactItem);
             }
         }
@@ -312,7 +325,7 @@ public class ContactsFragment extends Fragment {
                 public void onClick(View v) {
                     if (!groupName.getText().toString().isEmpty()){
                         alertDialog.cancel();
-                        postDataForNewRequest(groupName.getText().toString());
+                        postDataForNewRequest(groupName.getText().toString().trim());
                     }else  groupName.setError("Field cannot be left blank.");
 
 
@@ -330,7 +343,7 @@ public class ContactsFragment extends Fragment {
             alertDialog.show();
     }
 
-    private void postDataForNewRequest(String groupName) {
+    private void postDataForNewRequest(final String groupName) {
         showLoader();
 
         RegisterService registerService = new RegisterService();
@@ -345,9 +358,8 @@ public class ContactsFragment extends Fragment {
         product.setPrice(22.0);
         requestOpinionInput.setProduct(product);
         List<Integer> userIDs = new ArrayList<>();
-        userIDs.add(1);
-        userIDs.add(5);
-        userIDs.add(7);
+        userIDs.add(2);
+        userIDs.add(3);
         requestOpinionInput.setRequestedUserIds(userIDs);
 
         Log.i(getActivity().getPackageName(),requestOpinionInput.toString());
@@ -369,11 +381,11 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onNext(Response<RequestOpinionOutput> requestResponse) {
 
-                cancelLoader();
                 if (requestResponse.isSuccessful()) {
 
                   if (requestResponse.body().getStatus() == Status.SUCCESS){
                       Toast.makeText(getActivity().getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                      storeGroupInDB(groupName);
                   }else {
                       Toast.makeText(getActivity().getApplicationContext(),"UNSUCCESSFUL",Toast.LENGTH_LONG).show();
                   }
@@ -389,5 +401,13 @@ public class ContactsFragment extends Fragment {
         });
     }
 
-
+    private void storeGroupInDB(String groupName) {
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        ContactGroup group = new ContactGroup();
+        group.setGroupName(groupName);
+        group.setContactArrayList(getSelectedContactsList());
+        group.setSelect(false);
+        db.addGroupWithContacts(group);
+        cancelLoader();
+    }
 }
