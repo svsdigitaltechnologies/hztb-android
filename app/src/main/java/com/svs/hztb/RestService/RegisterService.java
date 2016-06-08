@@ -41,9 +41,6 @@ public class RegisterService {
         return dataService.validateOTPResponse(validateOTPRequest);
     }
 
-    public Observable<Response<RequestOpinionOutput>> requestOpinionForNewProduct(RequestOpinionInput requestOpinionInput) {
-        return dataService.requestOpinionForNewProduct(requestOpinionInput);
-    }
 
 
     public Observable<Response<UserProfileResponse>> updateUserProfile(String mobileNumber,String name,String emailID,byte[] picArray) {

@@ -39,6 +39,7 @@ import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.Database.DatabaseHandler;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
+import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.RestService.RegisterService;
 import com.svs.hztb.RestService.ServiceGenerator;
 import com.svs.hztb.Utils.LoadingBar;
@@ -346,7 +347,7 @@ public class ContactsFragment extends Fragment {
     private void postDataForNewRequest(final String groupName) {
         showLoader();
 
-        RegisterService registerService = new RegisterService();
+        OpinionService opinionService = new OpinionService();
         RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
         requestOpinionInput.setRequesterUserId(1);
         requestOpinionInput.setGroupName(groupName);
@@ -364,7 +365,7 @@ public class ContactsFragment extends Fragment {
 
         Log.i(getActivity().getPackageName(),requestOpinionInput.toString());
 
-        Observable<Response<RequestOpinionOutput>> registerResponseObservable = registerService.requestOpinionForNewProduct(requestOpinionInput);
+        Observable<Response<RequestOpinionOutput>> registerResponseObservable = opinionService.requestOpinionForNewProduct(requestOpinionInput);
 
         registerResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<RequestOpinionOutput>>() {

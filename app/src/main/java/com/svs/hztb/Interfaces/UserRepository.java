@@ -25,11 +25,6 @@ public interface UserRepository {
     @POST("/user/validateOTP")
     Observable<Response<ValidateOTPResponse>> validateOTPResponse(@Body ValidateOTPRequest validateOTPRequest);
 
-
-    @POST("/opinion/requestOpinion")
-    Observable<Response<RequestOpinionOutput>> requestOpinionForNewProduct(@Body RequestOpinionInput requestOpinionInput);
-
-
     @POST("/user/updateUserProfile")
     Observable<Response<UserProfileResponse>> updateUserProfile(@Body UserProfileRequest userProfileRequest);
 }
