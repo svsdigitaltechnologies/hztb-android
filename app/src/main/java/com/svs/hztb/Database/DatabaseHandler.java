@@ -1,10 +1,5 @@
 package com.svs.hztb.Database;
- 
-import java.security.acl.Group;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
- 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,12 +9,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.ContactGroup;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class DatabaseHandler extends SQLiteOpenHelper {
- 
+
     // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
- 
+
     // Database Name
     private static final String DATABASE_NAME = "groupsManager";
 
@@ -38,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
- 
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -47,10 +45,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_GROUP_WITH_CONTACT_TABLE);
         String CREATE_GROUP_TABLE = "CREATE TABLE " + TABLE_GROUPS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_GROUPNAME + " TEXT" + ")";
+                + KEY_ID + " INTEGER ," + KEY_GROUPNAME + " TEXT " + ")";
         db.execSQL(CREATE_GROUP_TABLE);
     }
- 
+
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -62,73 +60,83 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addGroupWithContacts(ContactGroup groupwithCont){
+    public void addGroupWithContacts(ContactGroup groupwithCont) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Contact> contacts = groupwithCont.getContactArrayList();
         Iterator<Contact> iterator = contacts.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Contact contact = iterator.next();
             ContentValues values = new ContentValues();
-            values.put(KEY_GROUPNAME,groupwithCont.getGroupName());
+            values.put(KEY_GROUPNAME, groupwithCont.getGroupName());
             values.put(KEY_NAME, contact.getContactName()); // Contact Name
             values.put(KEY_PH_NO, contact.getNumber()); // Contact Phone
             // Inserting Row
             db.insert(TABLE_GROUPSWITHCONTACTS, null, values);
 
-            ContentValues groupValue = new ContentValues();
-            groupValue.put(KEY_GROUPNAME,groupwithCont.getGroupName());
-            db.insert(TABLE_GROUPS,null,groupValue);
-            db.close(); // Closing database connection
-        }
+            ArrayList<String> groupNameList = getGroupName();
 
-
-    }
-
-    public ArrayList<ContactGroup> getGroups() {
-        ArrayList<String> groupList = getGroupNames();
-    return getAllGroupsList(groupList);
-    }
-    // Getting All Contacts
-    public ArrayList<ContactGroup> getAllGroupsList(ArrayList<String> groupList) {
-        ArrayList<ContactGroup> contactGroupList = new ArrayList<ContactGroup>();
-
-        // Select All Query
-        Iterator<String> groupIterator = groupList.iterator();
-        while (groupIterator.hasNext()){
-            String groupName  = groupIterator.next();
-            ArrayList<Contact> contactList = new ArrayList<Contact>();
-            ContactGroup groupObj = new ContactGroup();
-            groupObj.setGroupName(groupName);
-            String query="SELECT * FROM "+TABLE_GROUPSWITHCONTACTS+" WHERE "+KEY_GROUPNAME+"="+groupName;
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
-            if (cursor.moveToFirst()){
-                do{
-                    Contact contact = new Contact();
-                    contact.setContactName(cursor.getString(2));
-                    contact.setNumber(cursor.getString(3));
-                    contactList.add(contact);
-                }while (cursor.moveToNext());
+            if (!groupNameList.contains(groupwithCont.getGroupName())) {
+                ContentValues groupValue = new ContentValues();
+                groupValue.put(KEY_GROUPNAME, groupwithCont.getGroupName());
+                db.insert(TABLE_GROUPS, null, groupValue);
             }
-            groupObj.setContactArrayList(contactList);
-            contactGroupList.add(groupObj);
         }
-        return contactGroupList;
+        db.close(); // Closing database connection
+
+
     }
 
-    private ArrayList<String> getGroupNames(){
+    // Getting All Contacts
+    public ContactGroup getGroupInfo(String groupName) {
+        ArrayList<Contact> contactList = new ArrayList<Contact>();
+        ContactGroup groupObj = new ContactGroup();
+        groupObj.setGroupName(groupName);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_GROUPSWITHCONTACTS,null,KEY_GROUPNAME+" = ?",new String[]{groupName},null,null,null);
+        if (cursor.moveToFirst()) {
+            do {
+                Contact contact = new Contact();
+                contact.setContactName(cursor.getString(2));
+                contact.setNumber(cursor.getString(3));
+                contactList.add(contact);
+            } while (cursor.moveToNext());
+        }
+        groupObj.setContactArrayList(contactList);
+
+        return groupObj;
+    }
+
+    public ArrayList<ContactGroup> getGroupNames() {
+        ArrayList<ContactGroup> groupsList = new ArrayList<ContactGroup>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_GROUPS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ContactGroup group  = new ContactGroup();
+                group.setGroupName(cursor.getString(1));
+                groupsList.add(group);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return groupsList;
+    }
+
+    public ArrayList<String> getGroupName() {
         ArrayList<String> groupsList = new ArrayList<String>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_GROUPS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                 String groupName = cursor.getString(1);
-                groupsList.add(groupName);
+                groupsList.add(cursor.getString(1));
             } while (cursor.moveToNext());
         }
 
@@ -138,9 +146,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
 
-        /**
-         * All CRUD(Create, Read, Update, Delete) Operations
-         */
+    /**
+     * All CRUD(Create, Read, Update, Delete) Operations
+     */
 
 
 
