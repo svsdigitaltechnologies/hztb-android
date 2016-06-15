@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Fragment;
@@ -86,17 +87,14 @@ public class GetOpinionsFragment extends android.app.Fragment {
     private void postDataToGetOpinions() {
         showLoader();
         OpinionService opinionService = new OpinionService();
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
 //        refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
         refreshInput.setUserId(1);
+//        refreshInput.setLastUpdatedTime(dateFormat.format(date));
         refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
         String json = toJson(refreshInput);
-        Log.d("Json Object"+json,"");
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        System.out.println(dateFormat.format(date));
 
         Observable<Response<List<OpinionData>>> refreshResponseObservable = opinionService.getOpinions(refreshInput);
 
@@ -117,10 +115,19 @@ public class GetOpinionsFragment extends android.app.Fragment {
             public void onNext(Response<List<OpinionData>> requestResponse) {
 
                 if (requestResponse.isSuccessful()) {
-                    opinionDataArrayList = (ArrayList<OpinionData>) requestResponse.body();
-                    adapter = new GetOpinionAdapter(getActivity().getApplicationContext(),opinionDataArrayList);
-                    listview_getOpinions.setAdapter(adapter);
+                    if (requestResponse.body().size() > 0) {
+                        opinionDataArrayList = (ArrayList<OpinionData>) requestResponse.body();
+                        adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
+                        listview_getOpinions.setAdapter(adapter);
+                        listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Toast.makeText(getActivity().getApplicationContext(), "" + position, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }
+                else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
             }
         });
     }

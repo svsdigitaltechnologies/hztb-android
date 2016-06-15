@@ -4,6 +4,7 @@
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
     android:paddingTop="10dp"
+    android:descendantFocusability="blocksDescendants"
     android:background="@android:color/transparent"
     android:layout_height="wrap_content">
 
@@ -17,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/custom_image_name_layout"
-
         android:layout_marginTop="10dp" />
 
     <include layout="@layout/custom_rating_item"
@@ -36,12 +36,10 @@
         android:id="@+id/button_view_selfie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:background="@color/picton_blue"
         android:text="@string/view_selfie"
         android:textColor="@android:color/white"
         android:layout_marginTop="5dp"
-
         android:layout_below="@+id/include" android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
