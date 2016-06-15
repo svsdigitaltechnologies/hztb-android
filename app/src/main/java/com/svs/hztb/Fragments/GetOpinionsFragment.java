@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.svs.hztb.Adapters.GetOpinionAdapter;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Bean.RefreshInput;
@@ -43,8 +45,10 @@ import rx.schedulers.Schedulers;
 
 public class GetOpinionsFragment extends android.app.Fragment {
 
+    private ArrayList<OpinionData> opinionDataArrayList;
     protected LoadingBar _loader;
-
+    private ListView listview_getOpinions;
+    private GetOpinionAdapter adapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,7 @@ public class GetOpinionsFragment extends android.app.Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         _loader=new LoadingBar(getActivity());
-
+        listview_getOpinions = (ListView)view.findViewById(R.id.listview_getOpinions);
         postDataToGetOpinions();
 
     }
@@ -113,6 +117,9 @@ public class GetOpinionsFragment extends android.app.Fragment {
             public void onNext(Response<List<OpinionData>> requestResponse) {
 
                 if (requestResponse.isSuccessful()) {
+                    opinionDataArrayList = (ArrayList<OpinionData>) requestResponse.body();
+                    adapter = new GetOpinionAdapter(getActivity().getApplicationContext(),opinionDataArrayList);
+                    listview_getOpinions.setAdapter(adapter);
                 }
             }
         });

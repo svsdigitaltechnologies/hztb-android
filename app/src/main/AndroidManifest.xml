@@ -45,6 +45,8 @@
         <activity
             android:name=".Activities.HomeScreenActivity"
             android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+
             android:label="@string/title_activity_home_screen" />
         <activity
             android:name=".Activities.RegistrationActivity"

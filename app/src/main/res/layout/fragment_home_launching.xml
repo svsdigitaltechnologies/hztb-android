@@ -9,7 +9,7 @@
     <com.svs.hztb.CustomViews.WalkWayButton
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="Request Opinion"
+    android:text="Opinions Recieved"
     android:id="@+id/button_getOpinons"
     android:layout_weight="1"
     android:textSize="25dp"
@@ -21,7 +21,7 @@
     <com.svs.hztb.CustomViews.WalkWayButton
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="Respond Opinion"
+    android:text="Opinions Given"
     android:id="@+id/button4"
     android:layout_weight="1"
     android:onClick="respondOpinionOnClick"
