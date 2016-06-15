@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.svs.hztb.Adapters.RetriveGroupsAdapter;
+import com.svs.hztb.Bean.Contact;
+import com.svs.hztb.Bean.ContactGroup;
+import com.svs.hztb.Database.DatabaseHandler;
 import com.svs.hztb.R;
 
 import java.util.ArrayList;
@@ -20,11 +24,12 @@ import java.util.Arrays;
 public class NewRequestFragment extends Fragment {
 
     private ListView groupsList;
-    private ArrayList<String> groupsArrayList;
+    private ArrayList<ContactGroup> groupsArrayList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_new_request, container, false);
@@ -35,10 +40,15 @@ public class NewRequestFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         groupsList = (ListView) view.findViewById(R.id.listview_groups);
-        groupsArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.group_items)));
-        groupsArrayList.add("Select From Contacts");
 
-        RetriveGroupsAdapter adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupsArrayList);
+        DatabaseHandler db  = new DatabaseHandler(getActivity().getApplicationContext());
+
+        groupsArrayList = db.getGroupNames();
+        ContactGroup group = new ContactGroup();
+        group.setGroupName("Select From Contacts");
+        groupsArrayList.add(group);
+
+        final RetriveGroupsAdapter adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupsArrayList);
         groupsList.setAdapter(adapter);
         groupsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -55,6 +65,16 @@ public class NewRequestFragment extends Fragment {
                         ftx.addToBackStack(backStateName);
                         ftx.commit();
                     }
+                }
+                else {
+//                    DatabaseHandler db  = new DatabaseHandler(getActivity().getApplicationContext());
+//                    ContactGroup group = db.getGroupInfo(groupsArrayList.get(i).getGroupName());
+                    if (!groupsArrayList.get(i).isSelect()) {
+                        groupsArrayList.get(i).setSelect(true);
+                    }else groupsArrayList.get(i).setSelect(false);
+
+                    adapter.notifyDataSetChanged();
+//                    Toast.makeText(getActivity().getApplicationContext(),group.getGroupName(),Toast.LENGTH_LONG).show();
                 }
             }
         });

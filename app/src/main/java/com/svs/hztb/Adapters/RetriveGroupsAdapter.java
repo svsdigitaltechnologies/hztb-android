@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.svs.hztb.Bean.ContactGroup;
 import com.svs.hztb.R;
 
 import java.util.ArrayList;
@@ -19,9 +21,9 @@ import java.util.ArrayList;
  */
 public class RetriveGroupsAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<String> groupList;
+    private ArrayList<ContactGroup> groupList;
 
-    public RetriveGroupsAdapter(Context context,ArrayList<String> group){
+    public RetriveGroupsAdapter(Context context,ArrayList<ContactGroup> group){
         this.mContext = context;
         this.groupList = group;
     }
@@ -48,11 +50,16 @@ public class RetriveGroupsAdapter extends BaseAdapter {
                 mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.custom_contacts_item_layout, null);
             TextView groupName = (TextView) (convertView).findViewById(R.id.textview_select_contacts);
-            groupName.setText(groupList.get(position).toString());
-
+            groupName.setText(groupList.get(position).getGroupName());
         if (position == groupList.size()-1){
             groupName.setTextColor(mContext.getResources().getColor(R.color.picton_blue));
+        }else {
+            ImageView tickImage = (ImageView) (convertView).findViewById(R.id.imageView_selected);
+            if (groupList.get(position).isSelect()){
+                tickImage.setVisibility(View.VISIBLE);
+            }else tickImage.setVisibility(View.GONE);
         }
+
         return convertView;
     }
 }
