@@ -54,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:id="@+id/button_request_opinion"
             android:background="@color/picton_blue"
             android:text="@string/invite_buddy"
             android:textColor="@android:color/white" />

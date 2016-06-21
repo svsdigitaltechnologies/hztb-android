@@ -1,10 +1,12 @@
 package com.svs.hztb.Interfaces;
 
+import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Bean.RefreshOutput;
 import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
+import com.svs.hztb.Bean.UserID;
 import com.svs.hztb.Bean.UserProfileRequest;
 import com.svs.hztb.Bean.UserProfileResponse;
 
@@ -26,6 +28,10 @@ public interface OpinionsRepository {
     Observable<Response<RequestOpinionOutput>> requestOpinionForNewProduct(@Body RequestOpinionInput requestOpinionInput);
 
 
+
     @POST("/refresh/opinions")
     Observable<Response<List<OpinionData>>> requestToGetOpinions(@Body RefreshInput refreshInput);
+
+    @POST("/group/listGroups")
+    Observable<Response<List<GroupDetail>>> requestToGetOpinions(@Body UserID userID);
 }

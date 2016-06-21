@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.svs.hztb.Bean.ContactGroup;
+import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.R;
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ import java.util.ArrayList;
  */
 public class RetriveGroupsAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<ContactGroup> groupList;
+    private ArrayList<GroupDetail> groupList;
 
-    public RetriveGroupsAdapter(Context context,ArrayList<ContactGroup> group){
+    public RetriveGroupsAdapter(Context context,ArrayList<GroupDetail> group){
         this.mContext = context;
         this.groupList = group;
     }
