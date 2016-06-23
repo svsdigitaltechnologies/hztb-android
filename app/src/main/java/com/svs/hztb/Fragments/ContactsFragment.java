@@ -349,7 +349,7 @@ public class ContactsFragment extends Fragment {
 
         OpinionService opinionService = new OpinionService();
         RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
-        requestOpinionInput.setRequesterUserId(1);
+        requestOpinionInput.setRequesterUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
         requestOpinionInput.setGroupName(groupName);
         Product product = new Product();
         product.setName("Test606163");

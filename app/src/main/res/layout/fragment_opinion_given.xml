@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/registration_bg"
+    android:orientation="vertical"
+    tools:context="com.svs.hztb.Fragments.OpinionGivenFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/white"
+        android:text="@string/opinion_list"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:id="@+id/listview_OpinionGiven"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5.0sp"
+        android:layout_gravity="left|top"></ListView>
+
+</LinearLayout>

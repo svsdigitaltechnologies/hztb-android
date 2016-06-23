@@ -1,6 +1,10 @@
 package com.svs.hztb.Fragments;
 
-
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,24 +13,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.svs.hztb.Activities.HomeScreenActivity;
 import com.svs.hztb.Adapters.GetOpinionAdapter;
+import com.svs.hztb.Adapters.OpinionGivenAdapter;
+import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
-import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Bean.RefreshInput;
-import com.svs.hztb.Bean.RefreshOutput;
-import com.svs.hztb.Bean.RequestOpinionInput;
-import com.svs.hztb.Bean.RequestOpinionOutput;
-import com.svs.hztb.Bean.Status;
-import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
-import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
-import com.svs.hztb.RestService.ServiceGenerator;
 import com.svs.hztb.Utils.ConnectionDetector;
 import com.svs.hztb.Utils.LoadingBar;
 
@@ -45,68 +41,51 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class GetOpinionsFragment extends android.app.Fragment {
+public class OpinionGivenFragment extends Fragment {
 
-    private ArrayList<OpinionData> opinionDataArrayList;
+    private ArrayList<OpinionCountData> opinionGivenDataArrayList;
     protected LoadingBar _loader;
-    private ListView listview_getOpinions;
-    private GetOpinionAdapter adapter;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private ListView listviewOpinionsGiven;
+    private OpinionGivenAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_get_opinions, container, false);
+        return inflater.inflate(R.layout.fragment_opinion_given, container, false);
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         _loader=new LoadingBar(getActivity());
-        listview_getOpinions = (ListView)view.findViewById(R.id.listview_getOpinions);
+        listviewOpinionsGiven = (ListView)view.findViewById(R.id.listview_OpinionGiven);
         ConnectionDetector c = new ConnectionDetector(getActivity().getApplicationContext());
         if(c.isConnectingToInternet()) {
 
-            postDataToGetOpinions();
+           postDataToGetOpinionsGiven();
         }else{
             Toast.makeText(getActivity().getApplicationContext(),"No Network",Toast.LENGTH_LONG).show();
         }
 
     }
 
-    public void showLoader(){
-        if(_loader!=null && !_loader.isShowing()){
-            _loader.show();
-        }
-    }
-
-    public void cancelLoader(){
-        if(_loader!=null && _loader.isShowing()){
-            _loader.cancel();
-        }
-    }
-
-    private void postDataToGetOpinions() {
+    private void postDataToGetOpinionsGiven() {
         showLoader();
         OpinionService opinionService = new OpinionService();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
-   //     refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
+        //     refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
         refreshInput.setUserId(1);
-  //      refreshInput.setLastUpdatedTime(dateFormat.format(date));
+        //      refreshInput.setLastUpdatedTime(dateFormat.format(date));
         refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
- //       String json = toJson(refreshInput);
+               String json = toJson(refreshInput);
 
-        Observable<Response<List<OpinionData>>> refreshResponseObservable = opinionService.getOpinions(refreshInput);
+        Observable<Response<List<OpinionCountData>>> refreshResponseObservable = opinionService.opinionGiven(refreshInput);
 
         refreshResponseObservable.observeOn(AndroidSchedulers.mainThread()).
-                subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<List<OpinionData>>>() {
+                subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<List<OpinionCountData>>>() {
             @Override
             public void onCompleted() {
                 cancelLoader();
@@ -119,19 +98,20 @@ public class GetOpinionsFragment extends android.app.Fragment {
             }
 
             @Override
-            public void onNext(Response<List<OpinionData>> requestResponse) {
+            public void onNext(Response<List<OpinionCountData>> requestResponse) {
 
                 if (requestResponse.isSuccessful()) {
                     if (requestResponse.body().size() > 0) {
-                        opinionDataArrayList = (ArrayList<OpinionData>) requestResponse.body();
-                        adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
-                        listview_getOpinions.setAdapter(adapter);
-                        listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        opinionGivenDataArrayList = (ArrayList<OpinionCountData>) requestResponse.body();
+                        adapter = new OpinionGivenAdapter(getActivity().getApplicationContext(), opinionGivenDataArrayList);
+                        listviewOpinionsGiven.setAdapter(adapter);
+                        listviewOpinionsGiven.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                ((HomeScreenActivity)getActivity()).setProduct(opinionDataArrayList.get(position));
 
-                                GetOpinionsDetailFragment opinionDetailsFrg = new GetOpinionsDetailFragment();
+                                ((HomeScreenActivity)getActivity()).setOpinionData(opinionGivenDataArrayList.get(position));
+
+                                OpinionGivenDetailFragment opinionDetailsFrg = new OpinionGivenDetailFragment();
                                 String backStateName = opinionDetailsFrg.getClass().getName();
                                 FragmentManager fragmentManager = getFragmentManager();
                                 boolean fragmentPopped = fragmentManager
@@ -165,4 +145,17 @@ public class GetOpinionsFragment extends android.app.Fragment {
         }
         return jsonString;
     }
+
+    public void showLoader(){
+        if(_loader!=null && !_loader.isShowing()){
+            _loader.show();
+        }
+    }
+
+    public void cancelLoader(){
+        if(_loader!=null && _loader.isShowing()){
+            _loader.cancel();
+        }
+    }
+
 }

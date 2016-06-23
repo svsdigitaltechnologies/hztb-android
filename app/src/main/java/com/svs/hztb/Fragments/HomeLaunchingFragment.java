@@ -43,5 +43,23 @@ public class HomeLaunchingFragment extends Fragment {
                 }
             }
         });
+
+        Button opinionGiven = (Button)view.findViewById(R.id.button4);
+        opinionGiven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpinionGivenFragment fragment = new OpinionGivenFragment();
+                String backStateName = fragment.getClass().getName();
+                FragmentManager fragmentManager = getFragmentManager();
+                boolean fragmentPopped = fragmentManager
+                        .popBackStackImmediate(backStateName, 0);
+                if (!fragmentPopped) {
+                    FragmentTransaction ftx = fragmentManager.beginTransaction();
+                    ftx.replace(R.id.fragment, fragment);
+                    ftx.addToBackStack(backStateName);
+                    ftx.commit();
+                }
+            }
+        });
     }
 }

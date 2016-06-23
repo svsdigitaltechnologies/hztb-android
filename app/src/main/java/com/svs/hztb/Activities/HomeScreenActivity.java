@@ -1,5 +1,6 @@
 package com.svs.hztb.Activities;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -22,6 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.svs.hztb.Adapters.SlideMenuAdapter;
+import com.svs.hztb.Bean.GivenPendingData;
+import com.svs.hztb.Bean.OpinionCountData;
+import com.svs.hztb.Bean.OpinionData;
+import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Fragments.NewRequestFragment;
 import com.svs.hztb.Interfaces.IDrawerClosed;
 import com.svs.hztb.R;
@@ -31,7 +36,9 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
     protected DrawerLayout mDrawerLayout;
     protected String[] menuItems;
     protected ListView mDrawerList;
-
+    protected OpinionData mProduct;
+    protected OpinionCountData opinionCountData;
+    protected GivenPendingData givenPendingData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +81,14 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
             @Override
             public void run() {
                 NewRequestFragment fragment = new NewRequestFragment();
-                String backStateName = fragment.getClass().getName();
-                // Insert the fragment by replacing any existing fragment
-                FragmentManager fragmentManager = getFragmentManager();
+
+                Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment);
+                if (currentFragment instanceof NewRequestFragment) {
+                    Log.d("Fragment Exist",currentFragment.getClass().getName());
+                } else {
+                    String backStateName = fragment.getClass().getName();
+                    // Insert the fragment by replacing any existing fragment
+                    FragmentManager fragmentManager = getFragmentManager();
 //                if (fragmentManager.getBackStackEntryCount() > 0) {
                     boolean fragmentPopped = fragmentManager
                             .popBackStackImmediate(backStateName, 0);
@@ -90,6 +102,7 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
                     // Highlight the selected item, update the title, and close the drawer
                     mDrawerList.setItemChecked(position, true);
                 }
+            }
 //            }
         }, 200);
 
@@ -200,6 +213,28 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
      */
     public void inStoreButtonOnClick(View view) {
 
+    }
+
+    public void setOpinionData(OpinionCountData opinionCountDataa ){
+        opinionCountData = opinionCountDataa;
+    }
+    public OpinionCountData getOpinionCountData(){
+        return opinionCountData;
+    }
+
+
+    public void setGivenPendingData(GivenPendingData pendingData){
+        givenPendingData = pendingData;
+    }
+    public GivenPendingData getPendingData(){
+        return givenPendingData;
+    }
+
+    public void setProduct(OpinionData product){
+        this.mProduct = product;
+    }
+    public OpinionData getProduct(){
+        return mProduct;
     }
 
 

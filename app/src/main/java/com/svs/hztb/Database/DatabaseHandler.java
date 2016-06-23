@@ -82,8 +82,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         }
         db.close(); // Closing database connection
-
-
     }
 
     // Getting All Contacts

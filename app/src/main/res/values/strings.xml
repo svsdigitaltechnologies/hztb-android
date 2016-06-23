@@ -71,4 +71,12 @@
     <string name="add_grouptext">Add</string>
     <string name="send_group_name">Send</string>
     <string name="view_selfie">View Selfie</string>
+    <string name="details_responded">Responded</string>
+    <string name="not_responded">No Responses</string>
+    <string name="opinion_list">Opinions List</string>
+    <string name="given">Given</string>
+    <string name="pending">Pending</string>
+    <string name="enter_comment">Enter your comment</string>
+    <string name="write_your_comment_about_the_product">Write your comment about the product</string>
+    <string name="send_your_opinion">Send Your Opinion</string>
 </resources>

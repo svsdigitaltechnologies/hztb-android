@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/registration_bg"
+    tools:context="com.svs.hztb.Fragments.OpinionGivenDetailFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/textview_usernameId"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:text="Invitation By" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent"
+        android:paddingBottom="2dp"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:background="@color/colorAccent"
+            android:id="@+id/opinion_given_button"
+            android:text="@string/given"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:background="@color/light_grey"
+
+            android:id="@+id/opinion_pending_button"
+            android:text="@string/pending"/>
+    </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/opinion_given_listview"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        android:layout_height="match_parent"></ListView>
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/opinion_pending_listview"
+        android:visibility="gone"
+        android:divider="@android:color/transparent"
+        android:layout_height="match_parent"></ListView>
+</LinearLayout>

@@ -5,6 +5,16 @@ public class RefreshInput {
     private int opinionId;
     private String lastUpdatedTime;
 
+    public String getResponderUserId() {
+        return responderUserId;
+    }
+
+    public void setResponderUserId(String responderUserId) {
+        this.responderUserId = responderUserId;
+    }
+
+    private String responderUserId;
+
     public int getUserId() {
         return userId;
     }

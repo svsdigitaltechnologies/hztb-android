@@ -1,13 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@mipmap/registration_bg"
     android:layout_height="match_parent"
+    android:id="@+id/listview_getOpinions"
     tools:context="com.svs.hztb.Fragments.GetOpinionsFragment">
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listview_getOpinions"
-         />
-</FrameLayout>
+</ListView>
