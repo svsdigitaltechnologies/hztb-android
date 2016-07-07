@@ -30,6 +30,9 @@ import com.svs.hztb.Bean.UserID;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.Database.DatabaseHandler;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.GroupDetailRealm;
+import com.svs.hztb.RealmDatabase.GroupRepositoryDatabase;
+import com.svs.hztb.RealmDatabase.RealmInt;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.RestService.ServiceGenerator;
@@ -46,6 +49,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import io.realm.RealmList;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -166,10 +170,12 @@ public class NewRequestFragment extends Fragment {
 
 
     private void postDataToGetGroups() {
+        groupList = new ArrayList<>();
         OpinionService opinionService = new OpinionService();
         UserID userId = new UserID();
         AppSharedPreference sherdPref = new AppSharedPreference();
-        int id = Integer.valueOf(sherdPref.getUserID(getActivity().getApplicationContext()));
+//        int id = Integer.valueOf(sherdPref.getUserID(getActivity().getApplicationContext()));
+        int id = 1;
         userId.setUserID(id);
         Observable<Response<List<GroupDetail>>> getGroupObservable = opinionService.getGroups(userId);
 
@@ -191,11 +197,14 @@ public class NewRequestFragment extends Fragment {
 
                 if (groupResponse.isSuccessful()) {
                     if (groupResponse.body().size() > 0) {
-                        groupList = (ArrayList<GroupDetail>) groupResponse.body();
+
+                        ArrayList<GroupDetail> detailList = new ArrayList<GroupDetail>();
+
+                        detailList = (ArrayList<GroupDetail>) groupResponse.body();
+                        groupList.addAll(detailList);
                         GroupDetail group = new GroupDetail();
                         group.setGroupName("Select From Contacts");
                         groupList.add(group);
-
                         adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupList);
                         groupsList.setAdapter(adapter);
                         groupsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -222,12 +231,40 @@ public class NewRequestFragment extends Fragment {
                                 }
                             }
                         });
+                        adapter.notifyDataSetChanged();
+                        addAllTheListToDatabase(detailList);
                     }
                 }
                 else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
             }
         });
 
+    }
+
+    private void addAllTheListToDatabase(ArrayList<GroupDetail> groupDetailList){
+        Iterator<GroupDetail> iterator = groupDetailList.iterator();
+        RealmList<GroupDetailRealm> groupDetailRealmList = new RealmList<>();
+        while (iterator.hasNext()){
+            GroupDetail groupDetail = iterator.next();
+            GroupDetailRealm groupDetailRealm = new GroupDetailRealm();
+            groupDetailRealm.setGroupName(groupDetail.getGroupName());
+            groupDetailRealm.setGroupId(groupDetail.getGroupId());
+            RealmList<RealmInt> intRealmList = new RealmList<>();
+            Iterator<Integer> integerIterator = groupDetail.getGroupMembers().iterator();
+            while (integerIterator.hasNext()){
+                int i = integerIterator.next();
+                RealmInt realmInt = new RealmInt();
+                realmInt.setVal(i);
+                intRealmList.add(realmInt);
+            }
+            groupDetailRealm.setGroupMembers(intRealmList);
+            groupDetailRealmList.add(groupDetailRealm);
+        }
+
+        GroupRepositoryDatabase groupRepositoryDatabase = new GroupRepositoryDatabase();
+        groupRepositoryDatabase.addGroupsListToDatabase(groupDetailRealmList);
+
+        groupRepositoryDatabase.getAllGroupList();
     }
 
 

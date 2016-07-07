@@ -16,12 +16,7 @@ public class OpinionData {
 	public void setOpinionId(int opinionId) {
 		this.opinionId = opinionId;
 	}
-//	public int getRequestedUserId() {
-//		return requestedUserId;
-//	}
-//	public void setRequestedUserId(int requestedUserId) {
-//		this.requestedUserId = requestedUserId;
-//	}
+
 	public int getRequestedGroupId() {
 		return requestedGroupId;
 	}

@@ -83,6 +83,7 @@ public class ContactsFragment extends Fragment {
         contactsListView = (ListView)view.findViewById(R.id.listview_contacts);
         doneButton = (Button)view.findViewById(R.id.doneButton);
         _loader=new LoadingBar(getActivity());
+        contactList = new ArrayList<>();
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +137,6 @@ public class ContactsFragment extends Fragment {
 
 
     private void searchForContactsAndDisplay() {
-        contactList = new ArrayList<>();
         ContentResolver cr = getActivity().getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
@@ -270,7 +270,11 @@ public class ContactsFragment extends Fragment {
 
     public void onDoneButtonClicked(){
         ArrayList<Contact> contactsSelected = getSelectedContactsList();
-        showAlertDialog(contactsSelected);
+        if (contactsSelected.size() > 0) {
+            showAlertDialog(contactsSelected);
+        }else {
+            Toast.makeText(getActivity().getApplicationContext(),"Please Select Contact",Toast.LENGTH_LONG).show();
+        }
     }
 
     private ArrayList<Contact> getSelectedContactsList() {
@@ -386,7 +390,6 @@ public class ContactsFragment extends Fragment {
 
                   if (requestResponse.body().getStatus() == Status.SUCCESS){
                       Toast.makeText(getActivity().getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-                      storeGroupInDB(groupName);
                   }else {
                       Toast.makeText(getActivity().getApplicationContext(),"UNSUCCESSFUL",Toast.LENGTH_LONG).show();
                   }

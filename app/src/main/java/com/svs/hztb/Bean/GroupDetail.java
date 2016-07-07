@@ -35,6 +35,4 @@ public class GroupDetail {
 	public void setGroupId(int groupId) {
 		this.groupId = groupId;
 	}
-	
-	
 }

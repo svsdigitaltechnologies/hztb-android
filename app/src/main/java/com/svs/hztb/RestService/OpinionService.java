@@ -62,5 +62,4 @@ public class OpinionService {
         return dataService.requestToGetOpinions(userID);
     }
 
-
 }
