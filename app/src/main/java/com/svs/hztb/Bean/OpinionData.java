@@ -8,6 +8,17 @@ public class OpinionData {
 	//private int requestedUserId;
 	private int requestedGroupId;
 	private String productName;
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	private Product product;
+
 	private Map<String, Integer> responseCounts = new HashMap<String, Integer>();
 	
 	public int getOpinionId() {

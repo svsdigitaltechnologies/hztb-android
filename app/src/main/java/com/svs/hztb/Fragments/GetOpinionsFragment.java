@@ -24,6 +24,10 @@ import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.Status;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmOpinionData;
+import com.svs.hztb.RealmDatabase.RealmOpinionDatabase;
+import com.svs.hztb.RealmDatabase.RealmProduct;
+import com.svs.hztb.RealmDatabase.RealmResponseCount;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.RestService.ServiceGenerator;
@@ -37,8 +41,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import io.realm.RealmList;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -125,12 +132,12 @@ public class GetOpinionsFragment extends android.app.Fragment {
                     if (requestResponse.body().size() > 0) {
                         opinionDataArrayList = (ArrayList<OpinionData>) requestResponse.body();
                         adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
+                        storeOpinionDataInDatabase(opinionDataArrayList);
                         listview_getOpinions.setAdapter(adapter);
                         listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 ((HomeScreenActivity)getActivity()).setProduct(opinionDataArrayList.get(position));
-
                                 GetOpinionsDetailFragment opinionDetailsFrg = new GetOpinionsDetailFragment();
                                 String backStateName = opinionDetailsFrg.getClass().getName();
                                 FragmentManager fragmentManager = getFragmentManager();
@@ -150,6 +157,44 @@ public class GetOpinionsFragment extends android.app.Fragment {
             }
         });
     }
+
+    private void storeOpinionDataInDatabase(ArrayList<OpinionData> opinionDataArrayList) {
+        RealmList<RealmOpinionData> opinionDataList = new RealmList<>();
+        Iterator<OpinionData> iterator = opinionDataArrayList.iterator();
+        while (iterator.hasNext()){
+            OpinionData opinionData = iterator.next();
+            RealmOpinionData realmOpinionData = new RealmOpinionData();
+            realmOpinionData.setOpinionId(opinionData.getOpinionId());
+            realmOpinionData.setProductName(opinionData.getProductName());
+            realmOpinionData.setRequestedGroupId(opinionData.getRequestedGroupId());
+            RealmList<RealmResponseCount> responCountList = new RealmList<>();
+            for (Map.Entry<String, Integer> entry : opinionData.getResponseCounts().entrySet())
+            {
+                RealmResponseCount responseCount = new RealmResponseCount();
+                responseCount.setResponseType(entry.getKey());
+                responseCount.setResponseCount(entry.getValue());
+                responCountList.add(responseCount);
+                System.out.println(entry.getKey() + "/" + entry.getValue());
+            }
+            realmOpinionData.setResponseCountList(responCountList);
+            RealmProduct realmProduct = new RealmProduct();
+            realmProduct.setName(opinionData.getProduct().getName());
+            realmProduct.setImageUrl(opinionData.getProduct().getImageUrl());
+            realmProduct.setLongDesc(opinionData.getProduct().getLongDesc());
+            realmProduct.setPrice(opinionData.getProduct().getPrice());
+            realmProduct.setShortDesc(opinionData.getProduct().getShortDesc());
+            realmOpinionData.setProduct(realmProduct);
+
+            opinionDataList.add(realmOpinionData);
+        }
+        RealmOpinionDatabase database = new RealmOpinionDatabase();
+        database.addRealmOpinionData(opinionDataList);
+        database.getAllOpinions();
+
+    }
+
+
+
 
     public static String toJson(Object object) {
         String jsonString = "";
