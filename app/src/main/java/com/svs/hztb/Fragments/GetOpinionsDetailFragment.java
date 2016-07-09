@@ -127,8 +127,8 @@ public class GetOpinionsDetailFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
-//        refreshInput.setOpinionId(opinionData.getOpinionId());
-        refreshInput.setOpinionId(7);
+        refreshInput.setOpinionId(opinionData.getOpinionId());
+//        refreshInput.setOpinionId(7);
 //        refreshInput.setLastUpdatedTime(dateFormat.format(date));
         refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
    //     String json = toJson(refreshInput);

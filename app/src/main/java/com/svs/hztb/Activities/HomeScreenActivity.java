@@ -28,10 +28,13 @@ import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Fragments.NewRequestFragment;
+import com.svs.hztb.Fragments.NotificationFragment;
 import com.svs.hztb.Interfaces.IDrawerClosed;
 import com.svs.hztb.R;
 
 public class HomeScreenActivity extends AbstractActivity implements IDrawerClosed {
+    private final int SLIDE_TIMEOUT = 200;
+
     protected SlideMenuAdapter slideMenuAdapter;
     protected DrawerLayout mDrawerLayout;
     protected String[] menuItems;
@@ -60,12 +63,7 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 5) {
-                    if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                        selectItem(5);
-                        mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    }
-                }
+               selectItem(i);
             }
         });
     }
@@ -75,24 +73,37 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
      */
     private void selectItem(final int position) {
         // Create a new fragment and specify the planet to show based on position
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        }
+        Fragment fragment = null;
 
-        mDrawerLayout.closeDrawer(mDrawerList);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                NewRequestFragment fragment = new NewRequestFragment();
+        switch (position){
+            case 5 :{
+                fragment = new NewRequestFragment();
+                break;
+            }
+            case 3:{
+               fragment = new NotificationFragment();
+                    break;
+            }
 
-                Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment);
-                if (currentFragment instanceof NewRequestFragment) {
-                    Log.d("Fragment Exist",currentFragment.getClass().getName());
-                } else {
+        }
+        pushFragment(fragment, position);
+
+    }
+
+    private void pushFragment(final Fragment fragment, final int position) {
+
+        final Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment);
+        if (!currentFragment.getClass().toString().equals(fragment.getClass().toString())) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     String backStateName = fragment.getClass().getName();
-                    // Insert the fragment by replacing any existing fragment
                     FragmentManager fragmentManager = getFragmentManager();
-//                if (fragmentManager.getBackStackEntryCount() > 0) {
                     boolean fragmentPopped = fragmentManager
                             .popBackStackImmediate(backStateName, 0);
-                    Log.d("Fragment Popped  " + fragmentPopped, "");
                     if (!fragmentPopped) {
                         FragmentTransaction ftx = fragmentManager.beginTransaction();
                         ftx.replace(R.id.fragment, fragment);
@@ -102,11 +113,11 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
                     // Highlight the selected item, update the title, and close the drawer
                     mDrawerList.setItemChecked(position, true);
                 }
-            }
-//            }
-        }, 200);
-
+            }, SLIDE_TIMEOUT);
+        }
     }
+
+
 
 
     public void onDrawerClosedClicked() {

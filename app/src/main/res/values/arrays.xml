@@ -15,7 +15,27 @@
         <item>Zimbabwe</item>
     </string-array>
 
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="vibrate_items">
+        <!-- <item>Request Launch</item> -->
+        <item>Vibrate</item>
+        <item>Off</item>
+        <!-- <item>Opinions\nResponse</item> -->
+        <item>Default</item>
+        <item>Short</item>
+        <item>Long</item>
+    </string-array>
 
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="popup_items">
+        <!-- <item>Request Launch</item> -->
+        <item>Popup notification</item>
+        <item>No Popup</item>
+        <!-- <item>Opinions\nResponse</item> -->
+        <item>Only when screen "On" </item>
+        <item>Only when screen "Off" </item>
+        <item>Always show popup</item>
+    </string-array>
     <string-array name="side_menu_items">
         <item>""</item>
         <item>Coupon</item>

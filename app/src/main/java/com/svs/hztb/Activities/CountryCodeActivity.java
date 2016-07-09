@@ -1,8 +1,20 @@
 package com.svs.hztb.Activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -11,8 +23,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.svs.hztb.Adapters.CountryCodeAdapter;
+import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.CountryItem;
 import com.svs.hztb.R;
+import com.svs.hztb.Utils.Constants;
+import com.svs.hztb.Utils.ContactsSync;
 
 import java.util.ArrayList;
 
@@ -31,8 +46,13 @@ public class CountryCodeActivity extends AbstractActivity {
 
         initializeCountryItem();
         initView();
-
     }
+
+
+
+
+
+
 
     private void initializeCountryItem() {
         int[] countrycodeArray =  getResources().getIntArray(R.array.countryCodeArray);

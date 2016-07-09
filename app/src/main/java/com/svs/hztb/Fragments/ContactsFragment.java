@@ -25,22 +25,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.svs.hztb.Activities.ConfirmRegistration;
 import com.svs.hztb.Adapters.ContactsAdapter;
 import com.svs.hztb.Bean.Contact;
-import com.svs.hztb.Bean.ContactGroup;
 import com.svs.hztb.Bean.Product;
-import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.Status;
 import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.Database.AppSharedPreference;
-import com.svs.hztb.Database.DatabaseHandler;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmDatabase;
+import com.svs.hztb.RealmDatabase.RealmUserProfileResponse;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
-import com.svs.hztb.RestService.RegisterService;
 import com.svs.hztb.RestService.ServiceGenerator;
 import com.svs.hztb.Utils.LoadingBar;
 
@@ -51,6 +48,7 @@ import android.widget.Toast;
 import java.util.Iterator;
 import java.util.List;
 
+import io.realm.RealmList;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -72,7 +70,6 @@ public class ContactsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_fragment, container, false);
 
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -91,7 +88,8 @@ public class ContactsFragment extends Fragment {
                 onDoneButtonClicked();
             }
         });
-        checkIfPermissionIsGranted();
+        initviews();
+//        checkIfPermissionIsGranted();
 
     }
 
@@ -234,6 +232,23 @@ public class ContactsFragment extends Fragment {
 
 
     private void initviews() {
+
+        RealmList<RealmUserProfileResponse> contactsListWithUserIds = new RealmList<>();
+        contactsListWithUserIds.addAll(new RealmDatabase().getAllContactsWithUserIDs());
+        Iterator<RealmUserProfileResponse> responseIterator = contactsListWithUserIds.iterator();
+        while (responseIterator.hasNext())
+        {
+            RealmUserProfileResponse userProfileResponse =responseIterator.next();
+            Contact contact = new Contact();
+            contact.setNumber(userProfileResponse.getMobileNumber());
+            contact.setUserId(userProfileResponse.getUserId());
+            contact.setContactName(userProfileResponse.getName());
+            contact.setContactImagePath(userProfileResponse.getProfilePictureURL());
+            contact.setUserRegistered(true);
+            contactList.add(contact);
+        }
+
+
         adapter = new ContactsAdapter(getActivity().getApplicationContext(),contactList);
         contactsListView.setAdapter(adapter);
         contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -265,6 +280,40 @@ public class ContactsFragment extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
+
+        /*
+        adapter = new ContactsAdapter(getActivity().getApplicationContext(),contactList);
+        contactsListView.setAdapter(adapter);
+        contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if (contactList.get(i).isSelected()) {
+                    contactList.get(i).setSelected(false);
+                }else contactList.get(i).setSelected(true);
+
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        contactSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                ContactsFragment.this.adapter.filter(""+cs);
+            }
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        */
     }
 
 
@@ -320,11 +369,10 @@ public class ContactsFragment extends Fragment {
                 contactString = "Contact";
             }
 
-            contectText.setText("Do you want to add "+contactsSelected.size()+" "+contactString+" to the group");
+            contectText.setText("Do you want to request with  "+contactsSelected.size()+" "+contactString+"");
 
             WalkWayButton addButton = (WalkWayButton)dialog.findViewById(R.id.button_add_groupName);
             WalkWayButton sendButton = (WalkWayButton)dialog.findViewById(R.id.button_add_sendButton);
-
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -332,10 +380,7 @@ public class ContactsFragment extends Fragment {
                         alertDialog.cancel();
                         postDataForNewRequest(groupName.getText().toString().trim());
                     }else  groupName.setError("Field cannot be left blank.");
-
-
-
-                }
+            }
             });
 
             sendButton.setOnClickListener(new View.OnClickListener() {
@@ -354,17 +399,22 @@ public class ContactsFragment extends Fragment {
         OpinionService opinionService = new OpinionService();
         RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
         requestOpinionInput.setRequesterUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-        requestOpinionInput.setGroupName(groupName);
         Product product = new Product();
-        product.setName("Test606163");
-        product.setShortDesc("Awesome");
-        product.setLongDesc("brilliant");
+        product.setName("Wrwlcome");
+        product.setShortDesc("aa");
+        product.setLongDesc("fe");
         product.setImageUrl("c:/ada/asdasd");
-        product.setPrice(22.0);
+        product.setPrice(24.0);
         requestOpinionInput.setProduct(product);
         List<Integer> userIDs = new ArrayList<>();
-        userIDs.add(2);
-        userIDs.add(3);
+        ArrayList<Contact> contactsSelected = getSelectedContactsList();
+        Iterator<Contact> contactIterator = contactsSelected.iterator();
+        while (contactIterator.hasNext()){
+            Contact contact = contactIterator.next();
+            if (contact.isSelected()){
+                userIDs.add(Integer.valueOf(contact.getUserId()));
+            }
+        }
         requestOpinionInput.setRequestedUserIds(userIDs);
 
         Log.i(getActivity().getPackageName(),requestOpinionInput.toString());
@@ -405,13 +455,4 @@ public class ContactsFragment extends Fragment {
         });
     }
 
-    private void storeGroupInDB(String groupName) {
-        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
-        ContactGroup group = new ContactGroup();
-        group.setGroupName(groupName);
-        group.setContactArrayList(getSelectedContactsList());
-        group.setSelect(false);
-        db.addGroupWithContacts(group);
-        cancelLoader();
-    }
 }

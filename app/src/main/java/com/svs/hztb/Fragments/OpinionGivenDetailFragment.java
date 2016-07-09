@@ -27,6 +27,7 @@ import com.svs.hztb.Bean.OpinionResponseData;
 import com.svs.hztb.Bean.OpinionResponseInfo;
 import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Bean.ResponseGivenPendingInfo;
+import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.Utils.ConnectionDetector;
@@ -118,7 +119,7 @@ public class OpinionGivenDetailFragment extends Fragment {
         Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
 //        refreshInput.setOpinionId(opinionData.getOpinionId());
-        refreshInput.setUserId(1);
+        refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
         refreshInput.setResponderUserId("2");
 //        refreshInput.setLastUpdatedTime(dateFormat.format(date));
         refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");

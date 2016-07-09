@@ -21,6 +21,7 @@ import com.svs.hztb.Adapters.OpinionGivenAdapter;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.RefreshInput;
+import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.Utils.ConnectionDetector;
@@ -76,8 +77,8 @@ public class OpinionGivenFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
-        //     refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-        refreshInput.setUserId(1);
+        refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
+   //     refreshInput.setUserId(1);
         //      refreshInput.setLastUpdatedTime(dateFormat.format(date));
         refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
                String json = toJson(refreshInput);

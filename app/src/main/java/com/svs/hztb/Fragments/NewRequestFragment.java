@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +14,17 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.svs.hztb.Adapters.GetOpinionAdapter;
 import com.svs.hztb.Adapters.RetriveGroupsAdapter;
-import com.svs.hztb.Bean.Contact;
-import com.svs.hztb.Bean.ContactGroup;
 import com.svs.hztb.Bean.GroupDetail;
-import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.Product;
-import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.Status;
 import com.svs.hztb.Bean.UserID;
 import com.svs.hztb.Database.AppSharedPreference;
-import com.svs.hztb.Database.DatabaseHandler;
 import com.svs.hztb.R;
 import com.svs.hztb.RealmDatabase.GroupDetailRealm;
-import com.svs.hztb.RealmDatabase.GroupRepositoryDatabase;
+import com.svs.hztb.RealmDatabase.RealmDatabase;
 import com.svs.hztb.RealmDatabase.RealmInt;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
@@ -41,11 +34,7 @@ import com.svs.hztb.Utils.LoadingBar;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -88,9 +77,7 @@ public class NewRequestFragment extends Fragment {
                         selectedGroup.add(group.getGroupId());
                     }
                 }
-
                 if (selectedGroup.size() > 0){
-
                     postDataForNewRequest(selectedGroup);
                 }
             }
@@ -116,12 +103,7 @@ public class NewRequestFragment extends Fragment {
         product.setPrice(22.0);
         requestOpinionInput.setProduct(product);
         requestOpinionInput.setRequestedGroupIds(selectedGroup);
-
-        String json = toJson(requestOpinionInput);
-        Log.i(getActivity().getPackageName(),requestOpinionInput.toString());
-
         Observable<Response<RequestOpinionOutput>> registerResponseObservable = opinionService.requestOpinionForNewProduct(requestOpinionInput);
-
         registerResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<RequestOpinionOutput>>() {
             @Override
@@ -174,8 +156,7 @@ public class NewRequestFragment extends Fragment {
         OpinionService opinionService = new OpinionService();
         UserID userId = new UserID();
         AppSharedPreference sherdPref = new AppSharedPreference();
-//        int id = Integer.valueOf(sherdPref.getUserID(getActivity().getApplicationContext()));
-        int id = 1;
+        int id = Integer.valueOf(sherdPref.getUserID(getActivity().getApplicationContext()));
         userId.setUserID(id);
         Observable<Response<List<GroupDetail>>> getGroupObservable = opinionService.getGroups(userId);
 
@@ -261,10 +242,8 @@ public class NewRequestFragment extends Fragment {
             groupDetailRealmList.add(groupDetailRealm);
         }
 
-        GroupRepositoryDatabase groupRepositoryDatabase = new GroupRepositoryDatabase();
-        groupRepositoryDatabase.addGroupsListToDatabase(groupDetailRealmList);
-
-        groupRepositoryDatabase.getAllGroupList();
+        RealmDatabase realmDatabase = new RealmDatabase();
+        realmDatabase.addGroupsListToDatabase(groupDetailRealmList);
     }
 
 

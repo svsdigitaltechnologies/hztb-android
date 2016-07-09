@@ -24,6 +24,7 @@ import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionResponseInput;
 import com.svs.hztb.Bean.OpinionResponseOutput;
 import com.svs.hztb.Bean.RefreshInput;
+import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.Utils.ConnectionDetector;
@@ -122,7 +123,7 @@ public class OpinionInputDetailFragment extends Fragment {
         opinionResponseInput.setOpinionReqId(7);
         opinionResponseInput.setResponseCode("W");
         opinionResponseInput.setResponseTxt(responseText.getText().toString());
-        opinionResponseInput.setUserId(2);
+        opinionResponseInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
         String json = toJson(opinionResponseInput);
 
         Observable<Response<OpinionResponseOutput>> refreshResponseObservable = opinionService.sendOpinionInput(opinionResponseInput);

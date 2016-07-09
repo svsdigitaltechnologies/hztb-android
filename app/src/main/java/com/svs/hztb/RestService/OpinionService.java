@@ -57,7 +57,6 @@ public class OpinionService {
     }
 
 
-
     public Observable<Response<List<GroupDetail>> > getGroups(UserID userID) {
         return dataService.requestToGetOpinions(userID);
     }

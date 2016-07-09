@@ -1,6 +1,8 @@
 package com.svs.hztb.Bean;
 
-public class UserProfileResponse {
+import io.realm.RealmObject;
+
+public class UserProfileResponse{
 	private String mobileNumber;
 	private String name;
 	private String imei;
@@ -9,7 +11,17 @@ public class UserProfileResponse {
 	private String deviceRegId;
 	private String emailAddress;
 	private String profilePictureURL;
-	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	private String userId;
+
 	public String getProfilePictureURL() {
 		return profilePictureURL;
 	}

@@ -6,7 +6,9 @@ import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.UserProfileRequest;
+import com.svs.hztb.Bean.UserProfileRequests;
 import com.svs.hztb.Bean.UserProfileResponse;
+import com.svs.hztb.Bean.UserProfileResponses;
 import com.svs.hztb.Bean.ValidateOTPRequest;
 import com.svs.hztb.Bean.ValidateOTPResponse;
 
@@ -27,4 +29,7 @@ public interface UserRepository {
 
     @POST("/user/updateUserProfile")
     Observable<Response<UserProfileResponse>> updateUserProfile(@Body UserProfileRequest userProfileRequest);
+
+    @POST("/user/registeredUsers")
+    Observable<Response<UserProfileResponses>> getRegisteredUsers(@Body UserProfileRequests userProfileRequest);
 }

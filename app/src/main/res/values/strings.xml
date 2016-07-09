@@ -79,4 +79,7 @@
     <string name="enter_comment">Enter your comment</string>
     <string name="write_your_comment_about_the_product">Write your comment about the product</string>
     <string name="send_your_opinion">Send Your Opinion</string>
+    <string name="message_notification">Message notification</string>
+    <string name="conversation_tones">Conversation tones</string>
+    <string name="play_sounds_for_incoming_and_outgoing_messages">Play sounds for incoming and outgoing messages</string>
 </resources>

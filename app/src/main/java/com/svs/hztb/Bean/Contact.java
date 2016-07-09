@@ -9,6 +9,28 @@ public class Contact {
     private String contactName;
     private String number;
     private String contactImagePath;
+    private String userId;
+
+    public boolean isUserRegistered() {
+        return isUserRegistered;
+    }
+
+    public void setUserRegistered(boolean userRegistered) {
+        isUserRegistered = userRegistered;
+    }
+
+    private boolean isUserRegistered;
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
 
     public String getContactImagePath() {
         return contactImagePath;

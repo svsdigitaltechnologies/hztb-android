@@ -1,7 +1,10 @@
 package com.svs.hztb.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +12,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.svs.hztb.Bean.UserProfileRequest;
+import com.svs.hztb.Bean.UserProfileRequests;
+import com.svs.hztb.Bean.UserProfileResponse;
+import com.svs.hztb.Bean.UserProfileResponses;
 import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.R;
+import com.svs.hztb.RestService.RegisterService;
 import com.svs.hztb.Utils.ConnectionDetector;
+import com.svs.hztb.Utils.Constants;
+import com.svs.hztb.Utils.ContactsSync;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import retrofit2.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class RegistrationActivity extends AbstractActivity {
@@ -25,6 +45,7 @@ public class RegistrationActivity extends AbstractActivity {
         setContentView(R.layout.activity_registration);
         actionBarSettings(R.string.title_activity_mobile_phone_registration);
         initViews();
+
     }
 
     /**
@@ -36,7 +57,47 @@ public class RegistrationActivity extends AbstractActivity {
         countryCode = getView(R.id.textview_registration_countryCode);
         countryCode.setText(getResources().getString(R.string.string_plus)+String.valueOf(getResources().getIntArray(R.array.countryCodeArray)[7]));
         countryCodeButton.setText(getResources().getStringArray(R.array.countries)[7]);
+
+        ContactsSync syncCont = new ContactsSync(RegistrationActivity.this);
+        syncCont.syncContactsToServer();
     }
+
+
+
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            // Received permission result for READ_PHONE_STATE permission.est.");
+            // Check if the only required permission has been granted
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new ContactsSync(RegistrationActivity.this).doPermissionGrantedStuffs();
+            } else {
+                alertAlert(getString(R.string.permissions_not_granted_read_phone_state));
+
+            }
+        }
+    }
+
+    private void alertAlert(String msg) {
+        new AlertDialog.Builder(RegistrationActivity.this)
+                .setTitle("Permission Request")
+                .setMessage(msg)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+//                       activity.finish();
+                    }
+                })
+                .show();
+    }
+
+
 
     private void showAlertDialog(){
 

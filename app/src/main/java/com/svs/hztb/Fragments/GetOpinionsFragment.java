@@ -16,21 +16,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.svs.hztb.Activities.HomeScreenActivity;
 import com.svs.hztb.Adapters.GetOpinionAdapter;
 import com.svs.hztb.Bean.OpinionData;
-import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Bean.RefreshInput;
-import com.svs.hztb.Bean.RefreshOutput;
-import com.svs.hztb.Bean.RequestOpinionInput;
-import com.svs.hztb.Bean.RequestOpinionOutput;
-import com.svs.hztb.Bean.Status;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmDatabase;
 import com.svs.hztb.RealmDatabase.RealmOpinionData;
-import com.svs.hztb.RealmDatabase.RealmOpinionDatabase;
 import com.svs.hztb.RealmDatabase.RealmProduct;
 import com.svs.hztb.RealmDatabase.RealmResponseCount;
-import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
-import com.svs.hztb.RestService.ServiceGenerator;
 import com.svs.hztb.Utils.ConnectionDetector;
 import com.svs.hztb.Utils.LoadingBar;
 
@@ -104,9 +97,9 @@ public class GetOpinionsFragment extends android.app.Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
-   //     refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-        refreshInput.setUserId(1);
-  //      refreshInput.setLastUpdatedTime(dateFormat.format(date));
+        refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
+     //   refreshInput.setUserId(1);
+   //     refreshInput.setLastUpdatedTime(dateFormat.format(date));
         refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
  //       String json = toJson(refreshInput);
 
@@ -187,7 +180,7 @@ public class GetOpinionsFragment extends android.app.Fragment {
 
             opinionDataList.add(realmOpinionData);
         }
-        RealmOpinionDatabase database = new RealmOpinionDatabase();
+        RealmDatabase database = new RealmDatabase();
         database.addRealmOpinionData(opinionDataList);
         database.getAllOpinions();
 

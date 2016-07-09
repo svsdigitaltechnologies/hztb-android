@@ -64,17 +64,19 @@ public class ContactsAdapter extends BaseAdapter {
         } else tick.setVisibility(View.GONE);
         TextView contactName = (TextView) convertView.findViewById(R.id.textview_select_contacts);
         contactName.setText(contactArrayList.get(position).getContactName());
-        ImageView contactImage = (ImageView)convertView.findViewById(R.id.contact_image);
-        String contactPath = contactArrayList.get(position).getContactImagePath();
-        if (contactPath != null) {
-            Bitmap bitmap;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(contactPath));
-                contactImage.setImageBitmap(bitmap);
-                System.out.println(bitmap);
-            } catch (FileNotFoundException e) {
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (!contactArrayList.get(position).isUserRegistered()) {
+            ImageView contactImage = (ImageView) convertView.findViewById(R.id.contact_image);
+            String contactPath = contactArrayList.get(position).getContactImagePath();
+            if (contactPath != null) {
+                Bitmap bitmap;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(contactPath));
+                    contactImage.setImageBitmap(bitmap);
+                    System.out.println(bitmap);
+                } catch (FileNotFoundException e) {
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return convertView;
