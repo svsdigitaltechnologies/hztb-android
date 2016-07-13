@@ -18,10 +18,13 @@ import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmUserData;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import io.realm.Realm;
 
 /**
  * Created by VenuNalla on 6/24/16.
@@ -63,7 +66,11 @@ public class OpinionGivenAdapter extends BaseAdapter {
             holder.pendingCount = (TextView)convertView.findViewById(R.id.opinion_pending_count);
 
             OpinionCountData opinionData = opinionGivenArrayList.get(position);
-            holder.userName.setText("User ID :" +opinionData.getUserId());
+            /*
+            Realm realm = Realm.getDefaultInstance();
+            RealmUserData userData =  realm.where(RealmUserData.class).equalTo("userId", opinionData.getUserId()).findFirst();
+            */
+            holder.userName.setText("UserID  :" +opinionData.getUserId());
             holder.givenCount.setText("Given :"+opinionData.getGivenCount());
             holder.pendingCount.setText("Pending :"+opinionData.getPendingCount());
             convertView.setTag(holder);

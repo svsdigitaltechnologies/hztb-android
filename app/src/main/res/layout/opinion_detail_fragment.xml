@@ -28,7 +28,7 @@
         <com.svs.hztb.CustomViews.WalkWayButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ButtOk"
+            android:text="Wow"
             android:layout_weight="1"
             android:id="@+id/button_double_ok"
             android:layout_alignParentTop="true"
@@ -37,7 +37,7 @@
         <com.svs.hztb.CustomViews.WalkWayButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SingOk"
+            android:text="Like"
             android:layout_weight="1"
 
             android:id="@+id/button_single_ok"
@@ -47,7 +47,7 @@
         <com.svs.hztb.CustomViews.WalkWayButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="May Be"
+            android:text="Neutrl"
             android:layout_weight="1"
 
             android:id="@+id/button_maybe"
@@ -57,7 +57,7 @@
         <com.svs.hztb.CustomViews.WalkWayButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BuDwn"
+            android:text="Down"
             android:id="@+id/button_down"
             android:layout_weight="1" />
         </LinearLayout>

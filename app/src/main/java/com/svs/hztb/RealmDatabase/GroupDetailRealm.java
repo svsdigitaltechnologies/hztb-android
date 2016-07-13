@@ -14,18 +14,18 @@ import io.realm.annotations.Required;
 public class GroupDetailRealm extends RealmObject {
     @Required
     private String groupName;
-
-    public RealmList<RealmInt> getGroupMembers() {
-        return groupMembers;
-    }
-
-    public void setGroupMembers(RealmList<RealmInt> groupMembers) {
-        this.groupMembers = groupMembers;
-    }
-
-    public RealmList<RealmInt> groupMembers;
+    public RealmList<RealmUserData> userDataList;
     @PrimaryKey
     private int groupId;
+    private boolean isSelect;
+
+    public RealmList<RealmUserData> getUserDataList() {
+        return userDataList;
+    }
+
+    public void setUserDataList(RealmList<RealmUserData> userDataList) {
+        this.userDataList = userDataList;
+    }
 
     public boolean isSelect() {
         return isSelect;
@@ -33,8 +33,6 @@ public class GroupDetailRealm extends RealmObject {
     public void setSelect(boolean select) {
         isSelect = select;
     }
-
-    private boolean isSelect;
     public String getGroupName() {
         return groupName;
     }
@@ -46,5 +44,15 @@ public class GroupDetailRealm extends RealmObject {
     }
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupDetailRealm{" +
+                "groupName='" + groupName + '\'' +
+                ", userDataList=" + userDataList +
+                ", groupId=" + groupId +
+                ", isSelect=" + isSelect +
+                '}';
     }
 }

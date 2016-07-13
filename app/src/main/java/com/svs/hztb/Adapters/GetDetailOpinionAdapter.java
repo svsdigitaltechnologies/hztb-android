@@ -2,6 +2,7 @@ package com.svs.hztb.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,17 @@ import android.widget.Toast;
 
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.OpinionResponseData;
+import com.svs.hztb.Bean.UserData;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmUserData;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 /**
  * Created by VenuNalla on 6/24/16.
@@ -63,7 +71,21 @@ public class GetDetailOpinionAdapter  extends BaseAdapter {
                 Toast.makeText(mContext,opinionData.getResponseText(),Toast.LENGTH_LONG).show();
             }
         });
-        holder.userIdName.setText("User Id :"+opinionData.getResponderUserId());
+
+        /*
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmResults<RealmUserData> userList = realm.where(RealmUserData.class).findAll();
+        Iterator<RealmUserData> userDataIterator = userList.iterator();
+        while (userDataIterator.hasNext()){
+            RealmUserData userData = userDataIterator.next();
+            Log.d("userids",userData.toString());
+        }
+
+
+//        RealmUserData userData =  realm.where(RealmUserData.class).equalTo("userId", opinionData.getResponderUserId()).findFirst();
+*/
+        holder.userIdName.setText("UserID :"+opinionData.getResponderUserId());
         convertView.setTag(holder);
         return convertView;
     }

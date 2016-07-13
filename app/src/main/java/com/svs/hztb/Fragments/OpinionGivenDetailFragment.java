@@ -27,8 +27,10 @@ import com.svs.hztb.Bean.OpinionResponseData;
 import com.svs.hztb.Bean.OpinionResponseInfo;
 import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Bean.ResponseGivenPendingInfo;
+import com.svs.hztb.Bean.UserData;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmUserData;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.Utils.ConnectionDetector;
 import com.svs.hztb.Utils.LoadingBar;
@@ -41,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import io.realm.Realm;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -54,7 +57,7 @@ public class OpinionGivenDetailFragment extends Fragment {
     protected LoadingBar _loader;
     private ListView opinionGivenListView;
     private ListView opinionPendingListView;
-
+    private int responderUserId;
     private Button opinionGiveButton;
     private Button opinionPendingButton;
 
@@ -65,11 +68,17 @@ public class OpinionGivenDetailFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_opinion_given_detail, container, false);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        responderUserId = bundle.getInt("responderUserId", 0);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        _loader=new LoadingBar(getActivity());
+        _loader = new LoadingBar(getActivity());
         initViews(view);
 
 
@@ -77,14 +86,18 @@ public class OpinionGivenDetailFragment extends Fragment {
 
     private void initViews(View view) {
 
-        OpinionCountData opinionCountData = ((HomeScreenActivity)getActivity()).getOpinionCountData();
+        OpinionCountData opinionCountData = ((HomeScreenActivity) getActivity()).getOpinionCountData();
 
-        TextView userName = (TextView)view.findViewById(R.id.textview_usernameId);
-        userName.setText(String.valueOf("User ID :"+opinionCountData.getUserId()));
-        opinionGivenListView = (ListView)view.findViewById(R.id.opinion_given_listview);
-        opinionPendingListView = (ListView)view.findViewById(R.id.opinion_pending_listview);
+        TextView userName = (TextView) view.findViewById(R.id.textview_usernameId);
+        Realm realm = Realm.getDefaultInstance();
 
-        opinionGiveButton  = (Button)view.findViewById(R.id.opinion_given_button);
+//        RealmUserData userData =  realm.where(RealmUserData.class).equalTo("userId", opinionCountData.getUserId()).findFirst();
+//        userName.setText(userData.getFirstName());
+        userName.setText("User ID:"+opinionCountData.getUserId());
+        opinionGivenListView = (ListView) view.findViewById(R.id.opinion_given_listview);
+        opinionPendingListView = (ListView) view.findViewById(R.id.opinion_pending_listview);
+
+        opinionGiveButton = (Button) view.findViewById(R.id.opinion_given_button);
         opinionGiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +107,7 @@ public class OpinionGivenDetailFragment extends Fragment {
                 opinionPendingListView.setVisibility(View.GONE);
             }
         });
-        opinionPendingButton  = (Button)view.findViewById(R.id.opinion_pending_button);
+        opinionPendingButton = (Button) view.findViewById(R.id.opinion_pending_button);
         opinionPendingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,10 +118,10 @@ public class OpinionGivenDetailFragment extends Fragment {
             }
         });
         ConnectionDetector c = new ConnectionDetector(getActivity().getApplicationContext());
-        if(c.isConnectingToInternet()) {
+        if (c.isConnectingToInternet()) {
             postDataToGetGivenAndPendingOpinionsResponses(opinionCountData);
-        }else{
-            Toast.makeText(getActivity().getApplicationContext(),"No Network",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), "No Network", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -118,12 +131,13 @@ public class OpinionGivenDetailFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
-//        refreshInput.setOpinionId(opinionData.getOpinionId());
-        refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-        refreshInput.setResponderUserId("2");
+        refreshInput.setUserId(responderUserId);
+        refreshInput.setResponderUserId((new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
+
+        Log.d(String.valueOf(responderUserId), "Responder ID");
+
 //        refreshInput.setLastUpdatedTime(dateFormat.format(date));
         refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
-            String json = toJson(refreshInput);
 
         Observable<Response<ResponseGivenPendingInfo>> refreshResponseObservable = opinionService.opinionsGivenDetail(refreshInput);
 
@@ -137,41 +151,44 @@ public class OpinionGivenDetailFragment extends Fragment {
             @Override
             public void onError(Throwable e) {
                 cancelLoader();
-                Log.d("Error ",e.toString());
+                Log.d("Error ", e.toString());
             }
 
             @Override
             public void onNext(Response<ResponseGivenPendingInfo> requestResponse) {
 
                 if (requestResponse.isSuccessful()) {
-                    List<GivenPendingData> opinionGivenDataList =requestResponse.body().getGivenData();
+                    final List<GivenPendingData> opinionGivenDataList = requestResponse.body().getGivenData();
                     final List<GivenPendingData> opinionPendingDataList = requestResponse.body().getPendingData();
-                    OpinionDetailGivenAdapter adapter = new OpinionDetailGivenAdapter(getActivity().getApplicationContext(),opinionGivenDataList);
-                    OpinionDetailGivenAdapter pendingAdapter = new OpinionDetailGivenAdapter(getActivity().getApplicationContext(),opinionPendingDataList);
+                    OpinionDetailGivenAdapter adapter = new OpinionDetailGivenAdapter(getActivity().getApplicationContext(), opinionGivenDataList);
+                    OpinionDetailGivenAdapter pendingAdapter = new OpinionDetailGivenAdapter(getActivity().getApplicationContext(), opinionPendingDataList);
                     opinionGivenListView.setAdapter(adapter);
                     opinionPendingListView.setAdapter(pendingAdapter);
                     opinionPendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            ((HomeScreenActivity)getActivity()).setGivenPendingData(opinionPendingDataList.get(position));
+                            if (opinionPendingDataList.size() > 0) {
+                                ((HomeScreenActivity) getActivity()).setGivenPendingData(opinionPendingDataList.get(position));
 
-                            OpinionInputDetailFragment opinioninputFragment = new OpinionInputDetailFragment();
-                            String backStateName = opinioninputFragment.getClass().getName();
-                            FragmentManager fragmentManager = getFragmentManager();
-                            boolean fragmentPopped = fragmentManager
-                                    .popBackStackImmediate(backStateName, 0);
-                            if (!fragmentPopped) {
-                                FragmentTransaction ftx = fragmentManager.beginTransaction();
-                                ftx.replace(R.id.fragment, opinioninputFragment);
-                                ftx.addToBackStack(backStateName);
-                                ftx.commit();
+                                OpinionInputDetailFragment opinioninputFragment = new OpinionInputDetailFragment();
+                                String backStateName = opinioninputFragment.getClass().getName();
+                                FragmentManager fragmentManager = getFragmentManager();
+                                boolean fragmentPopped = fragmentManager
+                                        .popBackStackImmediate(backStateName, 0);
+                                if (!fragmentPopped) {
+                                    FragmentTransaction ftx = fragmentManager.beginTransaction();
+                                    ftx.replace(R.id.fragment, opinioninputFragment);
+                                    ftx.addToBackStack(backStateName);
+                                    ftx.commit();
+                                }
                             }
                         }
                     });
                     opinionGivenListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            ((HomeScreenActivity)getActivity()).setGivenPendingData(opinionPendingDataList.get(position));
+
+                            ((HomeScreenActivity) getActivity()).setGivenPendingData(opinionGivenDataList.get(position));
 
                             OpinionInputDetailFragment opinioninputFragment = new OpinionInputDetailFragment();
                             String backStateName = opinioninputFragment.getClass().getName();
@@ -193,14 +210,14 @@ public class OpinionGivenDetailFragment extends Fragment {
 
     }
 
-    public void showLoader(){
-        if(_loader!=null && !_loader.isShowing()){
+    public void showLoader() {
+        if (_loader != null && !_loader.isShowing()) {
             _loader.show();
         }
     }
 
-    public void cancelLoader(){
-        if(_loader!=null && _loader.isShowing()){
+    public void cancelLoader() {
+        if (_loader != null && _loader.isShowing()) {
             _loader.cancel();
         }
     }

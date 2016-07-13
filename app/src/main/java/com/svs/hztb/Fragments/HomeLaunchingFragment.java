@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.svs.hztb.R;
+import com.svs.hztb.Utils.ContactsSync;
 
 
 public class HomeLaunchingFragment extends Fragment {
@@ -41,6 +42,15 @@ public class HomeLaunchingFragment extends Fragment {
                     ftx.addToBackStack(backStateName);
                     ftx.commit();
                 }
+            }
+        });
+
+        Button button1 = (Button)view.findViewById(R.id.button5);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContactsSync syncCont = new ContactsSync(getActivity());
+                syncCont.syncContactsToServer();
             }
         });
 

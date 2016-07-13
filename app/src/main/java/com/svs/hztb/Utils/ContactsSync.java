@@ -114,7 +114,7 @@ public class ContactsSync {
                         while (phones.moveToNext()) {
                             String phoneNumber = phones.getString(
                                     phones.getColumnIndex(
-                                            ContactsContract.CommonDataKinds.Phone.NUMBER)).replace("+","");
+                                            ContactsContract.CommonDataKinds.Phone.NUMBER)).replace("+","").replace(" ","").replace("(","").replace(")","").replace("-","");
  //                           contact.setContactNumber(phoneNumber);
                             UserProfileRequest userRequest = new UserProfileRequest();
                             userRequest.setMobileNumber(phoneNumber);

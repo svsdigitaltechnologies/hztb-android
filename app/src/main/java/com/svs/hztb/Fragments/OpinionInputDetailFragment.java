@@ -64,6 +64,7 @@ public class OpinionInputDetailFragment extends Fragment {
     Button sendOpinion;
     EditText responseText;
     String responseCode;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,56 +76,114 @@ public class OpinionInputDetailFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        _loader=new LoadingBar(getActivity());
+        _loader = new LoadingBar(getActivity());
         initViews(view);
 
 
     }
 
     private void initViews(View convertView) {
-        GivenPendingData pendingData = ((HomeScreenActivity)getActivity()).getPendingData();
+        final GivenPendingData pendingData = ((HomeScreenActivity) getActivity()).getPendingData();
 
-        productName = (TextView)convertView.findViewById(R.id.textView2);
-        productID = (TextView)convertView.findViewById(R.id.textView3);
-        productDescription = (TextView)convertView.findViewById(R.id.product_description);
-        productPrice = (TextView)convertView.findViewById(R.id.product_price);
+        productName = (TextView) convertView.findViewById(R.id.textView2);
+        productID = (TextView) convertView.findViewById(R.id.textView3);
+        productDescription = (TextView) convertView.findViewById(R.id.product_description);
+        productPrice = (TextView) convertView.findViewById(R.id.product_price);
 
         productName.setText(pendingData.getProduct().getName());
-        productPrice.setText("Price : $"+pendingData.getProduct().getPrice());
+        productPrice.setText("Price : $" + pendingData.getProduct().getPrice());
         productPrice.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), android.R.color.black));
         productDescription.setText(pendingData.getProduct().getLongDesc());
 
-        buttonOk = (Button)convertView.findViewById(R.id.button_double_ok);
-        buttonSingleOk = (Button)convertView.findViewById(R.id.button_single_ok);
-        buttonDown = (Button)convertView.findViewById(R.id.button_down);
-        buttonMayBe = (Button)convertView.findViewById(R.id.button_maybe);
-        sendOpinion = (Button)convertView.findViewById(R.id.send_Opinion);
-        responseText = (EditText)convertView.findViewById(R.id.response_Text);
+        buttonOk = (Button) convertView.findViewById(R.id.button_double_ok);
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                responseCode = "W";
+                setBackgroundGrey();
+                buttonOk.setBackgroundColor(buttonOk.getContext().getResources().getColor(R.color.colorAccent));
+
+            }
+        });
+        buttonSingleOk = (Button) convertView.findViewById(R.id.button_single_ok);
+        buttonSingleOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                responseCode = "L";
+                setBackgroundGrey();
+                buttonSingleOk.setBackgroundColor(buttonSingleOk.getContext().getResources().getColor(R.color.colorAccent));
+
+            }
+        });
+        buttonDown = (Button) convertView.findViewById(R.id.button_down);
+        buttonDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                responseCode = "D";
+                setBackgroundGrey();
+                buttonDown.setBackgroundColor(buttonDown.getContext().getResources().getColor(R.color.colorAccent));
+
+            }
+        });
+        buttonMayBe = (Button) convertView.findViewById(R.id.button_maybe);
+        buttonMayBe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                responseCode = "N";
+                setBackgroundGrey();
+                buttonMayBe.setBackgroundColor(buttonMayBe.getContext().getResources().getColor(R.color.colorAccent));
+
+            }
+        });
+        sendOpinion = (Button) convertView.findViewById(R.id.send_Opinion);
+        responseText = (EditText) convertView.findViewById(R.id.response_Text);
         sendOpinion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (responseText.getText().toString().length()>0){
-                    ConnectionDetector c = new ConnectionDetector(getActivity().getApplicationContext());
-                    if(c.isConnectingToInternet()) {
-                        postDataToSendOpinionOnProduct();
-                    }else{
-                        Toast.makeText(getActivity().getApplicationContext(),"No Network",Toast.LENGTH_LONG).show();
+                ConnectionDetector c = new ConnectionDetector(getActivity().getApplicationContext());
+                if (c.isConnectingToInternet()) {
+                    if (pendingData.getResponseText() == null) {
+                        if (responseText.getText().length() > 0) {
+                            if (responseCode.length() > 0) {
+                                postDataToSendOpinionOnProduct(pendingData.getOpinionId());
+                            } else
+                                Toast.makeText(getActivity().getApplicationContext(), "No ", Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(getActivity().getApplicationContext(), "Empty Response Text", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "Already Option Given", Toast.LENGTH_LONG).show();
                     }
-                }else Toast.makeText(getActivity().getApplicationContext(),"Empty Comment",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "No Network", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
-        viewSelf = (Button)convertView.findViewById(R.id.button_view_selfie);
+        viewSelf = (Button) convertView.findViewById(R.id.button_view_selfie);
+        if (pendingData.getResponseText() != null) {
+            responseText.setText(pendingData.getResponseText());
+            responseText.setEnabled(false);
+        }
     }
 
-    private void postDataToSendOpinionOnProduct() {
+    private void setBackgroundGrey() {
+        buttonOk.setBackgroundColor(buttonOk.getContext().getResources().getColor(R.color.light_grey));
+        buttonSingleOk.setBackgroundColor(buttonSingleOk.getContext().getResources().getColor(R.color.light_grey));
+        buttonDown.setBackgroundColor(buttonDown.getContext().getResources().getColor(R.color.light_grey));
+        buttonMayBe.setBackgroundColor(buttonMayBe.getContext().getResources().getColor(R.color.light_grey));
+
+    }
+
+
+    private void postDataToSendOpinionOnProduct(int opinionId) {
         showLoader();
         OpinionService opinionService = new OpinionService();
         OpinionResponseInput opinionResponseInput = new OpinionResponseInput();
-        opinionResponseInput.setOpinionReqId(7);
-        opinionResponseInput.setResponseCode("W");
+        opinionResponseInput.setOpinionReqId(opinionId);
+        opinionResponseInput.setResponseCode(responseCode);
         opinionResponseInput.setResponseTxt(responseText.getText().toString());
         opinionResponseInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-        String json = toJson(opinionResponseInput);
+//        String json = toJson(opinionResponseInput);
 
         Observable<Response<OpinionResponseOutput>> refreshResponseObservable = opinionService.sendOpinionInput(opinionResponseInput);
 
@@ -138,7 +197,7 @@ public class OpinionInputDetailFragment extends Fragment {
             @Override
             public void onError(Throwable e) {
                 cancelLoader();
-                Log.d("Error ",e.toString());
+                Log.d("Error ", e.toString());
             }
 
             @Override
@@ -146,9 +205,9 @@ public class OpinionInputDetailFragment extends Fragment {
 
                 if (requestResponse.isSuccessful()) {
 
-                    Toast.makeText(getActivity().getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-                }
-                else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getActivity().getApplicationContext(), "No Options Available", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -168,14 +227,14 @@ public class OpinionInputDetailFragment extends Fragment {
         return jsonString;
     }
 
-    public void showLoader(){
-        if(_loader!=null && !_loader.isShowing()){
+    public void showLoader() {
+        if (_loader != null && !_loader.isShowing()) {
             _loader.show();
         }
     }
 
-    public void cancelLoader(){
-        if(_loader!=null && _loader.isShowing()){
+    public void cancelLoader() {
+        if (_loader != null && _loader.isShowing()) {
             _loader.cancel();
         }
     }

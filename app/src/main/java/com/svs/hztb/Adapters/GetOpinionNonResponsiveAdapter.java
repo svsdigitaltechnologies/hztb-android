@@ -16,8 +16,11 @@ import android.widget.TextView;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.Interfaces.IDrawerClosed;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmUserData;
 
 import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Created by VenuNalla on 6/24/16.
@@ -53,7 +56,13 @@ public class GetOpinionNonResponsiveAdapter extends BaseAdapter {
 
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
             TextView textView = (TextView) (convertView).findViewById(R.id.drawer_list_item_textview);
-             textView.setText("User ID"+userIDS.get(position));
+        /*
+        Realm realm = Realm.getDefaultInstance();
+        RealmUserData userData =  realm.where(RealmUserData.class).equalTo("userId", userIDS.get(position)).findFirst();
+        textView.setText("Name :"+userData.getFirstName());
+        */
+        textView.setText("Name :"+userIDS.get(position));
+
         textView.setTextColor(ContextCompat.getColor(mContext, android.R.color.black));
         return convertView;
     }

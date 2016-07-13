@@ -20,12 +20,14 @@ import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.Status;
+import com.svs.hztb.Bean.UserData;
 import com.svs.hztb.Bean.UserID;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
 import com.svs.hztb.RealmDatabase.GroupDetailRealm;
 import com.svs.hztb.RealmDatabase.RealmDatabase;
 import com.svs.hztb.RealmDatabase.RealmInt;
+import com.svs.hztb.RealmDatabase.RealmUserData;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.RestService.ServiceGenerator;
@@ -177,49 +179,47 @@ public class NewRequestFragment extends Fragment {
             public void onNext(Response<List<GroupDetail>> groupResponse) {
 
                 if (groupResponse.isSuccessful()) {
-                    if (groupResponse.body().size() > 0) {
-
-                        ArrayList<GroupDetail> detailList = new ArrayList<GroupDetail>();
-
-                        detailList = (ArrayList<GroupDetail>) groupResponse.body();
-                        groupList.addAll(detailList);
-                        GroupDetail group = new GroupDetail();
-                        group.setGroupName("Select From Contacts");
-                        groupList.add(group);
-                        adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupList);
-                        groupsList.setAdapter(adapter);
-                        groupsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                if (groupList.size() - 1 == i) {
-                                    ContactsFragment fragment = new ContactsFragment();
-                                    String backStateName = fragment.getClass().getName();
-                                    FragmentManager fragmentManager = getFragmentManager();
-                                    boolean fragmentPopped = fragmentManager
-                                            .popBackStackImmediate(backStateName, 0);
-                                    if (!fragmentPopped) {
-                                        FragmentTransaction ftx = fragmentManager.beginTransaction();
-                                        ftx.replace(R.id.fragment, fragment);
-                                        ftx.addToBackStack(backStateName);
-                                        ftx.commit();
-                                    }
-                                }
-                                else {
-                                    if (!groupList.get(i).isSelect()) {
-                                        groupList.get(i).setSelect(true);
-                                    }else groupList.get(i).setSelect(false);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            }
-                        });
-                        adapter.notifyDataSetChanged();
-                        addAllTheListToDatabase(detailList);
-                    }
+                        groupList = (ArrayList<GroupDetail>) groupResponse.body();
+                        updateListviewWithGroups();
                 }
                 else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
             }
         });
 
+    }
+
+    private void updateListviewWithGroups() {
+        GroupDetail group = new GroupDetail();
+        group.setGroupName("Select From Contacts");
+        groupList.add(group);
+        adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupList);
+        groupsList.setAdapter(adapter);
+        groupsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (groupList.size() - 1 == i) {
+                    ContactsFragment fragment = new ContactsFragment();
+                    String backStateName = fragment.getClass().getName();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    boolean fragmentPopped = fragmentManager
+                            .popBackStackImmediate(backStateName, 0);
+                    if (!fragmentPopped) {
+                        FragmentTransaction ftx = fragmentManager.beginTransaction();
+                        ftx.replace(R.id.fragment, fragment);
+                        ftx.addToBackStack(backStateName);
+                        ftx.commit();
+                    }
+                }
+                else {
+                    if (!groupList.get(i).isSelect()) {
+                        groupList.get(i).setSelect(true);
+                    }else groupList.get(i).setSelect(false);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+        adapter.notifyDataSetChanged();
+        addAllTheListToDatabase(groupList);
     }
 
     private void addAllTheListToDatabase(ArrayList<GroupDetail> groupDetailList){
@@ -230,20 +230,24 @@ public class NewRequestFragment extends Fragment {
             GroupDetailRealm groupDetailRealm = new GroupDetailRealm();
             groupDetailRealm.setGroupName(groupDetail.getGroupName());
             groupDetailRealm.setGroupId(groupDetail.getGroupId());
-            RealmList<RealmInt> intRealmList = new RealmList<>();
-            Iterator<Integer> integerIterator = groupDetail.getGroupMembers().iterator();
+            RealmList<RealmUserData> realmUserList = new RealmList<>();
+            Iterator<UserData> integerIterator = groupDetail.getGroupMembers().iterator();
             while (integerIterator.hasNext()){
-                int i = integerIterator.next();
-                RealmInt realmInt = new RealmInt();
-                realmInt.setVal(i);
-                intRealmList.add(realmInt);
+                UserData userData = integerIterator.next();
+
+                RealmUserData realmUserData = new RealmUserData();
+                realmUserData.setUserId(userData.getUserId());
+                realmUserData.setFirstName(userData.getFirstName());
+                realmUserData.setLastname(userData.getLastname());
+                realmUserList.add(realmUserData);
             }
-            groupDetailRealm.setGroupMembers(intRealmList);
+            groupDetailRealm.setUserDataList(realmUserList);
             groupDetailRealmList.add(groupDetailRealm);
         }
 
         RealmDatabase realmDatabase = new RealmDatabase();
         realmDatabase.addGroupsListToDatabase(groupDetailRealmList);
+        realmDatabase.getAllGroupList();
     }
 
 

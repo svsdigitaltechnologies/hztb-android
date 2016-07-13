@@ -119,6 +119,11 @@ public class OpinionGivenFragment extends Fragment {
                                         .popBackStackImmediate(backStateName, 0);
                                 if (!fragmentPopped) {
                                     FragmentTransaction ftx = fragmentManager.beginTransaction();
+                                    Bundle bundle = new Bundle();
+                                    int c =  opinionGivenDataArrayList.get(position).getUserId();
+
+                                    bundle.putInt("responderUserId", opinionGivenDataArrayList.get(position).getUserId());
+                                    opinionDetailsFrg.setArguments(bundle);
                                     ftx.replace(R.id.fragment, opinionDetailsFrg);
                                     ftx.addToBackStack(backStateName);
                                     ftx.commit();

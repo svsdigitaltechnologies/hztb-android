@@ -376,24 +376,24 @@ public class ContactsFragment extends Fragment {
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!groupName.getText().toString().isEmpty()){
                         alertDialog.cancel();
-                        postDataForNewRequest(groupName.getText().toString().trim());
-                    }else  groupName.setError("Field cannot be left blank.");
             }
             });
 
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    postDataForNewRequest();
                     alertDialog.cancel();
+
+
                 }
             });
 
             alertDialog.show();
     }
 
-    private void postDataForNewRequest(final String groupName) {
+    private void postDataForNewRequest() {
         showLoader();
 
         OpinionService opinionService = new OpinionService();

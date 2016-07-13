@@ -12,6 +12,7 @@
         android:layout_alignParentTop="true"
         android:textStyle="bold"
         android:gravity="center"
+        android:layout_marginBottom="10dp"
         android:id="@+id/textview_content"
         android:text="Do you want to add 5 contacts as a group"
         android:padding="8dp"
@@ -25,6 +26,7 @@
         android:layout_margin="7dp"
         android:textColor="@android:color/black"
         android:gravity="center"
+        android:visibility="gone"
         android:ems="15"
         android:layout_centerHorizontal="true"
         android:hint="@string/group_name"/>
@@ -35,7 +37,7 @@
         android:textColor="@android:color/white"
         android:background="@color/picton_blue"
         android:id="@+id/button_add_groupName"
-        android:text="@string/add_grouptext"
+        android:text="@string/profile_cancel"
         android:layout_below="@+id/edittext_groupName"
         android:layout_alignStart="@+id/edittext_groupName" />
     <com.svs.hztb.CustomViews.WalkWayButton

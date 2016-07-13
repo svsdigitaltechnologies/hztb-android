@@ -5,7 +5,16 @@ import java.util.List;
 
 public class GroupDetail {
 	String groupName;
-	List<Integer> groupMembers = new ArrayList<Integer>();
+
+	public List<UserData> getGroupMembers() {
+		return groupMembers;
+	}
+
+	public void setGroupMembers(List<UserData> groupMembers) {
+		this.groupMembers = groupMembers;
+	}
+
+	List<UserData> groupMembers = new ArrayList<UserData>();
 	int groupId;
 
 	public boolean isSelect() {
@@ -22,12 +31,6 @@ public class GroupDetail {
 	}
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
-	}
-	public List<Integer> getGroupMembers() {
-		return groupMembers;
-	}
-	public void setGroupMembers(List<Integer> groupMembers) {
-		this.groupMembers = groupMembers;
 	}
 	public int getGroupId() {
 		return groupId;

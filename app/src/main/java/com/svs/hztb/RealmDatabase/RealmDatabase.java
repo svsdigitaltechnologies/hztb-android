@@ -2,6 +2,7 @@ package com.svs.hztb.RealmDatabase;
 
 import android.util.Log;
 
+import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.UserProfileResponses;
 
@@ -114,7 +115,7 @@ public class RealmDatabase {
     }
 
     public void getAllGroupList(){
-        RealmResults<GroupDetailRealm> users = realm.where(GroupDetailRealm.class).findAll();
+        RealmResults<GroupDetailRealm> groupList = realm.where(GroupDetailRealm.class).findAll();
     }
 
 
@@ -131,10 +132,9 @@ public class RealmDatabase {
                         dataToStore = bgRealm.createObject(GroupDetailRealm.class);
                         dataToStore.setGroupId(groupDetailRealm.getGroupId());
                     }
-                        dataToStore.groupMembers.clear();
-                        dataToStore.groupMembers.addAll(groupDetailRealm.getGroupMembers());
+                        dataToStore.getUserDataList().clear();
+                        dataToStore.getUserDataList().addAll(groupDetailRealm.getUserDataList());
                         dataToStore.setGroupName(groupDetailRealm.getGroupName());
-
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -144,7 +144,7 @@ public class RealmDatabase {
             }, new Realm.Transaction.OnError() {
                 @Override
                 public void onError(Throwable error) {
-                    Log.d("Failure", "Failure");
+                    Log.d("Failure", error.toString());
 
                 }
             });
