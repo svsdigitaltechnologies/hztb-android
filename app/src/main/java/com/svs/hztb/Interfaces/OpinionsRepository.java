@@ -59,4 +59,7 @@ public interface OpinionsRepository {
     @POST("/user/registeredUsers")
     Observable<Response<List<GroupDetail>>> requestToGetRegisteredContacts(@Body UserID userID);
 
+    @POST("/group/createGroup")
+    Observable<Response<RequestOpinionOutput>> requestForNewGroup(@Body GroupDetail groupDetail);
+
 }

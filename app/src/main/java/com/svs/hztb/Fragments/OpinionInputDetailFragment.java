@@ -115,6 +115,7 @@ public class OpinionInputDetailFragment extends Fragment {
 
             }
         });
+        responseCode="";
         buttonDown = (Button) convertView.findViewById(R.id.button_down);
         buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override

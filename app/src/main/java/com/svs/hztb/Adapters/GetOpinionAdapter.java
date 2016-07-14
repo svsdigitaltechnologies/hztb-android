@@ -20,6 +20,9 @@ import com.svs.hztb.R;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by VenuNalla on 6/15/16.
@@ -61,15 +64,38 @@ public class GetOpinionAdapter extends BaseAdapter{
         holder.productPrice = (TextView)convertView.findViewById(R.id.product_price);
         holder.textViewdateOpinion = (TextView)convertView.findViewById(R.id.textview_date_getopinion);
 
-        holder.buttonOk = (Button)convertView.findViewById(R.id.button_double_ok);
-        holder.buttonSingleOk = (Button)convertView.findViewById(R.id.button_single_ok);
-        holder.buttonDown = (Button)convertView.findViewById(R.id.button_down);
-        holder.buttonMayBe = (Button)convertView.findViewById(R.id.button_maybe);
+        holder.textViewOk = (TextView)convertView.findViewById(R.id.textview_ok);
+        holder.textViewSingleOk = (TextView)convertView.findViewById(R.id.textView_single_ok);
+        holder.textViewDown = (TextView)convertView.findViewById(R.id.textView_down);
+        holder.textViewMayBe = (TextView)convertView.findViewById(R.id.textView_maybe);
         holder.viewSelf = (Button)convertView.findViewById(R.id.button_view_selfie);
-
         OpinionData opinionData = opinionDatasArrayList.get(position);
+        Iterator<String> iterator = opinionData.getResponseCounts().keySet().iterator();
+        while (iterator.hasNext()){
+            String key = iterator.next();
+            switch (key){
+                case "L" : {
+                    holder.textViewSingleOk.setText(String.valueOf(opinionData.getResponseCounts().get(key)));
+                    break;
+                }
+                case "D" :
+                {
+                    holder.textViewDown.setText(String.valueOf(opinionData.getResponseCounts().get(key)));
+                    break;
+                }
+                case "N" :{
+                    holder.textViewMayBe.setText(String.valueOf(opinionData.getResponseCounts().get(key)));
+                    break;
+                }
+                case "W" : {
+                    holder.textViewOk.setText(String.valueOf(opinionData.getResponseCounts().get(key)));
+                    break;
+                }
+            }
+        }
         holder.productName.setText(opinionData.getProductName());
         holder.productID.setText(String.valueOf(opinionData.getOpinionId()));
+
         convertView.setTag(holder);
         return convertView;
     }
@@ -80,11 +106,11 @@ public class GetOpinionAdapter extends BaseAdapter{
         TextView productDescription;
         TextView productPrice;
         TextView textViewdateOpinion;
-        Button buttonOk;
-        Button buttonSingleOk;
-        Button buttonDown;
-        Button buttonMayBe;
-        Button viewSelf;
+        TextView textViewOk;
+        TextView textViewSingleOk;
+        TextView textViewDown;
+        TextView textViewMayBe;
+        TextView viewSelf;
     }
 
 }

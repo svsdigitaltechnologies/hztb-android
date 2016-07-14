@@ -30,7 +30,9 @@ import com.svs.hztb.Bean.ResponseGivenPendingInfo;
 import com.svs.hztb.Bean.UserData;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmContact;
 import com.svs.hztb.RealmDatabase.RealmUserData;
+import com.svs.hztb.RealmDatabase.RealmUserProfileResponse;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.Utils.ConnectionDetector;
 import com.svs.hztb.Utils.LoadingBar;
@@ -91,9 +93,12 @@ public class OpinionGivenDetailFragment extends Fragment {
         TextView userName = (TextView) view.findViewById(R.id.textview_usernameId);
         Realm realm = Realm.getDefaultInstance();
 
-//        RealmUserData userData =  realm.where(RealmUserData.class).equalTo("userId", opinionCountData.getUserId()).findFirst();
-//        userName.setText(userData.getFirstName());
-        userName.setText("User ID:"+opinionCountData.getUserId());
+        RealmUserProfileResponse userData =  realm.where(RealmUserProfileResponse.class).equalTo("userId",String.valueOf(opinionCountData.getUserId())).findFirst();
+        if (userData != null ){
+            if (userData.getName() != null){
+                userName.setText(userData.getName());
+            }else userName.setText("UserID "+opinionCountData.getUserId());
+        }
         opinionGivenListView = (ListView) view.findViewById(R.id.opinion_given_listview);
         opinionPendingListView = (ListView) view.findViewById(R.id.opinion_pending_listview);
 

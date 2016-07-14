@@ -14,6 +14,15 @@ public class GroupDetail {
 		this.groupMembers = groupMembers;
 	}
 
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int userId;
 	List<UserData> groupMembers = new ArrayList<UserData>();
 	int groupId;
 

@@ -1,6 +1,7 @@
 package com.svs.hztb.Interfaces;
 
 
+import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.Bean.RegisterRequest;
 import com.svs.hztb.Bean.RegisterResponse;
 import com.svs.hztb.Bean.RequestOpinionInput;
@@ -32,4 +33,5 @@ public interface UserRepository {
 
     @POST("/user/registeredUsers")
     Observable<Response<UserProfileResponses>> getRegisteredUsers(@Body UserProfileRequests userProfileRequest);
+
 }

@@ -21,12 +21,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.svs.hztb.Adapters.SlideMenuAdapter;
 import com.svs.hztb.Bean.GivenPendingData;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.Product;
+import com.svs.hztb.Fragments.GroupsFragment;
 import com.svs.hztb.Fragments.NewRequestFragment;
 import com.svs.hztb.Fragments.NotificationFragment;
 import com.svs.hztb.Interfaces.IDrawerClosed;
@@ -79,17 +81,38 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
         Fragment fragment = null;
 
         switch (position){
-            case 5 :{
-                fragment = new NewRequestFragment();
+            case 1:{
+                displayMessage("Under Process");
+                break;
+            }
+            case 2:{
+                displayMessage("Under Process");
                 break;
             }
             case 3:{
-               fragment = new NotificationFragment();
-                    break;
+                fragment = new NotificationFragment();
+                pushFragment(fragment, position);
+                break;
+            }
+            case 4:{
+//                fragment = new GroupsFragment();
+//                pushFragment(fragment, position);
+                displayMessage("Under Process");
+                break;
             }
 
+            case 5 :{
+                fragment = new NewRequestFragment();
+                pushFragment(fragment, position);
+                break;
+            }
+            case 6:{
+                displayMessage("Under Process");
+                break;
+            }
+
+
         }
-        pushFragment(fragment, position);
 
     }
 

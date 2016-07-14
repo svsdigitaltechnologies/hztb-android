@@ -25,6 +25,7 @@ import com.svs.hztb.Bean.UserProfileRequests;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.UserProfileResponses;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Interfaces.ContactsSyncCompleted;
 import com.svs.hztb.R;
 import com.svs.hztb.RealmDatabase.RealmContact;
 import com.svs.hztb.RealmDatabase.RealmDatabase;
@@ -173,6 +174,7 @@ public class ContactsSync {
                     userProfileResponses.addAll(response.body().getUserProfileResponses());
                     RealmDatabase db = new RealmDatabase();
                     db.storeUserIds(userProfileResponses);
+
                 }
             }
         });
@@ -225,5 +227,6 @@ public class ContactsSync {
            Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
     }
+
 }
 

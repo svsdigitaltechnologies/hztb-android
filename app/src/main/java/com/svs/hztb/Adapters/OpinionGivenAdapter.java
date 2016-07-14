@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,18 @@ import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmContact;
 import com.svs.hztb.RealmDatabase.RealmUserData;
+import com.svs.hztb.RealmDatabase.RealmUserProfileResponse;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 /**
  * Created by VenuNalla on 6/24/16.
@@ -66,11 +72,20 @@ public class OpinionGivenAdapter extends BaseAdapter {
             holder.pendingCount = (TextView)convertView.findViewById(R.id.opinion_pending_count);
 
             OpinionCountData opinionData = opinionGivenArrayList.get(position);
-            /*
+
             Realm realm = Realm.getDefaultInstance();
-            RealmUserData userData =  realm.where(RealmUserData.class).equalTo("userId", opinionData.getUserId()).findFirst();
-            */
-            holder.userName.setText("UserID  :" +opinionData.getUserId());
+
+            RealmResults<RealmUserProfileResponse> list = realm.where(RealmUserProfileResponse.class).findAll();
+            Iterator<RealmUserProfileResponse> iterator = list.iterator();
+            while (iterator.hasNext()){
+                RealmUserProfileResponse userProfileResponse = iterator.next();
+                Log.d(userProfileResponse.getUserId(),userProfileResponse.getName());
+            }
+            RealmUserProfileResponse userData =  realm.where(RealmUserProfileResponse.class).equalTo("userId",String.valueOf(opinionData.getUserId())).findFirst();
+            if (userData == null){
+                holder.userName.setText("UserID  :"+opinionData.getUserId());
+            }else holder.userName.setText(userData.getName());
+
             holder.givenCount.setText("Given :"+opinionData.getGivenCount());
             holder.pendingCount.setText("Pending :"+opinionData.getPendingCount());
             convertView.setTag(holder);

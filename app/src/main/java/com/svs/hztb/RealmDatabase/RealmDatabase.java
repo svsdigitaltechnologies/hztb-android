@@ -5,6 +5,7 @@ import android.util.Log;
 import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.UserProfileResponses;
+import com.svs.hztb.Interfaces.ContactsSyncCompleted;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,15 +15,22 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
+
 /**
  * Created by VenuNalla on 7/9/16.
  */
 public class RealmDatabase {
 
+    private ContactsSyncCompleted syncCompleted;
     private Realm realm;
-
+    private int size;
     public RealmDatabase(){
         realm = Realm.getDefaultInstance();
+    }
+
+    public RealmDatabase(ContactsSyncCompleted contactsSyncCompleted){
+        realm = Realm.getDefaultInstance();
+        syncCompleted = contactsSyncCompleted;
     }
 
     public RealmResults getAllContactsWithUserIDs() {
@@ -31,8 +39,8 @@ public class RealmDatabase {
     }
 
 
+    public void storeUserIds(final List<UserProfileResponse> userProfileResponsesArrayList){
 
-    public void storeUserIds(List<UserProfileResponse> userProfileResponsesArrayList){
         Iterator<UserProfileResponse>  iterator = userProfileResponsesArrayList.iterator();
         while (iterator.hasNext()){
             final UserProfileResponse userProfileResponse = iterator.next();
@@ -47,12 +55,19 @@ public class RealmDatabase {
                         dataToStore.setUserId(userProfileResponse.getUserId());
                         dataToStore.setProfilePictureURL(userProfileResponse.getProfilePictureURL());
                         dataToStore.setName(userProfileResponse.getName());
-
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
                 public void onSuccess() {
+                    size = size+1;
+                    Log.d("Size"+size,"List size"+userProfileResponsesArrayList.size());
+                    if (userProfileResponsesArrayList.size() == size){
+                        if (syncCompleted != null) {
+                            syncCompleted.onContactsSyncCompleted();
+                        }
+                    }
                     Log.d("Success", "Success");
+
                 }
             }, new Realm.Transaction.OnError() {
                 @Override

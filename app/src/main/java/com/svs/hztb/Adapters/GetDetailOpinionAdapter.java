@@ -15,7 +15,9 @@ import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.OpinionResponseData;
 import com.svs.hztb.Bean.UserData;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmContact;
 import com.svs.hztb.RealmDatabase.RealmUserData;
+import com.svs.hztb.RealmDatabase.RealmUserProfileResponse;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -73,7 +75,6 @@ public class GetDetailOpinionAdapter  extends BaseAdapter {
         });
 
         /*
-        Realm realm = Realm.getDefaultInstance();
 
         RealmResults<RealmUserData> userList = realm.where(RealmUserData.class).findAll();
         Iterator<RealmUserData> userDataIterator = userList.iterator();
@@ -81,11 +82,10 @@ public class GetDetailOpinionAdapter  extends BaseAdapter {
             RealmUserData userData = userDataIterator.next();
             Log.d("userids",userData.toString());
         }
-
-
-//        RealmUserData userData =  realm.where(RealmUserData.class).equalTo("userId", opinionData.getResponderUserId()).findFirst();
-*/
-        holder.userIdName.setText("UserID :"+opinionData.getResponderUserId());
+        */
+        Realm realm = Realm.getDefaultInstance();
+        RealmUserProfileResponse userData =  realm.where(RealmUserProfileResponse.class).equalTo("userId",String.valueOf(opinionData.getResponderUserId())).findFirst();
+        holder.userIdName.setText("UserName :"+userData.getName());
         convertView.setTag(holder);
         return convertView;
     }
