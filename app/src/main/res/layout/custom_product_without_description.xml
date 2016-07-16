@@ -1,168 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_product_item"
-    android:layout_margin="10dp"
     android:layout_width="wrap_content"
-    android:padding="10dp"
-    android:descendantFocusability="blocksDescendants"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:background="@android:color/transparent"
-    android:layout_height="wrap_content">
+    android:descendantFocusability="blocksDescendants"
+    android:padding="10dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:background="@android:color/white"
-        android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/product_thumb"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:baselineAlignBottom="true"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/thumb" />
-
-
-
-    <com.svs.hztb.CustomViews.WalkWayTextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/product_thumb"
-        android:paddingLeft="10dp"
-        android:textColor="@android:color/black"
-        android:paddingRight="10dp"
+        android:background="@android:color/white">
 
-        android:text="Jumba Sports Shoes"
-        android:textSize="16sp" />
-
-    <com.svs.hztb.CustomViews.WalkWayTextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView2"
-        android:layout_toRightOf="@+id/product_thumb"
-        android:paddingBottom="5dp"
-        android:textColor="@android:color/black"
-
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:text="Product ID : 234234"
-        android:textSize="13sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/price_layout"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/product_thumb"
-        android:layout_below="@+id/textView3"
-        android:gravity="bottom"
-        android:orientation="vertical">
-        <View
-            android:id="@+id/separator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_above="@+id/product_price"
-            android:layout_alignParentRight="true"
+        <ImageView
+            android:id="@+id/product_thumb"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/product_thumb"
-            android:background="@android:color/black"
-            android:padding="10dp"></View>
+            android:layout_marginTop="10dp"
+            android:baselineAlignBottom="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/thumb" />
 
-        <TextView
-            android:layout_width="match_parent"
+
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price:$ 98.99"
-            android:id="@+id/product_price"
-            android:paddingLeft="10dp"
-            android:textColor="@android:color/black"
-
-            android:layout_toRightOf="@+id/product_thumb"
-            android:layout_above="@+id/separator_bottom"
-            />
-
-        <View
-            android:id="@+id/separator_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/product_thumb"
-            android:background="@android:color/black"
-            ></View>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:textSize="10sp"
+            android:paddingRight="10dp"
+            android:text="Jumba Sports Shoes"
+
             android:textColor="@android:color/black"
-            android:paddingTop="3dp"
-            android:id="@+id/textview_date_getopinion"
-            android:text="12 April 2016"/>
+            android:textSize="16sp" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="4"
-        android:layout_toRightOf="@+id/product_thumb"
-        android:layout_alignBottom="@+id/product_thumb"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout">
-        <Button
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/button_double_ok"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView2"
+            android:layout_toRightOf="@+id/product_thumb"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
 
-            android:text="A"
-            />
-        <Button
-            android:layout_width="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="Product ID : 234234"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:id="@+id/price_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="A"
-            android:id="@+id/button_single_ok"
+            android:layout_below="@+id/textView3"
+            android:layout_toRightOf="@+id/product_thumb"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
-            android:layout_weight="1"
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/product_price"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/product_thumb"
+                android:background="@android:color/black"
+                android:padding="10dp"></View>
 
-            />
-        <Button
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/product_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/separator_bottom"
+                android:layout_toRightOf="@+id/product_thumb"
+                android:paddingLeft="10dp"
+
+                android:text="Price:$ 98.99"
+                android:textColor="@android:color/black" />
+
+            <View
+                android:id="@+id/separator_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/product_thumb"
+                android:background="@android:color/black"></View>
+
+            <TextView
+                android:id="@+id/textview_date_getopinion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:text="12 April 2016"
+                android:textColor="@android:color/black"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button_maybe"
+            android:layout_marginTop="10dp"
+            android:layout_alignBottom="@+id/product_thumb"
+            android:layout_toRightOf="@+id/product_thumb"
+            android:weightSum="4">
 
-            android:layout_weight="1"
+            <ImageView
+                android:id="@+id/button_double_ok"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:src="@mipmap/wow"/>
 
-            android:text="A"
+            <ImageView
+                android:id="@+id/button_single_ok"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@mipmap/like"
+                android:layout_margin="4dp"
+
+                />
+
+            <ImageView
+                android:id="@+id/button_maybe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+
+                android:src="@mipmap/neutral"
             />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/button_down"
 
+            <ImageView
+                android:id="@+id/button_down"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+
+                android:src="@mipmap/dont_like"/>
+        </LinearLayout>
+
+        <com.svs.hztb.CustomViews.WalkWayButton
+            android:id="@+id/button_view_selfie"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="A"
-            />
-    </LinearLayout>
-    <com.svs.hztb.CustomViews.WalkWayButton
-        android:id="@+id/button_view_selfie"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/picton_blue"
-        android:text="@string/view_selfie"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/product_thumb"
-        android:layout_marginBottom="10dp"
-        android:layout_alignStart="@+id/product_thumb" />
+            android:layout_alignStart="@+id/product_thumb"
+            android:layout_below="@+id/product_thumb"
+            android:layout_marginBottom="10dp"
+            android:background="@mipmap/blue_background"
+            android:text="@string/view_selfie"
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
 </RelativeLayout>

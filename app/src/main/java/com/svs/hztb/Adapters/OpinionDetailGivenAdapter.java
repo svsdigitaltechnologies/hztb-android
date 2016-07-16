@@ -2,12 +2,15 @@ package com.svs.hztb.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.svs.hztb.Bean.GivenPendingData;
@@ -55,19 +58,35 @@ public class OpinionDetailGivenAdapter extends BaseAdapter {
         holder.productPrice = (TextView)convertView.findViewById(R.id.product_price);
         holder.textViewdateOpinion = (TextView)convertView.findViewById(R.id.textview_date_getopinion);
 
-        holder.buttonOk = (Button)convertView.findViewById(R.id.button_double_ok);
-        holder.buttonSingleOk = (Button)convertView.findViewById(R.id.button_single_ok);
-        holder.buttonDown = (Button)convertView.findViewById(R.id.button_down);
-        holder.buttonMayBe = (Button)convertView.findViewById(R.id.button_maybe);
+        holder.buttonOk = (ImageView)convertView.findViewById(R.id.button_double_ok);
+        holder.buttonSingleOk = (ImageView)convertView.findViewById(R.id.button_single_ok);
+        holder.buttonDown = (ImageView)convertView.findViewById(R.id.button_down);
+        holder.buttonMayBe = (ImageView)convertView.findViewById(R.id.button_maybe);
         holder.viewSelf = (Button)convertView.findViewById(R.id.button_view_selfie);
 
 
         GivenPendingData givenPendingData = opinionGivenPendingArrayList.get(position);
         if (givenPendingData.getResponseText() != null){
-            holder.buttonDown.setVisibility(View.INVISIBLE);
-            holder.buttonSingleOk.setVisibility(View.INVISIBLE);
-            holder.buttonMayBe.setVisibility(View.INVISIBLE);
-            holder.buttonOk.setText(givenPendingData.getResponseType());
+            hideButtons(holder);
+            holder.buttonDown.setVisibility(View.VISIBLE);
+
+            Drawable res=null;
+
+            if (givenPendingData.getResponseType().equals("W")){
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.wow, null);
+            }
+            if (givenPendingData.getResponseType().equals("L")){
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.like, null);
+
+            }
+            if (givenPendingData.getResponseType().equals("N")){
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.neutral, null);
+
+            }
+            if (givenPendingData.getResponseType().equals("D")){
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.dont_like, null);
+            }
+            holder.buttonDown.setImageDrawable(res);
         }
 
         holder.productName.setText(givenPendingData.getProduct().getName());
@@ -77,15 +96,22 @@ public class OpinionDetailGivenAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private void hideButtons(ViewHolder holder) {
+        holder.buttonDown.setVisibility(View.INVISIBLE);
+        holder.buttonSingleOk.setVisibility(View.INVISIBLE);
+        holder.buttonMayBe.setVisibility(View.INVISIBLE);
+        holder.buttonOk.setVisibility(View.INVISIBLE);
+    }
+
     class  ViewHolder{
         TextView productName;
         TextView productID;
         TextView productPrice;
         TextView textViewdateOpinion;
-        Button buttonOk;
-        Button buttonSingleOk;
-        Button buttonDown;
-        Button buttonMayBe;
+        ImageView buttonOk;
+        ImageView buttonSingleOk;
+        ImageView buttonDown;
+        ImageView buttonMayBe;
         Button viewSelf;
     }
 }

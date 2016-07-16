@@ -54,6 +54,9 @@ public class RetriveGroupsAdapter extends BaseAdapter {
             groupName.setText(groupList.get(position).getGroupName());
         if (position == groupList.size()-1){
             groupName.setTextColor(mContext.getResources().getColor(R.color.picton_blue));
+            ImageView rightArrow = (ImageView) (convertView).findViewById(R.id.imageView2);
+            rightArrow.setVisibility(View.VISIBLE);
+
         }else {
             ImageView tickImage = (ImageView) (convertView).findViewById(R.id.imageView_selected);
             if (groupList.get(position).isSelect()){

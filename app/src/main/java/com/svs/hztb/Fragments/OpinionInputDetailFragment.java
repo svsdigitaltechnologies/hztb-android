@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,10 +57,10 @@ public class OpinionInputDetailFragment extends Fragment {
     TextView productID;
     TextView productDescription;
     TextView productPrice;
-    Button buttonOk;
-    Button buttonSingleOk;
-    Button buttonDown;
-    Button buttonMayBe;
+    ImageView buttonOk;
+    ImageView buttonSingleOk;
+    ImageView buttonDown;
+    ImageView buttonMayBe;
     Button viewSelf;
     Button sendOpinion;
     EditText responseText;
@@ -95,44 +96,44 @@ public class OpinionInputDetailFragment extends Fragment {
         productPrice.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), android.R.color.black));
         productDescription.setText(pendingData.getProduct().getLongDesc());
 
-        buttonOk = (Button) convertView.findViewById(R.id.button_double_ok);
+        buttonOk = (ImageView) convertView.findViewById(R.id.button_double_ok);
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 responseCode = "W";
                 setBackgroundGrey();
-                buttonOk.setBackgroundColor(buttonOk.getContext().getResources().getColor(R.color.colorAccent));
+                buttonOk.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorAccent));
 
             }
         });
-        buttonSingleOk = (Button) convertView.findViewById(R.id.button_single_ok);
+        buttonSingleOk = (ImageView) convertView.findViewById(R.id.button_single_ok);
         buttonSingleOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 responseCode = "L";
                 setBackgroundGrey();
-                buttonSingleOk.setBackgroundColor(buttonSingleOk.getContext().getResources().getColor(R.color.colorAccent));
+                buttonSingleOk.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorAccent));
 
             }
         });
         responseCode="";
-        buttonDown = (Button) convertView.findViewById(R.id.button_down);
+        buttonDown = (ImageView) convertView.findViewById(R.id.button_down);
         buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 responseCode = "D";
                 setBackgroundGrey();
-                buttonDown.setBackgroundColor(buttonDown.getContext().getResources().getColor(R.color.colorAccent));
+                buttonDown.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorAccent));
 
             }
         });
-        buttonMayBe = (Button) convertView.findViewById(R.id.button_maybe);
+        buttonMayBe = (ImageView) convertView.findViewById(R.id.button_maybe);
         buttonMayBe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 responseCode = "N";
                 setBackgroundGrey();
-                buttonMayBe.setBackgroundColor(buttonMayBe.getContext().getResources().getColor(R.color.colorAccent));
+                buttonMayBe.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorAccent));
 
             }
         });
@@ -168,11 +169,10 @@ public class OpinionInputDetailFragment extends Fragment {
     }
 
     private void setBackgroundGrey() {
-        buttonOk.setBackgroundColor(buttonOk.getContext().getResources().getColor(R.color.light_grey));
-        buttonSingleOk.setBackgroundColor(buttonSingleOk.getContext().getResources().getColor(R.color.light_grey));
-        buttonDown.setBackgroundColor(buttonDown.getContext().getResources().getColor(R.color.light_grey));
-        buttonMayBe.setBackgroundColor(buttonMayBe.getContext().getResources().getColor(R.color.light_grey));
-
+        buttonOk.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), android.R.color.transparent));
+        buttonSingleOk.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), android.R.color.transparent));
+        buttonDown.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), android.R.color.transparent));
+        buttonMayBe.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), android.R.color.transparent));
     }
 
 

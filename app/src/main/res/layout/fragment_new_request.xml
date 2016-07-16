@@ -26,9 +26,10 @@
         android:layout_below="@+id/custom_product_item"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="10dp"
+
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="@color/picton_blue"
+        android:background="@mipmap/blue_background"
         android:text="@string/capture_selfie"
         android:textColor="@android:color/white" />
 
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:id="@+id/button_request_opinion"
-            android:background="@color/picton_blue"
+            android:background="@mipmap/blue_background"
             android:text="@string/invite_buddy"
             android:textColor="@android:color/white" />
     </RelativeLayout>

@@ -16,37 +16,53 @@
         android:text="18 April 2018"
         android:textColor="@android:color/black" />
 
-    <Button
+    <ImageView
         android:id="@+id/button_double_ok"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:src="@mipmap/wow"
+        android:layout_margin="5dp"
         android:layout_toStartOf="@+id/button_single_ok"
         android:text="ButtOk" />
 
-    <Button
+    <ImageView
         android:id="@+id/button_single_ok"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:src="@mipmap/like"
+        android:layout_margin="5dp"
+
+        android:layout_alignBottom="@+id/button_double_ok"
         android:layout_toStartOf="@+id/button_maybe"
-        android:text="SingOk" />
+        android:text="SingOk"
+        android:layout_alignTop="@+id/button_double_ok" />
 
-    <Button
+    <ImageView
         android:id="@+id/button_maybe"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/button_down"
-        android:text="May Be" />
+        android:src="@mipmap/neutral"
+        android:layout_margin="5dp"
 
-    <Button
+        android:layout_toStartOf="@+id/button_down"
+        android:layout_alignBottom="@+id/button_double_ok"
+
+        android:text="May Be"
+        android:layout_alignTop="@+id/button_single_ok" />
+
+    <ImageView
         android:id="@+id/button_down"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:text="ButtDwn" />
+        android:src="@mipmap/dont_like"
+        android:layout_marginRight="30dp"
+        android:layout_alignBottom="@+id/button_double_ok"
+        android:text="ButtDwn"
+        android:layout_margin="5dp"
+
+        android:layout_alignTop="@+id/button_maybe" />
 
     <TextView
         android:id="@+id/textview_ok"
@@ -63,25 +79,26 @@
         android:id="@+id/textView_single_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button_single_ok"
         android:layout_below="@+id/button_single_ok"
-
-        android:layout_toEndOf="@+id/button_double_ok"
+        android:layout_alignTop="@+id/textview_ok"
         android:gravity="center"
         android:text="0"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:layout_alignStart="@+id/button_single_ok"
+        android:layout_alignBottom="@+id/textview_ok"
+        android:layout_alignEnd="@+id/button_single_ok" />
 
     <TextView
         android:id="@+id/textView_maybe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button_maybe"
         android:layout_alignTop="@+id/textView_single_ok"
 
-        android:layout_toStartOf="@+id/button_down"
         android:gravity="center"
         android:text="0"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:layout_alignEnd="@+id/button_maybe"
+        android:layout_alignStart="@+id/button_maybe" />
 
     <TextView
         android:id="@+id/textView_down"
@@ -91,7 +108,7 @@
         android:layout_alignTop="@+id/textView_maybe"
 
 
-        android:layout_toEndOf="@+id/textView_maybe"
+        android:layout_toEndOf="@+id/button_maybe"
         android:gravity="center"
         android:text="0"
         android:textColor="@android:color/black" />

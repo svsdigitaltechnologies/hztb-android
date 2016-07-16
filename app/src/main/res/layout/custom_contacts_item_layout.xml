@@ -32,7 +32,7 @@
         android:visibility="gone"
         android:src="@mipmap/right_arrow"
         android:layout_alignParentRight="true"
-        android:paddingRight="20dp"
+        android:layout_marginRight="20dp"
         android:layout_alignTop="@+id/textview_select_contacts"
         android:layout_alignBottom="@+id/textview_select_contacts"/>
 
