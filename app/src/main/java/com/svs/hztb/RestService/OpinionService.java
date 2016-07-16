@@ -57,8 +57,6 @@ public class OpinionService {
     public Observable<Response<OpinionResponseOutput>> sendOpinionInput(OpinionResponseInput opinionsInput) {
         return dataService.sendOpinionOfProduct(opinionsInput);
     }
-
-
     public Observable<Response<RequestOpinionOutput>> sendGroupInput(GroupDetail groupDetail) {
         return dataService.requestForNewGroup(groupDetail);
     }

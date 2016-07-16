@@ -9,35 +9,32 @@
     <com.svs.hztb.CustomViews.WalkWayButton
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="Opinions Recieved"
     android:id="@+id/button_getOpinons"
     android:layout_weight="1"
     android:textSize="25dp"
     android:layout_marginBottom="2dp"
     android:onClick="requestOpinionOnClick"
-    android:background="@color/picton_blue"
+    android:background="@mipmap/opinion_responded"
     android:layout_gravity="center_horizontal" />
 
     <com.svs.hztb.CustomViews.WalkWayButton
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="Opinions Given"
     android:id="@+id/button4"
     android:layout_weight="1"
     android:onClick="respondOpinionOnClick"
     android:textSize="25dp"
-    android:background="@color/picton_blue"
+    android:background="@mipmap/opinions_given"
     android:layout_marginBottom="2dp"
     android:layout_gravity="center_horizontal" />
 
     <com.svs.hztb.CustomViews.WalkWayButton
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="In Store"
     android:textSize="25dp"
     android:id="@+id/button5"
     android:onClick="inStoreButtonOnClick"
-    android:background="@color/picton_blue"
+    android:background="@mipmap/instore_button"
     android:layout_weight="1"
     android:layout_gravity="center_horizontal" />
 

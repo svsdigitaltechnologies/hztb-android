@@ -51,6 +51,7 @@ public class GetOpinionsFragment extends android.app.Fragment {
     protected LoadingBar _loader;
     private ListView listview_getOpinions;
     private GetOpinionAdapter adapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +70,46 @@ public class GetOpinionsFragment extends android.app.Fragment {
         super.onViewCreated(view, savedInstanceState);
         _loader=new LoadingBar(getActivity());
         listview_getOpinions = (ListView)view.findViewById(R.id.listview_getOpinions);
+
+        RealmDatabase db = new RealmDatabase();
+        opinionDataArrayList = db.getAllOpinions();
+        if (opinionDataArrayList.size() == 0){
+            checkForNewOpinions();
+        }else {
+            adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
+            listview_getOpinions.setAdapter(adapter);
+            listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    ((HomeScreenActivity)getActivity()).setProduct(opinionDataArrayList.get(position));
+                    GetOpinionsDetailFragment opinionDetailsFrg = new GetOpinionsDetailFragment();
+                    String backStateName = opinionDetailsFrg.getClass().getName();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    boolean fragmentPopped = fragmentManager
+                            .popBackStackImmediate(backStateName, 0);
+                    if (!fragmentPopped) {
+                        FragmentTransaction ftx = fragmentManager.beginTransaction();
+                        ftx.replace(R.id.fragment, opinionDetailsFrg);
+                        ftx.addToBackStack(backStateName);
+                        ftx.commit();
+                    }
+                }
+            });
+        }
+
+
+
+    }
+
+    public void checkForNewOpinions(){
         ConnectionDetector c = new ConnectionDetector(getActivity().getApplicationContext());
         if(c.isConnectingToInternet()) {
-
             postDataToGetOpinions();
         }else{
             Toast.makeText(getActivity().getApplicationContext(),"No Network",Toast.LENGTH_LONG).show();
         }
-
     }
+
 
     public void showLoader(){
         if(_loader!=null && !_loader.isShowing()){
@@ -124,8 +156,9 @@ public class GetOpinionsFragment extends android.app.Fragment {
                 if (requestResponse.isSuccessful()) {
                     if (requestResponse.body().size() > 0) {
                         opinionDataArrayList = (ArrayList<OpinionData>) requestResponse.body();
-                        adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
                         storeOpinionDataInDatabase(opinionDataArrayList);
+
+                        adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
                         listview_getOpinions.setAdapter(adapter);
                         listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -182,7 +215,6 @@ public class GetOpinionsFragment extends android.app.Fragment {
         }
         RealmDatabase database = new RealmDatabase();
         database.addRealmOpinionData(opinionDataList);
-        database.getAllOpinions();
 
     }
 

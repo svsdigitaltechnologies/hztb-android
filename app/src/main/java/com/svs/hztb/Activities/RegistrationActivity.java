@@ -60,6 +60,8 @@ public class RegistrationActivity extends AbstractActivity {
 
         ContactsSync syncCont = new ContactsSync(RegistrationActivity.this);
         syncCont.syncContactsToServer();
+
+
     }
 
 

@@ -3,11 +3,14 @@ package com.svs.hztb.RealmDatabase;
 import android.util.Log;
 
 import com.svs.hztb.Bean.GroupDetail;
+import com.svs.hztb.Bean.OpinionData;
+import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.UserProfileResponses;
 import com.svs.hztb.Interfaces.ContactsSyncCompleted;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -82,8 +85,34 @@ public class RealmDatabase {
 
 
 
-    public void getAllOpinions() {
+    public ArrayList<OpinionData> getAllOpinions() {
         RealmResults<RealmOpinionData> opinionList = realm.where(RealmOpinionData.class).findAll();
+        ArrayList<OpinionData> opinionDataArrayList = new ArrayList<>();
+        Iterator<RealmOpinionData> iterator = opinionList.iterator();
+        while (iterator.hasNext()){
+            RealmOpinionData realmOpinionData= iterator.next();
+            OpinionData opinionData = new OpinionData();
+            opinionData.setOpinionId(realmOpinionData.getOpinionId());
+            opinionData.setProductName(realmOpinionData.getProductName());
+            opinionData.setRequestedGroupId(realmOpinionData.getRequestedGroupId());
+            HashMap<String,Integer> responseCount = new HashMap<>();
+            Iterator<RealmResponseCount> responseIterator = realmOpinionData.getResponseCountList().iterator();
+            while (responseIterator.hasNext()){
+                RealmResponseCount count = responseIterator.next();
+                responseCount.put(count.getResponseType(),count.getResponseCount());
+            }
+            opinionData.setResponseCounts(responseCount);
+            RealmProduct realmProduct = realmOpinionData.getProduct();
+            Product product = new Product();
+            product.setName(realmProduct.getName());
+            product.setImageUrl(realmProduct.getImageUrl());
+            product.setLongDesc(realmProduct.getLongDesc());
+            product.setShortDesc(realmProduct.getShortDesc());
+            product.setPrice(realmProduct.getPrice());
+            opinionData.setProduct(product);
+            opinionDataArrayList.add(opinionData);
+        }
+        return opinionDataArrayList;
     }
 
 

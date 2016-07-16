@@ -157,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit"
-            android:id="@+id/button2"
+            android:id="@+id/edit_profilePic"
             android:onClick="onProfileThumbClicked"
             android:background="@color/picton_blue"
             android:layout_alignBottom="@+id/profile_thumb"

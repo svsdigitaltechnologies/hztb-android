@@ -1,15 +1,24 @@
 package com.svs.hztb.Fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,6 +42,7 @@ import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.RestService.ServiceGenerator;
 import com.svs.hztb.Utils.LoadingBar;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -49,11 +59,14 @@ import rx.schedulers.Schedulers;
 
 public class NewRequestFragment extends Fragment {
 
+    private final int RESULT_CAMERA = 0;
+    private final int CROP_PIC = 2;
     private ListView groupsList;
     protected LoadingBar _loader;
     private ArrayList<GroupDetail> groupList;
     private Button reguestOpinionButton;
     private RetriveGroupsAdapter adapter;
+    private ImageView productImage;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,14 +98,95 @@ public class NewRequestFragment extends Fragment {
             }
         });
 
+
         _loader=new LoadingBar(getActivity());
         showLoader();
-
+        productImage = (ImageView)view.findViewById(R.id.product_thumb);
+        Button captureSelf = (Button)view.findViewById(R.id.button_capture_selfie);
+        captureSelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePicture, RESULT_CAMERA);//zero can be replaced with any action code
+            }
+        });
         postDataToGetGroups();
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+
+            case RESULT_CAMERA:
+                if(resultCode == Activity.RESULT_OK){
+                    if (imageReturnedIntent.getData() != null) {
+                        Uri selectedImage = imageReturnedIntent.getData();
+                        performCrop(selectedImage);
+                    }else {
+                        Bitmap bitmap= (Bitmap)imageReturnedIntent.getExtras().get("data");
+                        productImage.setImageBitmap(bitmap);
+                    }
+                }
+
+                break;
+            case CROP_PIC:{
+                // get the returned data
+                Bundle extras = imageReturnedIntent.getExtras();
+                if (extras != null){
+                    // get the cropped bitmap
+                    Bitmap bitmapPic = extras.getParcelable("data");
+                    productImage.setImageBitmap(bitmapPic);
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * this function does the crop operation.
+     */
+    private void performCrop(Uri picUri) {
+        // take care of exceptions
+        try {
+            // call the standard crop action intent (the user device may not
+            // support it)
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties
+            cropIntent.putExtra("crop", "true");
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 256);
+            cropIntent.putExtra("outputY", 256);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, CROP_PIC);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            Toast.makeText(getActivity().getApplicationContext(),"Device Crop Not Supported",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private String getProductByteArray(){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ((BitmapDrawable)productImage.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        final byte[] picArray = stream.toByteArray();
+        String imageData = Base64.encodeToString(picArray, Base64.DEFAULT);
+        return imageData;
+    }
+
+
     private void postDataForNewRequest(ArrayList<Integer> selectedGroup) {
         showLoader();
+
+         String productThumbArray = getProductByteArray();
 
         OpinionService opinionService = new OpinionService();
         RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
@@ -101,7 +195,7 @@ public class NewRequestFragment extends Fragment {
         product.setName("Test606163");
         product.setShortDesc("Awesome");
         product.setLongDesc("brilliant");
-        product.setImageUrl("c:/ada/asdasd");
+        product.setImageUrl(productThumbArray);
         product.setPrice(22.0);
         requestOpinionInput.setProduct(product);
         requestOpinionInput.setRequestedGroupIds(selectedGroup);
@@ -199,6 +293,9 @@ public class NewRequestFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (groupList.size() - 1 == i) {
                     ContactsFragment fragment = new ContactsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("imageData",getProductByteArray());
+                    fragment.setArguments(bundle);
                     String backStateName = fragment.getClass().getName();
                     FragmentManager fragmentManager = getFragmentManager();
                     boolean fragmentPopped = fragmentManager

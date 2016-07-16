@@ -19,6 +19,8 @@ public class AppSharedPreference  {
     private String kUserName = "USERNAME";
     private String kUserEmail = "USEREMAIL";
     private String kUserID = "USERID";
+    private String kMobileNumber = "MobileNumber";
+
     private String kUserPicArray = "BYTEARRATY";
     public static String NOTIFICATION_CONVERSATION = "notification_conversation";
 
@@ -114,6 +116,13 @@ public class AppSharedPreference  {
 
     public  void storeUserID (String userId,Context context){
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(kUserID, userId).commit();
+    }
+
+    public  void storeMobileNumber (String mobileNumber,Context context){
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(kMobileNumber, mobileNumber).commit();
+    }
+    public String getMobileNumber(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(kMobileNumber, "");
     }
 
     public String getUserID(Context context) {

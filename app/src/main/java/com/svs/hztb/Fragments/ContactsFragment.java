@@ -64,6 +64,7 @@ public class ContactsFragment extends Fragment{
     private ContactsAdapter adapter;
     EditText contactSearch;
     private Button doneButton;
+    String imageData;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2001;
     protected LoadingBar _loader;
 
@@ -73,6 +74,13 @@ public class ContactsFragment extends Fragment{
         View view = inflater.inflate(R.layout.activity_fragment, container, false);
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        imageData = bundle.getString("imageData");
     }
 
     @Override
@@ -285,10 +293,12 @@ public class ContactsFragment extends Fragment{
         RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
         requestOpinionInput.setRequesterUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
         Product product = new Product();
+
+
         product.setName("Wrwlcome");
         product.setShortDesc("aa");
         product.setLongDesc("fe");
-        product.setImageUrl("c:/ada/asdasd");
+        product.setImageUrl(imageData);
         product.setPrice(24.0);
         requestOpinionInput.setProduct(product);
         List<Integer> userIDs = new ArrayList<>();

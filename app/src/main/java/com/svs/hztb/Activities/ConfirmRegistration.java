@@ -77,96 +77,6 @@ public class ConfirmRegistration extends AbstractActivity {
         postDataForOTPVerification();
     }
 
-
-    /**
-     * Called when the 'loadIMEI' function is triggered.
-     */
-    public void loadIMEI() {
-        // Check if the READ_PHONE_STATE permission is already available.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // READ_PHONE_STATE permission has not been granted.
-            requestReadPhoneStatePermission();
-        } else {
-            // READ_PHONE_STATE permission is already been granted.
-            doPermissionGrantedStuffs();
-        }
-    }
-
-
-
-    /**
-     * Requests the READ_PHONE_STATE permission.
-     * If the permission has been denied previously, a dialog will prompt the user to grant the
-     * permission, otherwise it is requested directly.
-     */
-    private void requestReadPhoneStatePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.READ_PHONE_STATE)) {
-            // Provide an additional rationale to the user if the permission was not granted
-            // and the user would benefit from additional context for the use of the permission.
-            // For example if the user has previously denied the permission.
-            new AlertDialog.Builder(ConfirmRegistration.this)
-                    .setTitle("Permission Request")
-                    .setMessage(getString(R.string.permission_read_phone_state_rationale))
-                    .setCancelable(false)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //re-request
-                            ActivityCompat.requestPermissions(ConfirmRegistration.this,
-                                    new String[]{Manifest.permission.READ_PHONE_STATE},
-                                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-                        }
-                    })
-                    .show();
-        } else {
-            // READ_PHONE_STATE permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE},
-                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-        }
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
-        if (requestCode == MY_PERMISSIONS_REQUEST_READ_PHONE_STATE) {
-            // Received permission result for READ_PHONE_STATE permission.est.");
-            // Check if the only required permission has been granted
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // READ_PHONE_STATE permission has been granted, proceed with displaying IMEI Number
-                //alertAlert(getString(R.string.permision_available_read_phone_state));
-                doPermissionGrantedStuffs();
-            } else {
-                alertAlert(getString(R.string.permissions_not_granted_read_phone_state));
-            }
-        }
-    }
-
-    private void alertAlert(String msg) {
-        new AlertDialog.Builder(ConfirmRegistration.this)
-                .setTitle("Permission Request")
-                .setMessage(msg)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-    }
-
-
-    public void doPermissionGrantedStuffs() {
-        //Have an  object of TelephonyManager
-        TelephonyManager tm =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        //Get IMEI Number of Phone  //////////////// for this example i only need the IMEI
-        IMEINumber=tm.getDeviceId();
-
-    }
-
     /**
      * Post data to server
      */
@@ -197,8 +107,7 @@ public class ConfirmRegistration extends AbstractActivity {
 
                 cancelLoader();
                 if (validateOTPResponseResponse.isSuccessful()) {
-                    new AppSharedPreference().storeUserID(validateOTPResponseResponse.body().getUserId(),getApplicationContext());
-                    Log.d("UserID",validateOTPResponseResponse.body().getUserId());
+                    storeMobileNumberAndUserID(validateOTPResponseResponse.body().getUserId());
                     pushActivity(ProfileActivity.class,mobileNumber);
                     finish();
                 }
@@ -212,6 +121,11 @@ public class ConfirmRegistration extends AbstractActivity {
                 }
             }
         });
+    }
+
+    private void storeMobileNumberAndUserID(String userId) {
+        new AppSharedPreference().storeUserID(userId,getApplicationContext());
+        new AppSharedPreference().storeMobileNumber(mobileNumber,getApplicationContext());
     }
 
 }

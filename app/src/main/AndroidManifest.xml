@@ -58,6 +58,10 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_confirm_registration" />
         <activity
+            android:name=".Activities.PopupViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_confirm_registration" />
+        <activity
             android:name=".Activities.ProfileActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_sign_up" />

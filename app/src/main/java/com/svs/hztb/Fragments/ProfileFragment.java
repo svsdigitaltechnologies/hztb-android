@@ -1,42 +1,47 @@
-package com.svs.hztb.Activities;
+package com.svs.hztb.Fragments;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.svs.hztb.Activities.HomeScreenActivity;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Permissions.MarshMallowPermission;
 import com.svs.hztb.R;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.RegisterService;
 import com.svs.hztb.RestService.ServiceGenerator;
-import com.svs.hztb.Utils.ConnectionDetector;
+import com.svs.hztb.Utils.LoadingBar;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Response;
 import rx.Observable;
@@ -44,7 +49,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ProfileActivity extends AbstractActivity {
+public class ProfileFragment extends Fragment {
 
     private String mobileNumber;
     private EditText emailEditText;
@@ -53,45 +58,58 @@ public class ProfileActivity extends AbstractActivity {
     private final int RESULT_CAMERA = 0;
     private final int RESULT_GALLERY = 1;
     private final int CROP_PIC = 2;
-
-
-
+    protected LoadingBar _loader;
+    private File mediaFile;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        actionBarSettings(R.string.profile_title);
-        initView();
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_profile, container, false);
     }
 
-    private void initView() {
-        mobileNumber = getIntent().getStringExtra("NUMBER");
-        TextView mobileNum = getView(R.id.editText_mobileNumber);
-        profilePic = getView(R.id.profile_thumb);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView(view);
+    }
+
+    private void initView(View view) {
+        mobileNumber = new AppSharedPreference().getMobileNumber(getActivity());
+        TextView mobileNum = (TextView)view.findViewById(R.id.editText_mobileNumber);
+        profilePic = (ImageView)view.findViewById(R.id.profile_thumb);
         mobileNum.setText(getResources().getString(R.string.string_plus) + mobileNumber);
-        emailEditText = getView(R.id.editText_email);
-        nameEditText = getView(R.id.editText_name);
-
+        emailEditText = (EditText)view.findViewById (R.id.editText_email);
+        nameEditText =  (EditText)view.findViewById (R.id.editText_name);
+        Button profileEditButton = (Button)view.findViewById(R.id.edit_profilePic);
+        Bitmap picBitmap = new AppSharedPreference().getUserBitmap(getActivity().getApplicationContext());
+        profilePic.setImageBitmap(picBitmap);
+        profileEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProfilePicSelectionDialog();
+            }
+        });
+        _loader=new LoadingBar(getActivity());
+        Button doneButton = (Button)view.findViewById(R.id.button_done);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postDataForUpdateUserProfile();
+            }
+        });
     }
 
-    public void onProfileThumbClicked(View view){
-        showProfilePicSelectionDialog();
-
-    }
 
     private void showProfilePicSelectionDialog(){
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View dialog = inflater.inflate(R.layout.custom_profile_pic_selection, null);
         dialogBuilder.setView(dialog);
 
         final AlertDialog alertDialog = dialogBuilder.create();
-
-
         WalkWayButton cameraPic = (WalkWayButton)dialog.findViewById(R.id.button_camera_pic);
         WalkWayButton galleryPic = (WalkWayButton)dialog.findViewById(R.id.button_gallery_pic);
         WalkWayButton cancel = (WalkWayButton)dialog.findViewById(R.id.button_cancel);
@@ -109,6 +127,7 @@ public class ProfileActivity extends AbstractActivity {
             @Override
             public void onClick(View v) {
                 alertDialog.cancel();
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -122,6 +141,7 @@ public class ProfileActivity extends AbstractActivity {
             }
         });
 
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,15 +149,28 @@ public class ProfileActivity extends AbstractActivity {
             }
         });
         alertDialog.show();
-
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+    public void showLoader(){
+        if(_loader!=null && !_loader.isShowing()){
+            _loader.show();
+        }
+    }
+
+    public void cancelLoader(){
+        if(_loader!=null && _loader.isShowing()){
+            _loader.cancel();
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
 
             case RESULT_CAMERA:
-                if(resultCode == RESULT_OK){
+                if(resultCode == Activity.RESULT_OK){
                     if (imageReturnedIntent.getData() != null) {
                         Uri selectedImage = imageReturnedIntent.getData();
                         performCrop(selectedImage);
@@ -149,7 +182,7 @@ public class ProfileActivity extends AbstractActivity {
 
                 break;
             case RESULT_GALLERY:
-                if(resultCode == RESULT_OK){
+                if(resultCode ==Activity.RESULT_OK){
                     if (imageReturnedIntent.getData() != null) {
                         Uri selectedImage = imageReturnedIntent.getData();
                         performCrop(selectedImage);
@@ -167,7 +200,6 @@ public class ProfileActivity extends AbstractActivity {
             }
         }
     }
-
 
     /**
      * this function does the crop operation.
@@ -195,21 +227,10 @@ public class ProfileActivity extends AbstractActivity {
         }
         // respond to users whose devices do not support the crop action
         catch (ActivityNotFoundException anfe) {
-            displayMessage( "This device doesn't support the crop action!");
+            Toast.makeText(getActivity().getApplicationContext(),"Device Crop Not Supported",Toast.LENGTH_LONG).show();
         }
     }
 
-    /**
-     * OnClick event for Sign Up
-     *
-     * @param view
-     */
-    public void onSignUpDoneButtonClicked(View view) {
-        ConnectionDetector c = new ConnectionDetector(getApplicationContext());
-        if(c.isConnectingToInternet()) {
-            postDataForUpdateUserProfile();
-        }else displayMessage("No Network");
-    }
 
     private void postDataForUpdateUserProfile() {
         showLoader();
@@ -220,9 +241,9 @@ public class ProfileActivity extends AbstractActivity {
             nameParam = nameEditText.getText().toString().trim();
         }
         if (emailEditText.getText().toString() == null || emailEditText.getText().toString().equals("")){
-            emailParam = null;
+            emailParam = "";
         }else {
-            emailParam = nameEditText.getText().toString().trim();
+            emailParam = emailEditText.getText().toString().trim();
         }
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -249,27 +270,18 @@ public class ProfileActivity extends AbstractActivity {
 
                 cancelLoader();
                 if (userProfileResponseObservable.isSuccessful()) {
-                    displayMessage(getResources().getString(R.string.toast_userprofile_update_success));
-                    pushActivity(HomeScreenActivity.class);
-                    new AppSharedPreference().storeSuccessLoginInSharedPreferences(getApplicationContext(),nameParam,emailParam,picArray);
-
-                    finish();
+                    Toast.makeText(getActivity().getApplicationContext(),getResources().getString(R.string.toast_userprofile_update_success),Toast.LENGTH_LONG).show();
+                    new AppSharedPreference().storeSuccessLoginInSharedPreferences(getActivity().getApplicationContext(),nameParam,emailParam,picArray);
+                    ((HomeScreenActivity)getActivity()).slideMenuAdapter.notifyDataSetChanged();
                 } else {
                     List<ErrorStatus> listErrorStatus = ServiceGenerator.parseErrorBody(userProfileResponseObservable);
                     for (ErrorStatus listErrorState : listErrorStatus) {
                         Log.d("Error Message : ", listErrorState.getMessage() + " " + listErrorState.getStatus());
-                        displayMessage(listErrorState.getMessage() + "Status :" + listErrorState.getStatus());
                     }
                 }
             }
         });
     }
 
-
-    @Override
-    public void onBackPressed() {
-        android.app.AlertDialog alertDialog = alertDialog();
-        alertDialog.show();
-    }
 
 }

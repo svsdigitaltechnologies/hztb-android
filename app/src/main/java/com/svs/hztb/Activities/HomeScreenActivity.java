@@ -1,11 +1,15 @@
 package com.svs.hztb.Activities;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,16 +32,21 @@ import com.svs.hztb.Bean.GivenPendingData;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.Product;
+import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Fragments.GetOpinionsFragment;
 import com.svs.hztb.Fragments.GroupsFragment;
 import com.svs.hztb.Fragments.NewRequestFragment;
 import com.svs.hztb.Fragments.NotificationFragment;
+import com.svs.hztb.Fragments.OpinionGivenFragment;
+import com.svs.hztb.Fragments.ProfileFragment;
 import com.svs.hztb.Interfaces.IDrawerClosed;
+import com.svs.hztb.Permissions.MarshMallowPermission;
 import com.svs.hztb.R;
 
 public class HomeScreenActivity extends AbstractActivity implements IDrawerClosed {
     private final int SLIDE_TIMEOUT = 200;
 
-    protected SlideMenuAdapter slideMenuAdapter;
+    public SlideMenuAdapter slideMenuAdapter;
     protected DrawerLayout mDrawerLayout;
     protected String[] menuItems;
     protected ListView mDrawerList;
@@ -68,7 +77,22 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
                selectItem(i);
             }
         });
+
+
+
+        Intent intent =getIntent();
+        boolean isOpinionRequest = getIntent().getBooleanExtra("request",false);
+        boolean isOpinionResponse =getIntent().getBooleanExtra("response",false);
+        if (isOpinionRequest){
+            Fragment fragment = new OpinionGivenFragment();
+            pushFragment(fragment);
+        }else if (isOpinionResponse){
+            Fragment fragment = new GetOpinionsFragment();
+            pushFragment(fragment);
+        }
+        String is = getIntent().getStringExtra("true");
     }
+
 
     /**
      * Swaps fragments in the main content view
@@ -86,37 +110,70 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
                 break;
             }
             case 2:{
-                displayMessage("Under Process");
+                fragment = new ProfileFragment();
+                pushFragment(fragment);
                 break;
             }
             case 3:{
                 fragment = new NotificationFragment();
-                pushFragment(fragment, position);
+                pushFragment(fragment);
                 break;
             }
             case 4:{
-//                fragment = new GroupsFragment();
-//                pushFragment(fragment, position);
+                fragment = new GroupsFragment();
+                pushFragment(fragment);
                 displayMessage("Under Process");
                 break;
             }
 
             case 5 :{
                 fragment = new NewRequestFragment();
-                pushFragment(fragment, position);
+                pushFragment(fragment);
                 break;
             }
             case 6:{
-                displayMessage("Under Process");
+                logOut();
                 break;
             }
-
-
         }
+        mDrawerList.setItemChecked(position, true);
 
     }
 
-    private void pushFragment(final Fragment fragment, final int position) {
+    private void logOut() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to Logout")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        new AppSharedPreference().storeUserID("",getApplicationContext());
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode== MarshMallowPermission.CAMERA_PERMISSION_REQUEST_CODE)
+        {
+            displayMessage("Camera");
+        }
+    }
+
+
+    private void pushFragment(final Fragment fragment) {
 
         final Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragment);
         if (!currentFragment.getClass().toString().equals(fragment.getClass().toString())) {
@@ -134,7 +191,7 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
                         ftx.commit();
                     }
                     // Highlight the selected item, update the title, and close the drawer
-                    mDrawerList.setItemChecked(position, true);
+
                 }
             }, SLIDE_TIMEOUT);
         }
