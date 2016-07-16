@@ -14,8 +14,8 @@ sonarqube {
                 "build/intermediates/exploded-aar/**/classes.jar"
 
         property "sonar.host.url", "http://localhost:9000"
-        property "sonar.projectKey", "MyAppName" // some shortcut name
-        property "sonar.projectName", "My App Name"
+        property "sonar.projectKey", "HZTBAndroid" // some shortcut name
+        property "sonar.projectName", "HowzThisBuddy"
         property "sonar.projectVersion", AppVersion
 
         property "sonar.sourceEncoding", "UTF-8"
