@@ -26,7 +26,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/custom_product_item"
-        android:background="@color/picton_blue"
+        android:background="@mipmap/blue_background"
         android:text="@string/view_selfie"
         android:textColor="@android:color/white" />
     </LinearLayout>

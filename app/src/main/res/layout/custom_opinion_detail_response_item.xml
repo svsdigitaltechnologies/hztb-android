@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:weightSum="5"
     android:layout_height="match_parent">
 <TextView
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:layout_weight="5"
     android:text="Andy Torres"
     android:textSize="18sp"
     android:textColor="@android:color/black"
-    android:id="@+id/textview_name_detail"/>
-    <Button
+    android:paddingLeft="20dp"
+    android:id="@+id/textview_name_detail"
+    android:layout_alignBottom="@+id/thumb_rating"
+    android:gravity="left|center"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:layout_toStartOf="@+id/thumb_rating" />
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:id="@+id/thumb_rating"
+        android:layout_weight="1"
+        android:src="@mipmap/wow"
         android:textColor="@android:color/black"
         android:text="Wow"
-        />
-    <Button
-        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/comment_button" />
+    <ImageView
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:id="@+id/comment_button"
+        android:layout_weight="1"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/comment"
+        android:scaleType="fitCenter"
         android:textColor="@android:color/black"
         android:text="Comment"
-        />
-</LinearLayout>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/thumb_rating" />
+</RelativeLayout>

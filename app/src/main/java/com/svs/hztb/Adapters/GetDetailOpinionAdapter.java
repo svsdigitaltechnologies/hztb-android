@@ -2,12 +2,15 @@ package com.svs.hztb.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,9 +67,27 @@ public class GetDetailOpinionAdapter  extends BaseAdapter {
         final OpinionResponseData opinionData = opinionDatasArrayList.get(position);
 
         holder.userIdName = (TextView) convertView.findViewById(R.id.textview_name_detail);
-        holder.thumbImage = (Button) convertView.findViewById(R.id.thumb_rating);
-        holder.thumbImage.setText(opinionData.getResponseType());
-        holder.comment = (Button) convertView.findViewById(R.id.comment_button);
+        holder.thumbImage = (ImageView) convertView.findViewById(R.id.thumb_rating);
+
+        Drawable res=null;
+        if (opinionData.getResponseText() != null) {
+            if (opinionData.getResponseType().equals("W")) {
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.wow, null);
+            }
+            if (opinionData.getResponseType().equals("L")) {
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.like, null);
+
+            }
+            if (opinionData.getResponseType().equals("N")) {
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.neutral, null);
+
+            }
+            if (opinionData.getResponseType().equals("D")) {
+                res = ResourcesCompat.getDrawable(mContext.getResources(), R.mipmap.dont_like, null);
+            }
+        }
+        holder.thumbImage.setImageDrawable(res);
+        holder.comment = (ImageView) convertView.findViewById(R.id.comment_button);
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,15 +106,15 @@ public class GetDetailOpinionAdapter  extends BaseAdapter {
         */
         Realm realm = Realm.getDefaultInstance();
         RealmUserProfileResponse userData =  realm.where(RealmUserProfileResponse.class).equalTo("userId",String.valueOf(opinionData.getResponderUserId())).findFirst();
-        holder.userIdName.setText("UserName :"+userData.getName());
+        holder.userIdName.setText(""+userData.getName());
         convertView.setTag(holder);
         return convertView;
     }
 
     class ViewHolder {
         TextView userIdName;
-        Button thumbImage;
-        Button comment;
+        ImageView thumbImage;
+        ImageView comment;
     }
 
 }

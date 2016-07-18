@@ -3,6 +3,7 @@ package com.svs.hztb.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -12,6 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.CountryItem;
 import com.svs.hztb.R;
@@ -19,6 +26,9 @@ import com.svs.hztb.R;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -30,12 +40,13 @@ public class ContactsAdapter extends BaseAdapter {
     private ArrayList<Contact> contactArrayList;
     private ArrayList<Contact> contactss;
 
-
     public ContactsAdapter(Context context, ArrayList<Contact> contacts){
         this.mContext = context;
         this.contactArrayList = contacts;
         this.contactss = new ArrayList<>();
         this.contactss.addAll(contacts);
+
+
     }
     @Override
     public int getCount() {
@@ -63,22 +74,11 @@ public class ContactsAdapter extends BaseAdapter {
             tick.setVisibility(View.VISIBLE);
         } else tick.setVisibility(View.GONE);
         TextView contactName = (TextView) convertView.findViewById(R.id.textview_select_contacts);
+        String[] imageName = contactArrayList.get(position).getContactImagePath().split("_");
         contactName.setText(contactArrayList.get(position).getContactName());
-        if (!contactArrayList.get(position).isUserRegistered()) {
             ImageView contactImage = (ImageView) convertView.findViewById(R.id.contact_image);
-            String contactPath = contactArrayList.get(position).getContactImagePath();
-            if (contactPath != null) {
-                Bitmap bitmap;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(contactPath));
-                    contactImage.setImageBitmap(bitmap);
-                    System.out.println(bitmap);
-                } catch (FileNotFoundException e) {
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+            String contactPath = imageName[0];
+        ImageLoader.getInstance().displayImage(contactPath, contactImage);
         return convertView;
     }
 
@@ -102,5 +102,6 @@ public class ContactsAdapter extends BaseAdapter {
         }
         notifyDataSetChanged();
     }
+
 
 }

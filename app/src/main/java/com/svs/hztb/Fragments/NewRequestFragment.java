@@ -7,9 +7,11 @@ import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -67,6 +69,7 @@ public class NewRequestFragment extends Fragment {
     private Button reguestOpinionButton;
     private RetriveGroupsAdapter adapter;
     private ImageView productImage;
+    private String imageData;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,6 +82,9 @@ public class NewRequestFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null){
+            imageData = savedInstanceState.getString("ImageData");
+        }
         groupsList = (ListView) view.findViewById(R.id.listview_groups);
         reguestOpinionButton =(Button)view.findViewById(R.id.button_request_opinion);
         reguestOpinionButton.setOnClickListener(new View.OnClickListener() {
@@ -110,9 +116,21 @@ public class NewRequestFragment extends Fragment {
                 startActivityForResult(takePicture, RESULT_CAMERA);//zero can be replaced with any action code
             }
         });
+        if (imageData != null){
+            String encodedString = imageData;
+            byte[] picArray = Base64.decode(encodedString, Base64.DEFAULT);
+            productImage.setImageBitmap( BitmapFactory.decodeByteArray(picArray , 0, picArray .length));
+        }
         postDataToGetGroups();
 
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("ImageData",getProductByteArray());
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);

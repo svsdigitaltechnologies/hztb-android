@@ -60,7 +60,7 @@ public class SlideMenuAdapter extends BaseAdapter {
             Bitmap picBitmap = new AppSharedPreference().getUserBitmap(mContext);
             ImageView profileImage= (ImageView) (convertView).findViewById(R.id.drawer_layout_thumbImage);
             profileImage.setImageBitmap(picBitmap);
-            Button closeDrawer = (Button)(convertView).findViewById(R.id.button);
+            ImageView closeDrawer = (ImageView)(convertView).findViewById(R.id.button);
             closeDrawer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

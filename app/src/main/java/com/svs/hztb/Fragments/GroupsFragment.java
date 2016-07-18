@@ -1,6 +1,7 @@
 package com.svs.hztb.Fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -13,9 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -101,7 +99,6 @@ public class GroupsFragment extends Fragment {
             }
         });
         initviews();
-//        checkIfPermissionIsGranted();
 
     }
 
@@ -224,7 +221,7 @@ public class GroupsFragment extends Fragment {
             contactString = "Contact";
         }
 
-        contectText.setText("Do you want to request with  "+contactsSelected.size()+" "+contactString+"");
+        contectText.setText("Do you want to create a group with   "+contactsSelected.size()+" "+contactString+"");
 
         WalkWayButton addButton = (WalkWayButton)dialog.findViewById(R.id.button_add_groupName);
         WalkWayButton sendButton = (WalkWayButton)dialog.findViewById(R.id.button_add_sendButton);
@@ -238,7 +235,7 @@ public class GroupsFragment extends Fragment {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postDataForNewRequest();
+                postDataForNewGroupCreation();
                 alertDialog.cancel();
             }
         });
@@ -246,7 +243,7 @@ public class GroupsFragment extends Fragment {
         alertDialog.show();
     }
 
-    private void postDataForNewRequest() {
+    private void postDataForNewGroupCreation() {
         showLoader();
 
         OpinionService opinionService = new OpinionService();
