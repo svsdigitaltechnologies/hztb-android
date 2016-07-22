@@ -13,9 +13,9 @@ sonarqube {
         def libraries = "C:/Users/skairamk/AppData/Local/Android/sdk/platforms/android-23/android.jar," +
                 "build/intermediates/exploded-aar/**/classes.jar"
 
-        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.host.url", "http://ec2-52-23-152-124.compute-1.amazonaws.com:9000"
         property "sonar.projectKey", "HZTBAndroid" // some shortcut name
-        property "sonar.projectName", "HowzThisBuddy"
+        property "sonar.projectName", "hztb-android-build"
         property "sonar.projectVersion", AppVersion
 
         property "sonar.sourceEncoding", "UTF-8"
