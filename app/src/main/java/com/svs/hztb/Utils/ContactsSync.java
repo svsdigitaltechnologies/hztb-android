@@ -60,6 +60,7 @@ public class ContactsSync {
     private Activity activity;
 //    private RealmList<RealmContact> contactList;
     private ArrayList<UserProfileRequest> userProfileRequestList;
+
     public ContactsSync(Activity activity1){
         this.activity = activity1;
     }
@@ -147,6 +148,7 @@ public class ContactsSync {
         set.addAll(userProfileRequestList);
         userProfileRequestList.clear();
         userProfileRequestList = new ArrayList<>(set);
+
         UserProfileRequests userprofileRequest = new UserProfileRequests();
         userprofileRequest.setUserProfileRequests(userProfileRequestList);
 

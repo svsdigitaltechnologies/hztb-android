@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import io.realm.RealmList;
 import retrofit2.Response;
 import rx.Observable;
@@ -128,12 +127,14 @@ public class GetOpinionsFragment extends android.app.Fragment {
         OpinionService opinionService = new OpinionService();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
+
         RefreshInput refreshInput = new RefreshInput();
         refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
      //   refreshInput.setUserId(1);
-   //     refreshInput.setLastUpdatedTime(dateFormat.format(date));
-        refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
- //       String json = toJson(refreshInput);
+        refreshInput.setLastUpdatedTime(dateFormat.format(date));
+     //   refreshInput.setLastUpdatedTime("2016-06-27 23:27:33");
+
+
 
         Observable<Response<List<OpinionData>>> refreshResponseObservable = opinionService.getOpinions(refreshInput);
 

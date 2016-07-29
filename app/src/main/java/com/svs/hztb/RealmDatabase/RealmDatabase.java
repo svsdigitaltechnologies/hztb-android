@@ -115,7 +115,10 @@ public class RealmDatabase {
         return opinionDataArrayList;
     }
 
+public  void addRealmOpinionCountData(final RealmList<RealmOpinionCountData> realmOpinionCountDatas){
 
+
+}
     public void addRealmOpinionData(final RealmList<RealmOpinionData> realmOpinionDataRealmList) {
 
         Iterator<RealmOpinionData> iterator = realmOpinionDataRealmList.iterator();
