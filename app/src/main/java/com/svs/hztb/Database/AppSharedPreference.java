@@ -20,6 +20,8 @@ public class AppSharedPreference  {
     private String kUserEmail = "USEREMAIL";
     private String kUserID = "USERID";
     private String kMobileNumber = "MobileNumber";
+    private String kLastOpinionRecievedDate = "lastOpinionRecievedDate";
+    private String kLastOpinionGivenDate = "lastOpinionGivenDate";
 
     private String kUserPicArray = "BYTEARRATY";
     public static String NOTIFICATION_CONVERSATION = "notification_conversation";
@@ -106,6 +108,21 @@ public class AppSharedPreference  {
 
     public String getStoreNotificationPopUp(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(NOTIFICATION_POPUP_MODE, "Always show popup");
+    }
+
+    public  void storeLastOpinionRecievedDate (String date,Context context){
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(kLastOpinionRecievedDate, date).commit();
+    }
+    public String getLastOpinionRecievedDate(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(kLastOpinionRecievedDate,null);
+    }
+
+
+    public  void storeLastOpinionGivenDate (String date,Context context){
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(kLastOpinionGivenDate, date).commit();
+    }
+    public String getLastOpinionGivenDate(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(kLastOpinionGivenDate, null);
     }
 
 

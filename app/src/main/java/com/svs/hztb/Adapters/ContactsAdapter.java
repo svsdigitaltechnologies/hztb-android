@@ -74,11 +74,11 @@ public class ContactsAdapter extends BaseAdapter {
             tick.setVisibility(View.VISIBLE);
         } else tick.setVisibility(View.GONE);
         TextView contactName = (TextView) convertView.findViewById(R.id.textview_select_contacts);
-        String[] imageName = contactArrayList.get(position).getContactImagePath().split("_");
         contactName.setText(contactArrayList.get(position).getContactName());
             ImageView contactImage = (ImageView) convertView.findViewById(R.id.contact_image);
-            String contactPath = imageName[0];
-        ImageLoader.getInstance().displayImage(contactPath, contactImage);
+//            String contactPath = imageName[0];
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+        ImageLoader.getInstance().displayImage(contactArrayList.get(position).getContactImagePath(), contactImage,options);
         return convertView;
     }
 

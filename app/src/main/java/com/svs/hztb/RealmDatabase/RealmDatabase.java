@@ -3,11 +3,13 @@ package com.svs.hztb.RealmDatabase;
 import android.util.Log;
 
 import com.svs.hztb.Bean.GroupDetail;
+import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.UserProfileResponses;
 import com.svs.hztb.Interfaces.ContactsSyncCompleted;
+import com.svs.hztb.Interfaces.IRealmDataStoredCallBack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,14 +29,22 @@ public class RealmDatabase {
     private ContactsSyncCompleted syncCompleted;
     private Realm realm;
     private int size;
+    private IRealmDataStoredCallBack dataStoredCallBack;
     public RealmDatabase(){
         realm = Realm.getDefaultInstance();
     }
 
     public RealmDatabase(ContactsSyncCompleted contactsSyncCompleted){
         realm = Realm.getDefaultInstance();
+        size = 0;
         syncCompleted = contactsSyncCompleted;
     }
+    public RealmDatabase(IRealmDataStoredCallBack iRealmDataStoredCallBack){
+        realm = Realm.getDefaultInstance();
+        dataStoredCallBack = iRealmDataStoredCallBack;
+        size = 0;
+    }
+
 
     public RealmResults getAllContactsWithUserIDs() {
         RealmResults<RealmUserProfileResponse> contactsWithUserIDs = realm.where(RealmUserProfileResponse.class).findAll();
@@ -67,7 +77,8 @@ public class RealmDatabase {
                     if (userProfileResponsesArrayList.size() == size){
                         if (syncCompleted != null) {
                             syncCompleted.onContactsSyncCompleted();
-                        }
+                            size = 0;
+                       }
                     }
                     Log.d("Success", "Success");
 
@@ -115,10 +126,60 @@ public class RealmDatabase {
         return opinionDataArrayList;
     }
 
-public  void addRealmOpinionCountData(final RealmList<RealmOpinionCountData> realmOpinionCountDatas){
+    public ArrayList<OpinionCountData> getAllOpinionsGiven() {
+        RealmResults<RealmOpinionCountData> opinionList = realm.where(RealmOpinionCountData.class).findAll();
+        ArrayList<OpinionCountData> opinionGivenDataArrayList = new ArrayList<>();
+        Iterator<RealmOpinionCountData> iterator = opinionList.iterator();
+        while (iterator.hasNext()){
+            RealmOpinionCountData realmOpinionData= iterator.next();
+            OpinionCountData opinionCountData = new OpinionCountData();
+            opinionCountData.setUserId(realmOpinionData.getUserId());
+            opinionCountData.setPendingCount(realmOpinionData.getPendingCount());
+            opinionCountData.setGivenCount(realmOpinionData.getGivenCount());
+            HashMap<String,Integer> responseCount = new HashMap<>();
+            opinionGivenDataArrayList.add(opinionCountData);
+        }
+        return opinionGivenDataArrayList;
+    }
 
+    public  void addRealmOpinionCountData(final RealmList<RealmOpinionCountData> realmOpinionCountDatas){
+        Iterator<RealmOpinionCountData> iterator = realmOpinionCountDatas.iterator();
+        while (iterator.hasNext()) {
+            final RealmOpinionCountData realmOpinionCountData = iterator.next();
+                realm.executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm bgRealm) {
+                        RealmOpinionCountData dataToStore = bgRealm.where(RealmOpinionCountData.class).equalTo("userId", realmOpinionCountData.getUserId()).findFirst();
+                        if (dataToStore == null) {
+                            dataToStore = bgRealm.createObject(RealmOpinionCountData.class);
+                            dataToStore.setUserId(realmOpinionCountData.getUserId());
+                        }
+                       dataToStore.setPendingCount(realmOpinionCountData.getPendingCount());
+                        dataToStore.setGivenCount(realmOpinionCountData.getGivenCount());
 
-}
+                    }
+                }, new Realm.Transaction.OnSuccess() {
+                    @Override
+                    public void onSuccess() {
+                        size += 1;
+                        if (size == realmOpinionCountDatas.size()){
+                            if (dataStoredCallBack != null) {
+                                dataStoredCallBack.dataSuccessfullyStore(true);
+                            }
+                        }
+                        Log.d("Success", "Success");
+                    }
+                }, new Realm.Transaction.OnError() {
+                    @Override
+                    public void onError(Throwable error) {
+                        Log.d("Failure", "Failure");
+                        if (dataStoredCallBack != null) {
+                            dataStoredCallBack.dataSuccessfullyStore(false);
+                        }
+                    }
+                });
+        }
+    }
     public void addRealmOpinionData(final RealmList<RealmOpinionData> realmOpinionDataRealmList) {
 
         Iterator<RealmOpinionData> iterator = realmOpinionDataRealmList.iterator();
@@ -148,6 +209,12 @@ public  void addRealmOpinionCountData(final RealmList<RealmOpinionCountData> rea
             }, new Realm.Transaction.OnSuccess() {
                 @Override
                 public void onSuccess() {
+                    size += 1;
+                    if (size == realmOpinionDataRealmList.size()){
+                        if (dataStoredCallBack != null) {
+                            dataStoredCallBack.dataSuccessfullyStore(true);
+                        }
+                    }
                     Log.d("Success", "Success");
                 }
             }, new Realm.Transaction.OnError() {

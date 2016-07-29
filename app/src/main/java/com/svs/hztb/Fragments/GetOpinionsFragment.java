@@ -18,6 +18,7 @@ import com.svs.hztb.Adapters.GetOpinionAdapter;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Interfaces.IRealmDataStoredCallBack;
 import com.svs.hztb.R;
 import com.svs.hztb.RealmDatabase.RealmDatabase;
 import com.svs.hztb.RealmDatabase.RealmOpinionData;
@@ -44,13 +45,13 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class GetOpinionsFragment extends android.app.Fragment {
+public class GetOpinionsFragment extends android.app.Fragment implements IRealmDataStoredCallBack{
 
     private ArrayList<OpinionData> opinionDataArrayList;
     protected LoadingBar _loader;
     private ListView listview_getOpinions;
     private GetOpinionAdapter adapter;
-
+    private RealmDatabase database;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,40 +71,45 @@ public class GetOpinionsFragment extends android.app.Fragment {
         _loader=new LoadingBar(getActivity());
         listview_getOpinions = (ListView)view.findViewById(R.id.listview_getOpinions);
 
-        RealmDatabase db = new RealmDatabase();
-        opinionDataArrayList = db.getAllOpinions();
+        database = new RealmDatabase(this);
+        opinionDataArrayList = database.getAllOpinions();
         if (opinionDataArrayList.size() == 0){
             checkForNewOpinions();
         }else {
-            adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
-            listview_getOpinions.setAdapter(adapter);
-            listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ((HomeScreenActivity)getActivity()).setProduct(opinionDataArrayList.get(position));
-                    GetOpinionsDetailFragment opinionDetailsFrg = new GetOpinionsDetailFragment();
-                    String backStateName = opinionDetailsFrg.getClass().getName();
-                    FragmentManager fragmentManager = getFragmentManager();
-                    boolean fragmentPopped = fragmentManager
-                            .popBackStackImmediate(backStateName, 0);
-                    if (!fragmentPopped) {
-                        FragmentTransaction ftx = fragmentManager.beginTransaction();
-                        ftx.replace(R.id.fragment, opinionDetailsFrg);
-                        ftx.addToBackStack(backStateName);
-                        ftx.commit();
-                    }
-                }
-            });
+            postDataToGetOpinions(true);
+            configureListviewAndAdapter();
         }
 
 
 
     }
 
+    private void configureListviewAndAdapter(){
+        adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
+        listview_getOpinions.setAdapter(adapter);
+        listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((HomeScreenActivity) getActivity()).setProduct(opinionDataArrayList.get(position));
+                GetOpinionsDetailFragment opinionDetailsFrg = new GetOpinionsDetailFragment();
+                String backStateName = opinionDetailsFrg.getClass().getName();
+                FragmentManager fragmentManager = getFragmentManager();
+                boolean fragmentPopped = fragmentManager
+                        .popBackStackImmediate(backStateName, 0);
+                if (!fragmentPopped) {
+                    FragmentTransaction ftx = fragmentManager.beginTransaction();
+                    ftx.replace(R.id.fragment, opinionDetailsFrg);
+                    ftx.addToBackStack(backStateName);
+                    ftx.commit();
+                }
+            }
+        });
+    }
+
     public void checkForNewOpinions(){
         ConnectionDetector c = new ConnectionDetector(getActivity().getApplicationContext());
         if(c.isConnectingToInternet()) {
-            postDataToGetOpinions();
+            postDataToGetOpinions(false);
         }else{
             Toast.makeText(getActivity().getApplicationContext(),"No Network",Toast.LENGTH_LONG).show();
         }
@@ -122,19 +128,26 @@ public class GetOpinionsFragment extends android.app.Fragment {
         }
     }
 
-    private void postDataToGetOpinions() {
+    private void postDataToGetOpinions(final boolean isBackgroundProcess) {
+        if (!isBackgroundProcess)
         showLoader();
+
+        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final Date date = new Date();
+
         OpinionService opinionService = new OpinionService();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
+
 
         RefreshInput refreshInput = new RefreshInput();
         refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-     //   refreshInput.setUserId(1);
-        refreshInput.setLastUpdatedTime(dateFormat.format(date));
-     //   refreshInput.setLastUpdatedTime("2016-06-27 23:27:33");
 
-
+        String lastUpdatedDate = new AppSharedPreference().getLastOpinionRecievedDate(getActivity().getApplicationContext());
+        if (lastUpdatedDate != null){
+            refreshInput.setLastUpdatedTime(lastUpdatedDate);
+        }else {
+            refreshInput.setLastUpdatedTime(dateFormat.format(date));
+        }
+     //   refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
 
         Observable<Response<List<OpinionData>>> refreshResponseObservable = opinionService.getOpinions(refreshInput);
 
@@ -142,12 +155,15 @@ public class GetOpinionsFragment extends android.app.Fragment {
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<List<OpinionData>>>() {
             @Override
             public void onCompleted() {
+                if (!isBackgroundProcess)
                 cancelLoader();
             }
 
             @Override
             public void onError(Throwable e) {
+                if (!isBackgroundProcess)
                 cancelLoader();
+
                 Log.d("Error ",e.toString());
             }
 
@@ -156,34 +172,16 @@ public class GetOpinionsFragment extends android.app.Fragment {
 
                 if (requestResponse.isSuccessful()) {
                     if (requestResponse.body().size() > 0) {
-                        opinionDataArrayList = (ArrayList<OpinionData>) requestResponse.body();
-                        storeOpinionDataInDatabase(opinionDataArrayList);
-
-                        adapter = new GetOpinionAdapter(getActivity().getApplicationContext(), opinionDataArrayList);
-                        listview_getOpinions.setAdapter(adapter);
-                        listview_getOpinions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                ((HomeScreenActivity)getActivity()).setProduct(opinionDataArrayList.get(position));
-                                GetOpinionsDetailFragment opinionDetailsFrg = new GetOpinionsDetailFragment();
-                                String backStateName = opinionDetailsFrg.getClass().getName();
-                                FragmentManager fragmentManager = getFragmentManager();
-                                boolean fragmentPopped = fragmentManager
-                                        .popBackStackImmediate(backStateName, 0);
-                                if (!fragmentPopped) {
-                                    FragmentTransaction ftx = fragmentManager.beginTransaction();
-                                    ftx.replace(R.id.fragment, opinionDetailsFrg);
-                                    ftx.addToBackStack(backStateName);
-                                    ftx.commit();
-                                }
-                            }
-                        });
+                        storeOpinionDataInDatabase((ArrayList<OpinionData>) requestResponse.body());
+                        new  AppSharedPreference().storeLastOpinionRecievedDate(dateFormat.format(date),getActivity().getApplicationContext());
                     }
                 }
                 else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
             }
         });
     }
+
+
 
     private void storeOpinionDataInDatabase(ArrayList<OpinionData> opinionDataArrayList) {
         RealmList<RealmOpinionData> opinionDataList = new RealmList<>();
@@ -214,9 +212,7 @@ public class GetOpinionsFragment extends android.app.Fragment {
 
             opinionDataList.add(realmOpinionData);
         }
-        RealmDatabase database = new RealmDatabase();
         database.addRealmOpinionData(opinionDataList);
-
     }
 
 
@@ -235,5 +231,13 @@ public class GetOpinionsFragment extends android.app.Fragment {
             e.printStackTrace();
         }
         return jsonString;
+    }
+
+    @Override
+    public void dataSuccessfullyStore(Boolean successful) {
+        if (successful){
+            opinionDataArrayList = database.getAllOpinions();
+            configureListviewAndAdapter();
+        }
     }
 }

@@ -22,7 +22,10 @@ import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Interfaces.IRealmDataStoredCallBack;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.RealmDatabase;
+import com.svs.hztb.RealmDatabase.RealmOpinionCountData;
 import com.svs.hztb.RestService.OpinionService;
 import com.svs.hztb.Utils.ConnectionDetector;
 import com.svs.hztb.Utils.LoadingBar;
@@ -34,21 +37,23 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
+import io.realm.RealmList;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class OpinionGivenFragment extends Fragment {
+public class OpinionGivenFragment extends Fragment implements IRealmDataStoredCallBack{
 
     private ArrayList<OpinionCountData> opinionGivenDataArrayList;
     protected LoadingBar _loader;
     private ListView listviewOpinionsGiven;
     private OpinionGivenAdapter adapter;
-
+    private RealmDatabase database;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,9 +67,16 @@ public class OpinionGivenFragment extends Fragment {
         _loader=new LoadingBar(getActivity());
         listviewOpinionsGiven = (ListView)view.findViewById(R.id.listview_OpinionGiven);
         ConnectionDetector c = new ConnectionDetector(getActivity().getApplicationContext());
-        if(c.isConnectingToInternet()) {
+        database = new RealmDatabase(this);
+        opinionGivenDataArrayList = database.getAllOpinionsGiven();
 
-           postDataToGetOpinionsGiven();
+        if(c.isConnectingToInternet()) {
+            if (opinionGivenDataArrayList.size() > 0)
+            {
+                configureListViewAndAdapter();
+            }else {
+                postDataToGetOpinionsGiven();
+            }
         }else{
             Toast.makeText(getActivity().getApplicationContext(),"No Network",Toast.LENGTH_LONG).show();
         }
@@ -74,14 +86,20 @@ public class OpinionGivenFragment extends Fragment {
     private void postDataToGetOpinionsGiven() {
         showLoader();
         OpinionService opinionService = new OpinionService();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
+        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final Date date = new Date();
         RefreshInput refreshInput = new RefreshInput();
         refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-   //     refreshInput.setUserId(1);
         //      refreshInput.setLastUpdatedTime(dateFormat.format(date));
-        refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
-               String json = toJson(refreshInput);
+
+        String lastUpdatedDate = new AppSharedPreference().getLastOpinionGivenDate(getActivity().getApplicationContext());
+        if (lastUpdatedDate != null){
+            refreshInput.setLastUpdatedTime(lastUpdatedDate);
+        }else {
+            refreshInput.setLastUpdatedTime(dateFormat.format(date));
+        }
+      //  refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
+      //  String json = toJson(refreshInput);
 
         Observable<Response<List<OpinionCountData>>> refreshResponseObservable = opinionService.opinionGiven(refreshInput);
 
@@ -103,38 +121,60 @@ public class OpinionGivenFragment extends Fragment {
 
                 if (requestResponse.isSuccessful()) {
                     if (requestResponse.body().size() > 0) {
-                        opinionGivenDataArrayList = (ArrayList<OpinionCountData>) requestResponse.body();
-                        adapter = new OpinionGivenAdapter(getActivity().getApplicationContext(), opinionGivenDataArrayList);
-                        listviewOpinionsGiven.setAdapter(adapter);
-                        listviewOpinionsGiven.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                ((HomeScreenActivity)getActivity()).setOpinionData(opinionGivenDataArrayList.get(position));
+                        if (requestResponse.body().size() > 0) {
+                            storeOpinionCountDataToDB(requestResponse.body());
+                            new  AppSharedPreference().storeLastOpinionGivenDate(dateFormat.format(date),getActivity().getApplicationContext());
 
-                                OpinionGivenDetailFragment opinionDetailsFrg = new OpinionGivenDetailFragment();
-                                String backStateName = opinionDetailsFrg.getClass().getName();
-                                FragmentManager fragmentManager = getFragmentManager();
-                                boolean fragmentPopped = fragmentManager
-                                        .popBackStackImmediate(backStateName, 0);
-                                if (!fragmentPopped) {
-                                    FragmentTransaction ftx = fragmentManager.beginTransaction();
-                                    Bundle bundle = new Bundle();
-                                    int c =  opinionGivenDataArrayList.get(position).getUserId();
-
-                                    bundle.putInt("responderUserId", opinionGivenDataArrayList.get(position).getUserId());
-                                    opinionDetailsFrg.setArguments(bundle);
-                                    ftx.replace(R.id.fragment, opinionDetailsFrg);
-                                    ftx.addToBackStack(backStateName);
-                                    ftx.commit();
-                                }
-                            }
-                        });
+                        }
                     }
                 }
                 else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void configureListViewAndAdapter(){
+        adapter = new OpinionGivenAdapter(getActivity().getApplicationContext(), opinionGivenDataArrayList);
+        listviewOpinionsGiven.setAdapter(adapter);
+        listviewOpinionsGiven.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ((HomeScreenActivity) getActivity()).setOpinionData(opinionGivenDataArrayList.get(position));
+
+                OpinionGivenDetailFragment opinionDetailsFrg = new OpinionGivenDetailFragment();
+                String backStateName = opinionDetailsFrg.getClass().getName();
+                FragmentManager fragmentManager = getFragmentManager();
+                boolean fragmentPopped = fragmentManager
+                        .popBackStackImmediate(backStateName, 0);
+                if (!fragmentPopped) {
+                    FragmentTransaction ftx = fragmentManager.beginTransaction();
+                    Bundle bundle = new Bundle();
+                    int c = opinionGivenDataArrayList.get(position).getUserId();
+
+                    bundle.putInt("responderUserId", opinionGivenDataArrayList.get(position).getUserId());
+                    opinionDetailsFrg.setArguments(bundle);
+                    ftx.replace(R.id.fragment, opinionDetailsFrg);
+                    ftx.addToBackStack(backStateName);
+                    ftx.commit();
+                }
+            }
+        });
+    }
+
+    private void storeOpinionCountDataToDB(List<OpinionCountData> opinionList) {
+        RealmList<RealmOpinionCountData> list = new RealmList<>();
+        Iterator<OpinionCountData> opinionIterator = opinionList.iterator();
+        while (opinionIterator.hasNext()){
+            OpinionCountData opinionCountObj = opinionIterator.next();
+            RealmOpinionCountData realmCountObj = new RealmOpinionCountData();
+            realmCountObj.setUserId(opinionCountObj.getUserId());
+            realmCountObj.setGivenCount(opinionCountObj.getGivenCount());
+            realmCountObj.setPendingCount(opinionCountObj.getPendingCount());
+            list.add(realmCountObj);
+        }
+        database.addRealmOpinionCountData(list);
     }
 
     public static String toJson(Object object) {
@@ -164,4 +204,9 @@ public class OpinionGivenFragment extends Fragment {
         }
     }
 
+    @Override
+    public void dataSuccessfullyStore(Boolean successful) {
+        opinionGivenDataArrayList = database.getAllOpinionsGiven();
+        configureListViewAndAdapter();
+    }
 }
