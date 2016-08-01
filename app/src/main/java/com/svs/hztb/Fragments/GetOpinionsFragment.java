@@ -118,6 +118,12 @@ public class GetOpinionsFragment extends android.app.Fragment implements IRealmD
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.removeIDataStoredCallBack();
+
+    }
 
     public void showLoader(){
         if(_loader!=null && !_loader.isShowing()){
@@ -182,8 +188,6 @@ public class GetOpinionsFragment extends android.app.Fragment implements IRealmD
             }
         });
     }
-
-
 
     private void storeOpinionDataInDatabase(ArrayList<OpinionData> opinionDataArrayList) {
         RealmList<RealmOpinionData> opinionDataList = new RealmList<>();

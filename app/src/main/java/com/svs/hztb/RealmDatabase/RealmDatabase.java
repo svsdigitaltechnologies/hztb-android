@@ -46,6 +46,13 @@ public class RealmDatabase {
         size = 0;
     }
 
+    public void removeIDataStoredCallBack(){
+        dataStoredCallBack = null;
+    }
+
+    public void removeIContactsSyncCompletedCallBack(){
+        syncCompleted = null;
+    }
 
     public RealmResults getAllContactsWithUserIDs() {
         RealmResults<RealmUserProfileResponse> contactsWithUserIDs = realm.where(RealmUserProfileResponse.class).findAll();

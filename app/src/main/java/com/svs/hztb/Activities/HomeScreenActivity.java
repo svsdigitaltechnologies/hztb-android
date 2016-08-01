@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -35,6 +36,7 @@ import com.svs.hztb.Bean.Product;
 import com.svs.hztb.Database.AppSharedPreference;
 import com.svs.hztb.Fragments.GetOpinionsFragment;
 import com.svs.hztb.Fragments.GroupsFragment;
+import com.svs.hztb.Fragments.HomeLaunchingFragment;
 import com.svs.hztb.Fragments.NewRequestFragment;
 import com.svs.hztb.Fragments.NotificationFragment;
 import com.svs.hztb.Fragments.OpinionGivenFragment;
@@ -53,6 +55,8 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
     protected OpinionData mProduct;
     protected OpinionCountData opinionCountData;
     protected GivenPendingData givenPendingData;
+    private Uri capturedImageURI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +98,18 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
     }
 
 
+
+    public Uri getCapturedImageURI() {
+        return capturedImageURI;
+    }
+
+    public void setCapturedImageURI(Uri capturedImageURI) {
+        this.capturedImageURI = capturedImageURI;
+    }
+
+
+
+
     /**
      * Swaps fragments in the main content view
      */
@@ -106,7 +122,11 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
 
         switch (position){
             case 1:{
-                displayMessage("Under Process");
+
+                int count = getFragmentManager().getBackStackEntryCount();
+                for(int i = 0; i < count; ++i) {
+                    getFragmentManager().popBackStack();
+                }
                 break;
             }
             case 2:{

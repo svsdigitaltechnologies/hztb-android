@@ -140,6 +140,12 @@ public class OpinionGivenFragment extends Fragment implements IRealmDataStoredCa
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.removeIDataStoredCallBack();
+    }
+
     private void configureListViewAndAdapter(){
         adapter = new OpinionGivenAdapter(getActivity().getApplicationContext(), opinionGivenDataArrayList);
         listviewOpinionsGiven.setAdapter(adapter);

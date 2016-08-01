@@ -145,6 +145,13 @@ public class GroupsFragment extends Fragment implements IRealmDataStoredCallBack
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.removeIDataStoredCallBack();
+
+    }
+
     private void addAllTheListToDatabase(ArrayList<GroupDetail> groupDetailList){
         Iterator<GroupDetail> iterator = groupDetailList.iterator();
         RealmList<GroupDetailRealm> groupDetailRealmList = new RealmList<>();

@@ -12,6 +12,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -36,6 +37,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Response;
@@ -54,6 +57,15 @@ public class ProfileActivity extends AbstractActivity {
     private final int RESULT_GALLERY = 1;
     private final int CROP_PIC = 2;
 
+    public Uri getCapturedImageURI() {
+        return capturedImageURI;
+    }
+
+    public void setCapturedImageURI(Uri capturedImageURI) {
+        this.capturedImageURI = capturedImageURI;
+    }
+
+    private Uri capturedImageURI;
 
 
 
@@ -110,9 +122,27 @@ public class ProfileActivity extends AbstractActivity {
             public void onClick(View v) {
                 alertDialog.cancel();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto , RESULT_GALLERY);//one can be replaced with any action code
+
+
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
+                        Toast toast = Toast.makeText(ProfileActivity.this, "There was a problem saving the photo...", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri fileUri = Uri.fromFile(photoFile);
+                        setCapturedImageURI(fileUri);
+                        Intent takePictureIntent = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                         getCapturedImageURI());
+                        startActivityForResult(takePictureIntent, RESULT_GALLERY);
+                    }
+
                 }else {
                     Intent intent = new Intent();
                     intent.setType("image/*");
@@ -132,27 +162,28 @@ public class ProfileActivity extends AbstractActivity {
 
     }
 
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "1mind_" + timeStamp + ".jpg";
+        File photo = new File(Environment.getExternalStorageDirectory(),  imageFileName);
+        return photo;
+    }
+
+
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
 
             case RESULT_CAMERA:
                 if(resultCode == RESULT_OK){
-                    if (imageReturnedIntent.getData() != null) {
-                        Uri selectedImage = imageReturnedIntent.getData();
-                        performCrop(selectedImage);
-                    }else {
-                        Bitmap bitmap= (Bitmap)imageReturnedIntent.getExtras().get("data");
-                        profilePic.setImageBitmap(bitmap);
-                    }
+                        performCrop(capturedImageURI);
                 }
 
                 break;
             case RESULT_GALLERY:
                 if(resultCode == RESULT_OK){
                     if (imageReturnedIntent.getData() != null) {
-                        Uri selectedImage = imageReturnedIntent.getData();
-                        performCrop(selectedImage);
+                        performCrop(capturedImageURI);
                     }
                 }
                 break;

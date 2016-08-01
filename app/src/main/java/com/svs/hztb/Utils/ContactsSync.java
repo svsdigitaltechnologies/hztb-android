@@ -76,6 +76,10 @@ public class ContactsSync {
         checkIfPermissionIsGranted();
     }
 
+    public void removeCallBack(){
+        contactsSyncCompleted = null;
+    }
+
     public void checkIfPermissionIsGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (activity.checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {

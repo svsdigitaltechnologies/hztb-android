@@ -81,6 +81,7 @@ public class ProfileFragment extends Fragment {
         mobileNum.setText(getResources().getString(R.string.string_plus) + mobileNumber);
         emailEditText = (EditText)view.findViewById (R.id.editText_email);
         nameEditText =  (EditText)view.findViewById (R.id.editText_name);
+        nameEditText.setText(new AppSharedPreference().getUserName(getActivity().getApplicationContext()));
         Button profileEditButton = (Button)view.findViewById(R.id.edit_profilePic);
         Bitmap picBitmap = new AppSharedPreference().getUserBitmap(getActivity().getApplicationContext());
         profilePic.setImageBitmap(picBitmap);
@@ -118,8 +119,24 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alertDialog.cancel();
-                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, RESULT_CAMERA);//zero can be replaced with any action code
+
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
+                    Toast toast = Toast.makeText(getActivity(), "There was a problem saving the photo...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    Uri fileUri = Uri.fromFile(photoFile);
+                    ((HomeScreenActivity) getActivity()).setCapturedImageURI(fileUri);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            ((HomeScreenActivity) getActivity()).getCapturedImageURI());
+                    startActivityForResult(takePictureIntent, RESULT_CAMERA);
+                }
             }
         });
 
@@ -151,6 +168,14 @@ public class ProfileFragment extends Fragment {
         alertDialog.show();
     }
 
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "1mind_" + timeStamp + ".jpg";
+        File photo = new File(Environment.getExternalStorageDirectory(),  imageFileName);
+        return photo;
+    }
+
+
     public void showLoader(){
         if(_loader!=null && !_loader.isShowing()){
             _loader.show();
@@ -171,12 +196,17 @@ public class ProfileFragment extends Fragment {
 
             case RESULT_CAMERA:
                 if(resultCode == Activity.RESULT_OK){
-                    if (imageReturnedIntent.getData() != null) {
-                        Uri selectedImage = imageReturnedIntent.getData();
-                        performCrop(selectedImage);
+                    if (imageReturnedIntent != null) {
+                        if (imageReturnedIntent.getData() != null) {
+                            Uri selectedImage = imageReturnedIntent.getData();
+                            performCrop(selectedImage);
+                        } else {
+                            Uri selectedImage = ((HomeScreenActivity) getActivity()).getCapturedImageURI();
+                            performCrop(selectedImage);
+                        }
                     }else {
-                        Bitmap bitmap= (Bitmap)imageReturnedIntent.getExtras().get("data");
-                        profilePic.setImageBitmap(bitmap);
+                        Uri selectedImage = ((HomeScreenActivity) getActivity()).getCapturedImageURI();
+                        performCrop(selectedImage);
                     }
                 }
 

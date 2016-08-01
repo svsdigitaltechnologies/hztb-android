@@ -65,6 +65,7 @@ public class ContactsFragment extends Fragment implements ContactsSyncCompleted{
     EditText contactSearch;
     private Button doneButton;
     byte[] imageData;
+    private  ContactsSync contactsSync;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2001;
     protected LoadingBar _loader;
 
@@ -108,7 +109,7 @@ public class ContactsFragment extends Fragment implements ContactsSyncCompleted{
     }
 
     private void syncContacts() {
-        ContactsSync contactsSync = new ContactsSync(this,getActivity());
+        contactsSync = new ContactsSync(this,getActivity());
         contactsSync.syncContactsToServer();
     }
 
@@ -320,6 +321,14 @@ public class ContactsFragment extends Fragment implements ContactsSyncCompleted{
                 }
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (contactsSync != null) {
+            contactsSync.removeCallBack();
+        }
     }
 
     @Override

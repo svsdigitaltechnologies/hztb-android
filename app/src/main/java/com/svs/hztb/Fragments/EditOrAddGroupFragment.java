@@ -127,6 +127,12 @@ public class EditOrAddGroupFragment extends Fragment implements ContactsSyncComp
         initviews();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.removeIContactsSyncCompletedCallBack();
+    }
+
     private void postDataToDeleteGroup() {
         showLoader();
 

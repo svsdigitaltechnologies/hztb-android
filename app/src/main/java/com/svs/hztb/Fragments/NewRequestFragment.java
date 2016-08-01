@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -25,6 +26,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.svs.hztb.Activities.HomeScreenActivity;
 import com.svs.hztb.Adapters.RetriveGroupsAdapter;
 import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.Bean.Product;
@@ -46,10 +48,13 @@ import com.svs.hztb.RestService.ServiceGenerator;
 import com.svs.hztb.Utils.LoadingBar;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -114,8 +119,24 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
         captureSelf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, RESULT_CAMERA);//zero can be replaced with any action code
+
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
+                    Toast toast = Toast.makeText(getActivity(), "There was a problem saving the photo...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    Uri fileUri = Uri.fromFile(photoFile);
+                    ((HomeScreenActivity) getActivity()).setCapturedImageURI(fileUri);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            ((HomeScreenActivity) getActivity()).getCapturedImageURI());
+                    startActivityForResult(takePictureIntent, RESULT_CAMERA);
+                }
             }
         });
         if (imageData != null){
@@ -128,11 +149,16 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
         groupList = database.getAllGroupList();
         if (groupList.size()>0){
             updateListviewWithGroups();
-            postDataToGetGroups(true);
         }else {
-            showLoader();
             postDataToGetGroups(false);
         }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "1mind_" + timeStamp + ".jpg";
+        File photo = new File(Environment.getExternalStorageDirectory(),  imageFileName);
+        return photo;
     }
 
     @Override
@@ -142,18 +168,29 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.removeIDataStoredCallBack();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
 
             case RESULT_CAMERA:
                 if(resultCode == Activity.RESULT_OK){
-                    if (imageReturnedIntent.getData() != null) {
-                        Uri selectedImage = imageReturnedIntent.getData();
-                        performCrop(selectedImage);
+                    if (imageReturnedIntent != null) {
+                        if (imageReturnedIntent.getData() != null) {
+                            Uri selectedImage = imageReturnedIntent.getData();
+                            performCrop(selectedImage);
+                        } else {
+                            Uri selectedImage = ((HomeScreenActivity) getActivity()).getCapturedImageURI();
+                            performCrop(selectedImage);
+                        }
                     }else {
-                        Bitmap bitmap= (Bitmap)imageReturnedIntent.getExtras().get("data");
-                        productImage.setImageBitmap(bitmap);
+                        Uri selectedImage = ((HomeScreenActivity) getActivity()).getCapturedImageURI();
+                        performCrop(selectedImage);
                     }
                 }
 
@@ -303,7 +340,7 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
             public void onNext(Response<List<GroupDetail>> groupResponse) {
 
                 if (groupResponse.isSuccessful()) {
-                    if (((ArrayList<GroupDetail>) groupResponse.body()).size() > 0) {
+                    if ((groupResponse.body()).size() > 0) {
                         addAllTheListToDatabase((ArrayList<GroupDetail>) groupResponse.body());
                     }else {
                         updateListviewWithGroups();
@@ -314,6 +351,8 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
         });
 
     }
+
+
 
     private void updateListviewWithGroups() {
 
