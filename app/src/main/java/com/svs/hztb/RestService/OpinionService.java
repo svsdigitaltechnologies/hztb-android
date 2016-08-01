@@ -1,6 +1,7 @@
 package com.svs.hztb.RestService;
 
 import com.svs.hztb.Bean.GroupDetail;
+import com.svs.hztb.Bean.GroupOutput;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.OpinionResponseInfo;
@@ -8,6 +9,7 @@ import com.svs.hztb.Bean.OpinionResponseInput;
 import com.svs.hztb.Bean.OpinionResponseOutput;
 import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Bean.RefreshOutput;
+import com.svs.hztb.Bean.RemoveGroup;
 import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.ResponseGivenPendingInfo;
@@ -57,9 +59,14 @@ public class OpinionService {
     public Observable<Response<OpinionResponseOutput>> sendOpinionInput(OpinionResponseInput opinionsInput) {
         return dataService.sendOpinionOfProduct(opinionsInput);
     }
-    public Observable<Response<RequestOpinionOutput>> sendGroupInput(GroupDetail groupDetail) {
+    public Observable<Response<GroupOutput>> requestNewGroup(GroupDetail groupDetail) {
         return dataService.requestForNewGroup(groupDetail);
     }
+    public Observable<Response<GroupOutput>> requestToDeleteGroup(RemoveGroup group) {
+        return dataService.requestForDeleteGroup(group);
+    }
+
+
 
     public Observable<Response<List<GroupDetail>> > getGroups(UserID userID) {
         return dataService.requestToGetOpinions(userID);

@@ -38,6 +38,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+
 import io.realm.RealmList;
 import retrofit2.Response;
 import rx.Observable;
@@ -75,6 +77,7 @@ public class GetOpinionsFragment extends android.app.Fragment implements IRealmD
         opinionDataArrayList = database.getAllOpinions();
         if (opinionDataArrayList.size() == 0){
             checkForNewOpinions();
+            configureListviewAndAdapter();
         }else {
             postDataToGetOpinions(true);
             configureListviewAndAdapter();
@@ -134,23 +137,22 @@ public class GetOpinionsFragment extends android.app.Fragment implements IRealmD
 
         final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final Date date = new Date();
+        dateFormat.setTimeZone(TimeZone.getTimeZone("gmt"));
+
 
         OpinionService opinionService = new OpinionService();
 
 
         RefreshInput refreshInput = new RefreshInput();
         refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-
         String lastUpdatedDate = new AppSharedPreference().getLastOpinionRecievedDate(getActivity().getApplicationContext());
         if (lastUpdatedDate != null){
             refreshInput.setLastUpdatedTime(lastUpdatedDate);
         }else {
-            refreshInput.setLastUpdatedTime(dateFormat.format(date));
+            refreshInput.setLastUpdatedTime("2016-07-29 01:01:01");
         }
-     //   refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
 
         Observable<Response<List<OpinionData>>> refreshResponseObservable = opinionService.getOpinions(refreshInput);
-
         refreshResponseObservable.observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<List<OpinionData>>>() {
             @Override

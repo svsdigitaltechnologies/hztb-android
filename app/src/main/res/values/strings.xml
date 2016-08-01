@@ -85,4 +85,5 @@
     <string name="conversation_tones">Conversation tones</string>
     <string name="play_sounds_for_incoming_and_outgoing_messages">Play sounds for incoming and outgoing messages</string>
     <string name="refresh">Refresh</string>
+    <string name="delete">Delete</string>
 </resources>

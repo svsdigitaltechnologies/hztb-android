@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/registration_bg"
+    tools:context="com.svs.hztb.Fragments.EditOrAddGroupFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="15sp"
+        android:textColor="@color/light_grey"
+        android:text="Group Name"
+        android:id="@+id/textView_group_header" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:hint="@string/group_name"
+        android:layout_marginTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@android:color/white"
+        android:id="@+id/editText_group"
+        android:background="@android:color/transparent"
+        android:layout_below="@+id/textView_group_header"
+        android:layout_alignStart="@+id/textView_group_header"
+        android:layout_toStartOf="@+id/button_group_delete" />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/white"
+        android:layout_alignStart="@+id/editText_group"
+        android:layout_below="@+id/editText_group"
+        android:layout_toStartOf="@+id/button_group_delete"
+        android:layout_marginRight="10dp"
+        android:id="@+id/view" />
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_group_delete"
+        android:text="@string/delete"
+        android:textSize="16dp"
+        android:layout_marginRight="10dp"
+        android:background="@mipmap/button_crop_bit"
+        android:layout_below="@+id/textView_group_header"
+        android:layout_alignParentEnd="true" />
+
+    <include layout="@layout/contacts_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/view"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>

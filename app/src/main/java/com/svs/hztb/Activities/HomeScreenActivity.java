@@ -122,7 +122,6 @@ public class HomeScreenActivity extends AbstractActivity implements IDrawerClose
             case 4:{
                 fragment = new GroupsFragment();
                 pushFragment(fragment);
-                displayMessage("Under Process");
                 break;
             }
 

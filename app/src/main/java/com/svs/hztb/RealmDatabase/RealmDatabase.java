@@ -6,6 +6,7 @@ import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.Product;
+import com.svs.hztb.Bean.UserData;
 import com.svs.hztb.Bean.UserProfileResponse;
 import com.svs.hztb.Bean.UserProfileResponses;
 import com.svs.hztb.Interfaces.ContactsSyncCompleted;
@@ -228,8 +229,30 @@ public class RealmDatabase {
 
     }
 
-    public void getAllGroupList(){
+    public ArrayList<GroupDetail> getAllGroupList(){
+        ArrayList<GroupDetail> groupDetailsList = new ArrayList<GroupDetail>();
         RealmResults<GroupDetailRealm> groupList = realm.where(GroupDetailRealm.class).findAll();
+        Iterator<GroupDetailRealm> iterator = groupList.iterator();
+        while (iterator.hasNext()){
+            GroupDetailRealm realmGroup = iterator.next();
+            GroupDetail groupDetail = new GroupDetail();
+            groupDetail.setUserId(realmGroup.getUserId());
+            groupDetail.setGroupId(realmGroup.getGroupId());
+            groupDetail.setGroupName(realmGroup.getGroupName());
+            Iterator<RealmUserData> realmUserDataIterator = realmGroup.getUserDataList().iterator();
+            ArrayList<UserData> userDataArrayList = new ArrayList<>();
+            while (realmUserDataIterator.hasNext()){
+                RealmUserData realmUserData = realmUserDataIterator.next();
+                UserData userData = new UserData();
+                userData.setUserId(realmUserData.getUserId());
+                userData.setFirstName(realmUserData.getFirstName());
+                userData.setLastname(realmUserData.getLastname());
+                userDataArrayList.add(userData);
+            }
+            groupDetail.setGroupMembers(userDataArrayList);
+            groupDetailsList.add(groupDetail);
+        }
+        return groupDetailsList;
     }
 
 
@@ -253,16 +276,27 @@ public class RealmDatabase {
             }, new Realm.Transaction.OnSuccess() {
                 @Override
                 public void onSuccess() {
+                    size = size+1;
+                    Log.d("Size"+size,"List size"+groupDetailRealmsList.size());
+                    if (groupDetailRealmsList.size() == size){
+                        if (dataStoredCallBack != null) {
+                            dataStoredCallBack.dataSuccessfullyStore(true);
+                            size = 0;
+                        }
+                    }
                     Log.d("Success", "Success");
                 }
             }, new Realm.Transaction.OnError() {
                 @Override
                 public void onError(Throwable error) {
                     Log.d("Failure", error.toString());
-
                 }
             });
         }
     }
+
+
+
+
 }
 

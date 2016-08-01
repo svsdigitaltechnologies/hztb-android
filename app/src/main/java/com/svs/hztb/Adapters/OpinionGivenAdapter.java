@@ -72,22 +72,16 @@ public class OpinionGivenAdapter extends BaseAdapter {
             holder.pendingCount = (TextView)convertView.findViewById(R.id.opinion_pending_count);
 
             OpinionCountData opinionData = opinionGivenArrayList.get(position);
-
             Realm realm = Realm.getDefaultInstance();
-
-            RealmResults<RealmUserProfileResponse> list = realm.where(RealmUserProfileResponse.class).findAll();
-            Iterator<RealmUserProfileResponse> iterator = list.iterator();
-            while (iterator.hasNext()){
-                RealmUserProfileResponse userProfileResponse = iterator.next();
-                Log.d(userProfileResponse.getUserId(),userProfileResponse.getName());
-            }
             RealmUserProfileResponse userData =  realm.where(RealmUserProfileResponse.class).equalTo("userId",String.valueOf(opinionData.getUserId())).findFirst();
+
             if (userData == null){
                 holder.userName.setText("UserID  :"+opinionData.getUserId());
             }else holder.userName.setText(userData.getName());
 
             holder.givenCount.setText("Given :"+opinionData.getGivenCount());
             holder.pendingCount.setText("Pending :"+opinionData.getPendingCount());
+
             convertView.setTag(holder);
             return convertView;
         }
@@ -97,7 +91,6 @@ public class OpinionGivenAdapter extends BaseAdapter {
             TextView userName;
             TextView givenCount;
             TextView pendingCount;
-
         }
 
     }

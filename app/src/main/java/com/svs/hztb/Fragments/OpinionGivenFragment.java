@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.realm.RealmList;
 import retrofit2.Response;
@@ -74,8 +75,9 @@ public class OpinionGivenFragment extends Fragment implements IRealmDataStoredCa
             if (opinionGivenDataArrayList.size() > 0)
             {
                 configureListViewAndAdapter();
+                postDataToGetOpinionsGiven(true);
             }else {
-                postDataToGetOpinionsGiven();
+                postDataToGetOpinionsGiven(false);
             }
         }else{
             Toast.makeText(getActivity().getApplicationContext(),"No Network",Toast.LENGTH_LONG).show();
@@ -83,20 +85,23 @@ public class OpinionGivenFragment extends Fragment implements IRealmDataStoredCa
 
     }
 
-    private void postDataToGetOpinionsGiven() {
+    private void postDataToGetOpinionsGiven(final boolean isBackground) {
+        if (!isBackground)
         showLoader();
+
         OpinionService opinionService = new OpinionService();
         final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final Date date = new Date();
+        dateFormat.setTimeZone(TimeZone.getTimeZone("gmt"));
+
         RefreshInput refreshInput = new RefreshInput();
         refreshInput.setUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
-        //      refreshInput.setLastUpdatedTime(dateFormat.format(date));
 
         String lastUpdatedDate = new AppSharedPreference().getLastOpinionGivenDate(getActivity().getApplicationContext());
         if (lastUpdatedDate != null){
             refreshInput.setLastUpdatedTime(lastUpdatedDate);
         }else {
-            refreshInput.setLastUpdatedTime(dateFormat.format(date));
+            refreshInput.setLastUpdatedTime("2016-07-29 01:01:01");
         }
       //  refreshInput.setLastUpdatedTime("2015-01-01 01:01:01");
       //  String json = toJson(refreshInput);
@@ -107,11 +112,13 @@ public class OpinionGivenFragment extends Fragment implements IRealmDataStoredCa
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<List<OpinionCountData>>>() {
             @Override
             public void onCompleted() {
-                cancelLoader();
+                if (!isBackground)
+                    cancelLoader();
             }
 
             @Override
             public void onError(Throwable e) {
+                if (!isBackground)
                 cancelLoader();
                 Log.d("Error ",e.toString());
             }
@@ -125,7 +132,6 @@ public class OpinionGivenFragment extends Fragment implements IRealmDataStoredCa
                         if (requestResponse.body().size() > 0) {
                             storeOpinionCountDataToDB(requestResponse.body());
                             new  AppSharedPreference().storeLastOpinionGivenDate(dateFormat.format(date),getActivity().getApplicationContext());
-
                         }
                     }
                 }

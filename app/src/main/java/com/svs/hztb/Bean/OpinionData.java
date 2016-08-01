@@ -46,7 +46,4 @@ public class OpinionData {
 	public void setResponseCounts(Map<String, Integer> responseCounts) {
 		this.responseCounts = responseCounts;
 	}
-	
-	
-
 }

@@ -3,6 +3,8 @@ package com.svs.hztb.Fragments;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.svs.hztb.Adapters.ContactsAdapter;
+import com.svs.hztb.Adapters.RetriveGroupsAdapter;
 import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.GroupDetail;
 import com.svs.hztb.Bean.Product;
@@ -35,10 +38,14 @@ import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.Status;
 import com.svs.hztb.Bean.UserData;
+import com.svs.hztb.Bean.UserID;
 import com.svs.hztb.CustomViews.WalkWayButton;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Interfaces.IRealmDataStoredCallBack;
 import com.svs.hztb.R;
+import com.svs.hztb.RealmDatabase.GroupDetailRealm;
 import com.svs.hztb.RealmDatabase.RealmDatabase;
+import com.svs.hztb.RealmDatabase.RealmUserData;
 import com.svs.hztb.RealmDatabase.RealmUserProfileResponse;
 import com.svs.hztb.RestService.ErrorStatus;
 import com.svs.hztb.RestService.OpinionService;
@@ -57,20 +64,19 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class GroupsFragment extends Fragment {
+public class GroupsFragment extends Fragment implements IRealmDataStoredCallBack {
 
-    private ArrayList<Contact> contactList;
-    private ListView contactsListView;
-    private ContactsAdapter adapter;
-    EditText contactSearch;
-    private Button doneButton;
-    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2001;
+    private ArrayList<GroupDetail> groupsArrayList;
+    private ListView groupsListView;
+    private RetriveGroupsAdapter adapter;
+    private Button addGroupButton;
+    private RealmDatabase database;
     protected LoadingBar _loader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_groups, container, false);
 
         return view;
     }
@@ -78,9 +84,125 @@ public class GroupsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        contactSearch =(EditText)view.findViewById(R.id.edittext_search_contact);
-        contactsListView = (ListView)view.findViewById(R.id.listview_contacts);
-        doneButton = (Button)view.findViewById(R.id.doneButton);
+
+        groupsListView = (ListView) view.findViewById(R.id.listview_groups);
+        addGroupButton = (Button) view.findViewById(R.id.button_add_new_groups);
+
+        _loader=new LoadingBar(getActivity());
+        database = new RealmDatabase(this);
+        groupsArrayList = database.getAllGroupList();
+        if (groupsArrayList.size() > 0) {
+            updateListviewWithGroups();
+            postDataToGetGroups(true);
+        } else {
+            postDataToGetGroups(false);
+        }
+
+        addGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pushToEditOrAddFragment(0,true);
+            }
+        });
+    }
+
+
+    private void postDataToGetGroups(final boolean isBackgroudTask) {
+        if (!isBackgroudTask)
+            showLoader();
+
+        OpinionService opinionService = new OpinionService();
+        UserID userId = new UserID();
+        AppSharedPreference sherdPref = new AppSharedPreference();
+        int id = Integer.valueOf(sherdPref.getUserID(getActivity().getApplicationContext()));
+        userId.setUserID(id);
+        Observable<Response<List<GroupDetail>>> getGroupObservable = opinionService.getGroups(userId);
+
+        getGroupObservable.observeOn(AndroidSchedulers.mainThread()).
+                subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<List<GroupDetail>>>() {
+            @Override
+            public void onCompleted() {
+                if (!isBackgroudTask)
+                    cancelLoader();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (!isBackgroudTask)
+                    cancelLoader();
+                Log.d("Error ",e.toString());
+            }
+
+            @Override
+            public void onNext(Response<List<GroupDetail>> groupResponse) {
+
+                if (groupResponse.isSuccessful()) {
+                    addAllTheListToDatabase((ArrayList<GroupDetail>) groupResponse.body());
+                }
+                else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void addAllTheListToDatabase(ArrayList<GroupDetail> groupDetailList){
+        Iterator<GroupDetail> iterator = groupDetailList.iterator();
+        RealmList<GroupDetailRealm> groupDetailRealmList = new RealmList<>();
+        while (iterator.hasNext()){
+            GroupDetail groupDetail = iterator.next();
+            GroupDetailRealm groupDetailRealm = new GroupDetailRealm();
+            groupDetailRealm.setGroupName(groupDetail.getGroupName());
+            groupDetailRealm.setGroupId(groupDetail.getGroupId());
+            RealmList<RealmUserData> realmUserList = new RealmList<>();
+            Iterator<UserData> integerIterator = groupDetail.getGroupMembers().iterator();
+            while (integerIterator.hasNext()){
+                UserData userData = integerIterator.next();
+
+                RealmUserData realmUserData = new RealmUserData();
+                realmUserData.setUserId(userData.getUserId());
+                realmUserData.setFirstName(userData.getFirstName());
+                realmUserData.setLastname(userData.getLastname());
+                realmUserList.add(realmUserData);
+            }
+            groupDetailRealm.setUserDataList(realmUserList);
+            groupDetailRealmList.add(groupDetailRealm);
+        }
+        database.addGroupsListToDatabase(groupDetailRealmList);
+    }
+
+
+    private void updateListviewWithGroups() {
+        adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupsArrayList,true);
+        groupsListView.setAdapter(adapter);
+        groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int groupId = groupsArrayList.get(i).getGroupId();
+                pushToEditOrAddFragment(groupId,false);
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+
+    private void pushToEditOrAddFragment(int groupId,boolean isAddFunctionality){
+        EditOrAddGroupFragment fragment = new EditOrAddGroupFragment();
+        String backStateName = fragment.getClass().getName();
+        FragmentManager fragmentManager = getFragmentManager();
+        boolean fragmentPopped = fragmentManager
+                .popBackStackImmediate(backStateName, 0);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isAdd",isAddFunctionality );
+        bundle.putInt("groupId",groupId);
+        fragment.setArguments(bundle);
+        if (!fragmentPopped) {
+            FragmentTransaction ftx = fragmentManager.beginTransaction();
+            ftx.replace(R.id.fragment, fragment);
+            ftx.addToBackStack(backStateName);
+            ftx.commit();
+        }
+    }
+        /*
         _loader=new LoadingBar(getActivity());
         contactList = new ArrayList<>();
         Button refreshButton = (Button)view.findViewById(R.id.button_refresh);
@@ -99,8 +221,8 @@ public class GroupsFragment extends Fragment {
             }
         });
         initviews();
+*/
 
-    }
 
     public void showLoader(){
         if(_loader!=null && !_loader.isShowing()){
@@ -114,8 +236,14 @@ public class GroupsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void dataSuccessfullyStore(Boolean successful) {
+        groupsArrayList = database.getAllGroupList();
+        updateListviewWithGroups();
+    }
 
 
+/*
 
     private void initviews() {
 
@@ -308,4 +436,6 @@ public class GroupsFragment extends Fragment {
             }
         });
     }
+
+    */
 }

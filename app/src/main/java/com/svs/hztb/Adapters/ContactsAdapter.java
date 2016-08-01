@@ -77,8 +77,8 @@ public class ContactsAdapter extends BaseAdapter {
         contactName.setText(contactArrayList.get(position).getContactName());
             ImageView contactImage = (ImageView) convertView.findViewById(R.id.contact_image);
 //            String contactPath = imageName[0];
-        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
-        ImageLoader.getInstance().displayImage(contactArrayList.get(position).getContactImagePath(), contactImage,options);
+//        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+//        ImageLoader.getInstance().displayImage(contactArrayList.get(position).getContactImagePath(), contactImage,options);
         return convertView;
     }
 

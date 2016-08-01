@@ -10,6 +10,8 @@ public class RequestOpinionInput {
 	private int channelId;
 	private String storeGeoCode;
 	private String productUrl;
+
+	private byte[] selfiePic;
 	//Added for sample, delete this
 	private Date date;
 	
@@ -50,7 +52,13 @@ public class RequestOpinionInput {
 		this.storeGeoCode = storeGeoCode;
 	}
 
-	
+	public byte[] getSelfiePic() {
+		return selfiePic;
+	}
+
+	public void setSelfiePic(byte[] selfiePic) {
+		this.selfiePic = selfiePic;
+	}
 
 	public List<Integer> getRequestedUserIds() {
 		return requestedUserIds;

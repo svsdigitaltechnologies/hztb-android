@@ -36,7 +36,7 @@
         android:id="@+id/button_view_selfie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/picton_blue"
+        android:background="@mipmap/button_crop_bit"
         android:text="@string/view_selfie"
         android:textColor="@android:color/white"
         android:layout_marginTop="5dp"

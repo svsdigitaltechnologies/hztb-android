@@ -4,68 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.ContactsFragment">
+    <include layout="@layout/contacts_layout"/>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/light_grey"
-        android:layout_alignParentTop="true">
-
-        <com.svs.hztb.CustomViews.WalkWayEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/search_icom"
-            android:background="@android:color/white"
-            android:textSize="20sp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:lines="1"
-            android:ems="15"
-            android:id="@+id/edittext_search_contact"
-            android:padding="10dp"
-            android:drawablePadding="10dp"
-            android:paddingLeft="10dp"
-            android:hint="@string/search_contacts"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_toStartOf="@+id/button_refresh" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:text="@string/refresh"
-            android:id="@+id/button_refresh" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/light_grey"
-        android:layout_alignParentBottom="true">
-
-        <com.svs.hztb.CustomViews.WalkWayButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@color/picton_blue"
-            android:text="@string/signup_Done"
-            android:id="@+id/doneButton"
-            android:textColor="@android:color/white" />
-    </RelativeLayout>
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listview_contacts"
-        android:layout_below="@+id/relativeLayout2"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/relativeLayout4" />
 </RelativeLayout>

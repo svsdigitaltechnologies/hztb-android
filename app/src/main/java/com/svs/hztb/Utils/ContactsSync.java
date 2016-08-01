@@ -59,10 +59,17 @@ import rx.schedulers.Schedulers;
 public class ContactsSync {
     private Activity activity;
 //    private RealmList<RealmContact> contactList;
+
+    private ContactsSyncCompleted contactsSyncCompleted;
     private ArrayList<UserProfileRequest> userProfileRequestList;
 
     public ContactsSync(Activity activity1){
         this.activity = activity1;
+    }
+
+    public ContactsSync(ContactsSyncCompleted syncCompleted,Activity activitySync){
+        this.contactsSyncCompleted = syncCompleted;
+        this.activity = activitySync;
     }
 
     public void syncContactsToServer(){
@@ -174,9 +181,8 @@ public class ContactsSync {
                 if (response.isSuccessful()) {
                     List<UserProfileResponse> userProfileResponses= new ArrayList<UserProfileResponse>();
                     userProfileResponses.addAll(response.body().getUserProfileResponses());
-                    RealmDatabase db = new RealmDatabase();
+                    RealmDatabase db = new RealmDatabase (contactsSyncCompleted);
                     db.storeUserIds(userProfileResponses);
-
                 }
             }
         });

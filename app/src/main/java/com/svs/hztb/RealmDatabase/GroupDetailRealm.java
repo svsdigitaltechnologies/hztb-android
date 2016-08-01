@@ -17,7 +17,7 @@ public class GroupDetailRealm extends RealmObject {
     public RealmList<RealmUserData> userDataList;
     @PrimaryKey
     private int groupId;
-    private boolean isSelect;
+
 
     public RealmList<RealmUserData> getUserDataList() {
         return userDataList;
@@ -27,12 +27,15 @@ public class GroupDetailRealm extends RealmObject {
         this.userDataList = userDataList;
     }
 
-    public boolean isSelect() {
-        return isSelect;
+    public int getUserId() {
+        return userId;
     }
-    public void setSelect(boolean select) {
-        isSelect = select;
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
+
+    public int userId;
     public String getGroupName() {
         return groupName;
     }
@@ -52,7 +55,6 @@ public class GroupDetailRealm extends RealmObject {
                 "groupName='" + groupName + '\'' +
                 ", userDataList=" + userDataList +
                 ", groupId=" + groupId +
-                ", isSelect=" + isSelect +
                 '}';
     }
 }

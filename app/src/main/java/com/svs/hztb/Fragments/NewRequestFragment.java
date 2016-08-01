@@ -34,6 +34,7 @@ import com.svs.hztb.Bean.Status;
 import com.svs.hztb.Bean.UserData;
 import com.svs.hztb.Bean.UserID;
 import com.svs.hztb.Database.AppSharedPreference;
+import com.svs.hztb.Interfaces.IRealmDataStoredCallBack;
 import com.svs.hztb.R;
 import com.svs.hztb.RealmDatabase.GroupDetailRealm;
 import com.svs.hztb.RealmDatabase.RealmDatabase;
@@ -59,7 +60,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class NewRequestFragment extends Fragment {
+public class NewRequestFragment extends Fragment implements IRealmDataStoredCallBack{
 
     private final int RESULT_CAMERA = 0;
     private final int CROP_PIC = 2;
@@ -70,6 +71,7 @@ public class NewRequestFragment extends Fragment {
     private RetriveGroupsAdapter adapter;
     private ImageView productImage;
     private String imageData;
+    private RealmDatabase database;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class NewRequestFragment extends Fragment {
         if (savedInstanceState != null){
             imageData = savedInstanceState.getString("ImageData");
         }
+        database = new RealmDatabase(this);
         groupsList = (ListView) view.findViewById(R.id.listview_groups);
         reguestOpinionButton =(Button)view.findViewById(R.id.button_request_opinion);
         reguestOpinionButton.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +109,6 @@ public class NewRequestFragment extends Fragment {
 
 
         _loader=new LoadingBar(getActivity());
-        showLoader();
         productImage = (ImageView)view.findViewById(R.id.product_thumb);
         Button captureSelf = (Button)view.findViewById(R.id.button_capture_selfie);
         captureSelf.setOnClickListener(new View.OnClickListener() {
@@ -121,14 +123,22 @@ public class NewRequestFragment extends Fragment {
             byte[] picArray = Base64.decode(encodedString, Base64.DEFAULT);
             productImage.setImageBitmap( BitmapFactory.decodeByteArray(picArray , 0, picArray .length));
         }
-        postDataToGetGroups();
 
+
+        groupList = database.getAllGroupList();
+        if (groupList.size()>0){
+            updateListviewWithGroups();
+            postDataToGetGroups(true);
+        }else {
+            showLoader();
+            postDataToGetGroups(false);
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("ImageData",getProductByteArray());
+        outState.putByteArray("ImageData",getSelfieByteArray());
     }
 
     @Override
@@ -192,19 +202,16 @@ public class NewRequestFragment extends Fragment {
         }
     }
 
-    private String getProductByteArray(){
+    private byte[] getSelfieByteArray(){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ((BitmapDrawable)productImage.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, stream);
-        final byte[] picArray = stream.toByteArray();
-        String imageData = Base64.encodeToString(picArray, Base64.DEFAULT);
-        return imageData;
+        return stream.toByteArray();
     }
 
 
     private void postDataForNewRequest(ArrayList<Integer> selectedGroup) {
         showLoader();
 
-         String productThumbArray = getProductByteArray();
 
         OpinionService opinionService = new OpinionService();
         RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
@@ -213,8 +220,8 @@ public class NewRequestFragment extends Fragment {
         product.setName("Test606163");
         product.setShortDesc("Awesome");
         product.setLongDesc("brilliant");
-        product.setImageUrl(productThumbArray);
         product.setPrice(22.0);
+        requestOpinionInput.setSelfiePic(getSelfieByteArray());
         requestOpinionInput.setProduct(product);
         requestOpinionInput.setRequestedGroupIds(selectedGroup);
         Observable<Response<RequestOpinionOutput>> registerResponseObservable = opinionService.requestOpinionForNewProduct(requestOpinionInput);
@@ -265,8 +272,11 @@ public class NewRequestFragment extends Fragment {
     }
 
 
-    private void postDataToGetGroups() {
-        groupList = new ArrayList<>();
+    private void postDataToGetGroups(final boolean isBackgroudTask) {
+        if (!isBackgroudTask)
+        showLoader();
+
+
         OpinionService opinionService = new OpinionService();
         UserID userId = new UserID();
         AppSharedPreference sherdPref = new AppSharedPreference();
@@ -278,12 +288,14 @@ public class NewRequestFragment extends Fragment {
                 subscribeOn(Schedulers.io()).subscribe(new Subscriber<Response<List<GroupDetail>>>() {
             @Override
             public void onCompleted() {
+                if (!isBackgroudTask)
                 cancelLoader();
             }
 
             @Override
             public void onError(Throwable e) {
-                cancelLoader();
+                if (!isBackgroudTask)
+                    cancelLoader();
                 Log.d("Error ",e.toString());
             }
 
@@ -291,8 +303,11 @@ public class NewRequestFragment extends Fragment {
             public void onNext(Response<List<GroupDetail>> groupResponse) {
 
                 if (groupResponse.isSuccessful()) {
-                        groupList = (ArrayList<GroupDetail>) groupResponse.body();
+                    if (((ArrayList<GroupDetail>) groupResponse.body()).size() > 0) {
+                        addAllTheListToDatabase((ArrayList<GroupDetail>) groupResponse.body());
+                    }else {
                         updateListviewWithGroups();
+                    }
                 }
                 else Toast.makeText(getActivity().getApplicationContext(),"No Options Available",Toast.LENGTH_LONG).show();
             }
@@ -301,10 +316,11 @@ public class NewRequestFragment extends Fragment {
     }
 
     private void updateListviewWithGroups() {
+
         GroupDetail group = new GroupDetail();
         group.setGroupName("Select From Contacts");
         groupList.add(group);
-        adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupList);
+        adapter = new RetriveGroupsAdapter(getActivity().getApplicationContext(), groupList,false);
         groupsList.setAdapter(adapter);
         groupsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -312,7 +328,7 @@ public class NewRequestFragment extends Fragment {
                 if (groupList.size() - 1 == i) {
                     ContactsFragment fragment = new ContactsFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putString("imageData",getProductByteArray());
+                    bundle.putByteArray("imageData",getSelfieByteArray());
                     fragment.setArguments(bundle);
                     String backStateName = fragment.getClass().getName();
                     FragmentManager fragmentManager = getFragmentManager();
@@ -334,7 +350,6 @@ public class NewRequestFragment extends Fragment {
             }
         });
         adapter.notifyDataSetChanged();
-        addAllTheListToDatabase(groupList);
     }
 
     private void addAllTheListToDatabase(ArrayList<GroupDetail> groupDetailList){
@@ -359,10 +374,7 @@ public class NewRequestFragment extends Fragment {
             groupDetailRealm.setUserDataList(realmUserList);
             groupDetailRealmList.add(groupDetailRealm);
         }
-
-        RealmDatabase realmDatabase = new RealmDatabase();
-        realmDatabase.addGroupsListToDatabase(groupDetailRealmList);
-        realmDatabase.getAllGroupList();
+        database.addGroupsListToDatabase(groupDetailRealmList);
     }
 
 
@@ -393,4 +405,9 @@ public class NewRequestFragment extends Fragment {
         return jsonString;
     }
 
+    @Override
+    public void dataSuccessfullyStore(Boolean successful) {
+        groupList = database.getAllGroupList();
+        updateListviewWithGroups();
+    }
 }

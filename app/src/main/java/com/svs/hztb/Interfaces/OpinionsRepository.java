@@ -1,6 +1,7 @@
 package com.svs.hztb.Interfaces;
 
 import com.svs.hztb.Bean.GroupDetail;
+import com.svs.hztb.Bean.GroupOutput;
 import com.svs.hztb.Bean.OpinionCountData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.Bean.OpinionResponseInfo;
@@ -8,6 +9,7 @@ import com.svs.hztb.Bean.OpinionResponseInput;
 import com.svs.hztb.Bean.OpinionResponseOutput;
 import com.svs.hztb.Bean.RefreshInput;
 import com.svs.hztb.Bean.RefreshOutput;
+import com.svs.hztb.Bean.RemoveGroup;
 import com.svs.hztb.Bean.RequestOpinionInput;
 import com.svs.hztb.Bean.RequestOpinionOutput;
 import com.svs.hztb.Bean.ResponseGivenPendingInfo;
@@ -60,6 +62,9 @@ public interface OpinionsRepository {
     Observable<Response<List<GroupDetail>>> requestToGetRegisteredContacts(@Body UserID userID);
 
     @POST("/group/createGroup")
-    Observable<Response<RequestOpinionOutput>> requestForNewGroup(@Body GroupDetail groupDetail);
+    Observable<Response<GroupOutput>> requestForNewGroup(@Body GroupDetail groupDetail);
+
+    @POST("/group/removeGroup")
+    Observable<Response<GroupOutput>> requestForDeleteGroup(@Body RemoveGroup removeGroup);
 
 }

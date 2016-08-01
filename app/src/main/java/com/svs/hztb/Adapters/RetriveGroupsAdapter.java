@@ -23,10 +23,11 @@ import java.util.ArrayList;
 public class RetriveGroupsAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<GroupDetail> groupList;
-
-    public RetriveGroupsAdapter(Context context,ArrayList<GroupDetail> group){
+    private boolean isGroupScreen;
+    public RetriveGroupsAdapter(Context context,ArrayList<GroupDetail> group,boolean isGroupScren){
         this.mContext = context;
         this.groupList = group;
+        this.isGroupScreen = isGroupScren;
     }
 
     @Override
@@ -52,16 +53,24 @@ public class RetriveGroupsAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.custom_contacts_item_layout, null);
             TextView groupName = (TextView) (convertView).findViewById(R.id.textview_select_contacts);
             groupName.setText(groupList.get(position).getGroupName());
-        if (position == groupList.size()-1){
+        if (isGroupScreen){
             groupName.setTextColor(mContext.getResources().getColor(R.color.picton_blue));
             ImageView rightArrow = (ImageView) (convertView).findViewById(R.id.imageView2);
             rightArrow.setVisibility(View.VISIBLE);
 
         }else {
-            ImageView tickImage = (ImageView) (convertView).findViewById(R.id.imageView_selected);
-            if (groupList.get(position).isSelect()){
-                tickImage.setVisibility(View.VISIBLE);
-            }else tickImage.setVisibility(View.GONE);
+            if (position == groupList.size()-1){
+                groupName.setTextColor(mContext.getResources().getColor(R.color.picton_blue));
+                ImageView rightArrow = (ImageView) (convertView).findViewById(R.id.imageView2);
+                rightArrow.setVisibility(View.VISIBLE);
+
+            }else {
+                ImageView tickImage = (ImageView) (convertView).findViewById(R.id.imageView_selected);
+                if (groupList.get(position).isSelect()){
+                    tickImage.setVisibility(View.VISIBLE);
+                }else tickImage.setVisibility(View.GONE);
+            }
+
         }
 
         return convertView;

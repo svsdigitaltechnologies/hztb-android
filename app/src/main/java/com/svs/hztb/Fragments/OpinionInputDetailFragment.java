@@ -205,7 +205,7 @@ public class OpinionInputDetailFragment extends Fragment {
             public void onNext(Response<OpinionResponseOutput> requestResponse) {
 
                 if (requestResponse.isSuccessful()) {
-
+                    getFragmentManager().popBackStack();
                     Toast.makeText(getActivity().getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
                 } else
                     Toast.makeText(getActivity().getApplicationContext(), "No Options Available", Toast.LENGTH_LONG).show();
