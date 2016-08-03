@@ -155,8 +155,11 @@ public class GetOpinionsFragment extends android.app.Fragment implements IRealmD
         if (lastUpdatedDate != null){
             refreshInput.setLastUpdatedTime(lastUpdatedDate);
         }else {
-            refreshInput.setLastUpdatedTime("2016-07-29 01:01:01");
+            refreshInput.setLastUpdatedTime("2016-08-01 00:00:00");
         }
+
+        refreshInput.setLastUpdatedTime("2016-08-01 00:00:00");
+
 
         Observable<Response<List<OpinionData>>> refreshResponseObservable = opinionService.getOpinions(refreshInput);
         refreshResponseObservable.observeOn(AndroidSchedulers.mainThread()).

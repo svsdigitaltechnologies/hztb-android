@@ -130,7 +130,9 @@ public class EditOrAddGroupFragment extends Fragment implements ContactsSyncComp
     @Override
     public void onDestroy() {
         super.onDestroy();
-        database.removeIContactsSyncCompletedCallBack();
+        if (database != null) {
+            database.removeIContactsSyncCompletedCallBack();
+        }
     }
 
     private void postDataToDeleteGroup() {
@@ -295,6 +297,8 @@ public class EditOrAddGroupFragment extends Fragment implements ContactsSyncComp
 
     private void postDataToEditGroup() {
     }
+
+
 
     private void postDataToCreateNewGroup() {
         showLoader();

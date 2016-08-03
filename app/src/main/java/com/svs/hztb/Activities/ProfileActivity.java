@@ -112,8 +112,23 @@ public class ProfileActivity extends AbstractActivity {
             @Override
             public void onClick(View v) {
                 alertDialog.cancel();
-                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, RESULT_CAMERA);//zero can be replaced with any action code
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
+                    Toast toast = Toast.makeText(ProfileActivity.this, "There was a problem saving the photo...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    Uri fileUri = Uri.fromFile(photoFile);
+                    setCapturedImageURI(fileUri);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            getCapturedImageURI());
+                    startActivityForResult(takePictureIntent, RESULT_CAMERA);
+                }
             }
         });
 
@@ -122,26 +137,9 @@ public class ProfileActivity extends AbstractActivity {
             public void onClick(View v) {
                 alertDialog.cancel();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-
-
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException ex) {
-                        // Error occurred while creating the File
-                        Toast toast = Toast.makeText(ProfileActivity.this, "There was a problem saving the photo...", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                    // Continue only if the File was successfully created
-                    if (photoFile != null) {
-                        Uri fileUri = Uri.fromFile(photoFile);
-                        setCapturedImageURI(fileUri);
-                        Intent takePictureIntent = new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                         getCapturedImageURI());
-                        startActivityForResult(takePictureIntent, RESULT_GALLERY);
-                    }
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto , RESULT_GALLERY);//one can be replaced with any action code
 
                 }else {
                     Intent intent = new Intent();

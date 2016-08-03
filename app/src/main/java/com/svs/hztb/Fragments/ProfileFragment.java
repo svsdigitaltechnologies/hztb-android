@@ -91,6 +91,8 @@ public class ProfileFragment extends Fragment {
                 showProfilePicSelectionDialog();
             }
         });
+
+//        emailEditText.setText(new AppSharedPreference().get);
         _loader=new LoadingBar(getActivity());
         Button doneButton = (Button)view.findViewById(R.id.button_done);
         doneButton.setOnClickListener(new View.OnClickListener() {
