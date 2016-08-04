@@ -91,6 +91,7 @@ public class ProfileFragment extends Fragment {
                 showProfilePicSelectionDialog();
             }
         });
+        emailEditText.setText(new AppSharedPreference().getUserEmail(getActivity().getApplicationContext()));
 
 //        emailEditText.setText(new AppSharedPreference().get);
         _loader=new LoadingBar(getActivity());
@@ -304,6 +305,7 @@ public class ProfileFragment extends Fragment {
                 if (userProfileResponseObservable.isSuccessful()) {
                     Toast.makeText(getActivity().getApplicationContext(),getResources().getString(R.string.toast_userprofile_update_success),Toast.LENGTH_LONG).show();
                     new AppSharedPreference().storeSuccessLoginInSharedPreferences(getActivity().getApplicationContext(),nameParam,emailParam,picArray);
+                    getFragmentManager().popBackStack();
                     ((HomeScreenActivity)getActivity()).slideMenuAdapter.notifyDataSetChanged();
                 } else {
                     List<ErrorStatus> listErrorStatus = ServiceGenerator.parseErrorBody(userProfileResponseObservable);

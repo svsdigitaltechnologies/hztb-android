@@ -217,6 +217,7 @@ public class GetOpinionsFragment extends android.app.Fragment implements IRealmD
             realmProduct.setLongDesc(opinionData.getProduct().getLongDesc());
             realmProduct.setPrice(opinionData.getProduct().getPrice());
             realmProduct.setShortDesc(opinionData.getProduct().getShortDesc());
+            realmOpinionData.setSelfieUrl(opinionData.getSelfieUrl());
             realmOpinionData.setProduct(realmProduct);
 
             opinionDataList.add(realmOpinionData);

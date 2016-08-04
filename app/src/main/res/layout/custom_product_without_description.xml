@@ -14,7 +14,7 @@
         android:background="@android:color/white">
 
         <ImageView
-            android:id="@+id/product_thumb"
+            android:id="@+id/product_thumb_white"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_alignParentTop="true"
@@ -33,7 +33,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/product_thumb"
+            android:layout_toRightOf="@+id/product_thumb_white"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Jumba Sports Shoes"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/textView2"
-            android:layout_toRightOf="@+id/product_thumb"
+            android:layout_toRightOf="@+id/product_thumb_white"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
 
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
-            android:layout_toRightOf="@+id/product_thumb"
+            android:layout_toRightOf="@+id/product_thumb_white"
             android:gravity="bottom"
             android:orientation="vertical">
 
@@ -74,7 +74,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_toRightOf="@+id/product_thumb"
+                android:layout_toRightOf="@+id/product_thumb_white"
                 android:background="@android:color/black"
                 android:padding="10dp"></View>
 
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/separator_bottom"
-                android:layout_toRightOf="@+id/product_thumb"
+                android:layout_toRightOf="@+id/product_thumb_white"
                 android:paddingLeft="10dp"
 
                 android:text="Price:$ 98.99"
@@ -96,7 +96,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_toRightOf="@+id/product_thumb"
+                android:layout_toRightOf="@+id/product_thumb_white"
                 android:background="@android:color/black"></View>
 
             <TextView
@@ -116,8 +116,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_alignBottom="@+id/product_thumb"
-            android:layout_toRightOf="@+id/product_thumb"
+            android:layout_alignBottom="@+id/product_thumb_white"
+            android:layout_toRightOf="@+id/product_thumb_white"
             android:weightSum="4">
 
             <ImageView
@@ -162,8 +162,8 @@
             android:id="@+id/button_view_selfie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/product_thumb"
-            android:layout_below="@+id/product_thumb"
+            android:layout_alignStart="@+id/product_thumb_white"
+            android:layout_below="@+id/product_thumb_white"
             android:layout_marginBottom="10dp"
             android:background="@mipmap/blue_background"
             android:text="@string/view_selfie"

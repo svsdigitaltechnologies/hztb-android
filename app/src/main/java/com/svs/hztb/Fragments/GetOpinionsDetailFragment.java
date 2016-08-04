@@ -14,11 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.svs.hztb.Activities.HomeScreenActivity;
 import com.svs.hztb.Adapters.GetDetailOpinionAdapter;
 import com.svs.hztb.Adapters.GetOpinionAdapter;
@@ -79,15 +84,50 @@ public class GetOpinionsDetailFragment extends Fragment {
 
     }
 
-    private void initViews(View view) {
-        OpinionData opinionData = ((HomeScreenActivity)getActivity()).getProduct();
+
+    private void initViews(final View view) {
+        final OpinionData opinionData = ((HomeScreenActivity)getActivity()).getProduct();
 
         TextView productName = (TextView)view.findViewById(R.id.textView2);
         TextView productID = (TextView)view.findViewById(R.id.textView3);
         TextView productDescription = (TextView)view.findViewById(R.id.product_description);
         TextView productPrice = (TextView)view.findViewById(R.id.product_price);
+        ImageView productImage =(ImageView)view.findViewById(R.id.product_thumb_black);
 
+        if (opinionData.getProduct().getImageUrl() != null){
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+            ImageLoader.getInstance().displayImage(opinionData.getProduct().getImageUrl(), productImage,options);
+        }
+
+        Button viewSelfie = (Button)view.findViewById(R.id.button_capture_selfie);
+        if (opinionData.getSelfieUrl() == null){
+            viewSelfie.setVisibility(View.INVISIBLE);
+        }
+        viewSelfie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout opinionDetailLayout = (LinearLayout)view.findViewById(R.id.detail_opinion_layout);
+                RelativeLayout selfieLayout = (RelativeLayout)view.findViewById(R.id.viewSelfie_layout);
+                opinionDetailLayout.setVisibility(View.GONE);
+                selfieLayout.setVisibility(View.VISIBLE);
+                ImageView selfieImageview = (ImageView)view.findViewById(R.id.selfie_imageView);
+                DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+                ImageLoader.getInstance().displayImage(opinionData.getSelfieUrl(), selfieImageview,options);
+            }
+        });
         productName.setText(opinionData.getProductName());
+
+        Button backButton = (Button)view.findViewById(R.id.button_back);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout opinionDetailLayout = (LinearLayout)view.findViewById(R.id.detail_opinion_layout);
+                RelativeLayout selfieLayout = (RelativeLayout)view.findViewById(R.id.viewSelfie_layout);
+                opinionDetailLayout.setVisibility(View.VISIBLE);
+                selfieLayout.setVisibility(View.GONE);
+            }
+        });
 
         responseListView = (ListView)view.findViewById(R.id.listview_responded);
         notResponseListView = (ListView)view.findViewById(R.id.listview_not_responded);

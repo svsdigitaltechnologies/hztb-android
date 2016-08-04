@@ -25,6 +25,16 @@ public class RealmOpinionData extends RealmObject {
         this.product = product;
     }
 
+    private String selfieUrl;
+
+    public String getSelfieUrl() {
+        return selfieUrl;
+    }
+
+    public void setSelfieUrl(String selfieUrl) {
+        this.selfieUrl = selfieUrl;
+    }
+
     public RealmProduct product;
     public RealmList<RealmResponseCount> getResponseCountList() {
         return responseCountList;

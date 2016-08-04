@@ -56,6 +56,7 @@ public class ProfileActivity extends AbstractActivity {
     private final int RESULT_CAMERA = 0;
     private final int RESULT_GALLERY = 1;
     private final int CROP_PIC = 2;
+    private Bitmap picBitmap;
 
     public Uri getCapturedImageURI() {
         return capturedImageURI;
@@ -181,17 +182,20 @@ public class ProfileActivity extends AbstractActivity {
             case RESULT_GALLERY:
                 if(resultCode == RESULT_OK){
                     if (imageReturnedIntent.getData() != null) {
-                        performCrop(capturedImageURI);
+                        Uri selectedImage = imageReturnedIntent.getData();
+                        performCrop(selectedImage);
                     }
                 }
                 break;
-            case CROP_PIC:{
+            case CROP_PIC: {
                 // get the returned data
-                Bundle extras = imageReturnedIntent.getExtras();
-                if (extras != null){
-                    // get the cropped bitmap
-                    Bitmap bitmapPic = extras.getParcelable("data");
-                    profilePic.setImageBitmap(bitmapPic);
+                if (imageReturnedIntent != null) {
+                    Bundle extras = imageReturnedIntent.getExtras();
+                    if (extras != null) {
+                        // get the cropped bitmap
+                        Bitmap bitmapPic = extras.getParcelable("data");
+                        profilePic.setImageBitmap(bitmapPic);
+                    }
                 }
             }
         }
@@ -293,6 +297,8 @@ public class ProfileActivity extends AbstractActivity {
             }
         });
     }
+
+
 
 
     @Override

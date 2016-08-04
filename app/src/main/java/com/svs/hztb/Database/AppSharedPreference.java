@@ -164,6 +164,10 @@ public class AppSharedPreference  {
     public String getUserName(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(kUserName, "");
     }
+    public String getUserEmail(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(kUserEmail, "");
+    }
+
 
     public void storeSuccessLoginInSharedPreferences(Context context,String username, String email,byte[] picArray) {
         SharedPreferences sharedpref = context.getSharedPreferences(context.getResources().getString(R.string.shared_pref_app), Context.MODE_PRIVATE);

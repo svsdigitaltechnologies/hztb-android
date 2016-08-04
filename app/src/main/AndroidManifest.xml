@@ -96,12 +96,7 @@
         </service>
 
         <activity android:name=".Activities.CountryCodeActivity" />
-        <activity
-            android:name=".Fragments.NewRequestFragment"
-            android:label="@string/title_activity_request_opinion" />
-        <activity
-            android:name=".Fragments.ContactsFragment"
-            android:label="@string/title_activity_contacts"></activity>
+
     </application>
 
 </manifest>

@@ -13,11 +13,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.svs.hztb.Activities.HomeScreenActivity;
 import com.svs.hztb.Adapters.OpinionGivenAdapter;
 import com.svs.hztb.Bean.GivenPendingData;
@@ -53,6 +57,7 @@ public class OpinionInputDetailFragment extends Fragment {
 
     private ArrayList<OpinionCountData> opinionGivenDataArrayList;
     protected LoadingBar _loader;
+    ImageView productThumb;
     TextView productName;
     TextView productID;
     TextView productDescription;
@@ -83,18 +88,20 @@ public class OpinionInputDetailFragment extends Fragment {
 
     }
 
-    private void initViews(View convertView) {
+    private void initViews(final View convertView) {
         final GivenPendingData pendingData = ((HomeScreenActivity) getActivity()).getPendingData();
 
         productName = (TextView) convertView.findViewById(R.id.textView2);
         productID = (TextView) convertView.findViewById(R.id.textView3);
         productDescription = (TextView) convertView.findViewById(R.id.product_description);
         productPrice = (TextView) convertView.findViewById(R.id.product_price);
-
+        productThumb = (ImageView)convertView.findViewById(R.id.product_thumb) ;
         productName.setText(pendingData.getProduct().getName());
         productPrice.setText("Price : $" + pendingData.getProduct().getPrice());
         productPrice.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), android.R.color.black));
         productDescription.setText(pendingData.getProduct().getLongDesc());
+
+
 
         buttonOk = (ImageView) convertView.findViewById(R.id.button_double_ok);
         buttonOk.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +169,37 @@ public class OpinionInputDetailFragment extends Fragment {
             }
         });
         viewSelf = (Button) convertView.findViewById(R.id.button_view_selfie);
+        if (pendingData.getSelfieUrl() == null){
+            viewSelf.setVisibility(View.INVISIBLE);
+        }
+        viewSelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout opinionDetailLayout = (LinearLayout)convertView.findViewById(R.id.detail_opinion_layout);
+                RelativeLayout selfieLayout = (RelativeLayout)convertView.findViewById(R.id.viewSelfie_layout);
+                opinionDetailLayout.setVisibility(View.GONE);
+                selfieLayout.setVisibility(View.VISIBLE);
+                ImageView selfieImageview = (ImageView)convertView.findViewById(R.id.selfie_imageView);
+                DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+                ImageLoader.getInstance().displayImage(pendingData.getSelfieUrl(), selfieImageview,options);
+            }
+        });
+        Button backButton = (Button)convertView.findViewById(R.id.button_back);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout opinionDetailLayout = (LinearLayout)convertView.findViewById(R.id.detail_opinion_layout);
+                RelativeLayout selfieLayout = (RelativeLayout)convertView.findViewById(R.id.viewSelfie_layout);
+                opinionDetailLayout.setVisibility(View.VISIBLE);
+                selfieLayout.setVisibility(View.GONE);
+            }
+        });
+        if (pendingData.getProduct().getImageUrl()!=null){
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+            ImageLoader.getInstance().displayImage(pendingData.getProduct().getImageUrl(), productThumb,options);
+        }
+
         if (pendingData.getResponseText() != null) {
             responseText.setText(pendingData.getResponseText());
             responseText.setEnabled(false);

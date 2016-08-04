@@ -5,6 +5,15 @@ public class GivenPendingData {
 	private String responseText;
 	private String responseType;
 	private Product product;
+	private String selfieUrl;
+
+	public String getSelfieUrl() {
+		return selfieUrl;
+	}
+
+	public void setSelfieUrl(String selfieUrl) {
+		this.selfieUrl = selfieUrl;
+	}
 	public int getOpinionId() {
 		return opinionId;
 	}

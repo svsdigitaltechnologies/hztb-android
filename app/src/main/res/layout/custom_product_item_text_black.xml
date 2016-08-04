@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/product_thumb"
+        android:id="@+id/product_thumb_black"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
@@ -25,7 +25,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/product_thumb"
+        android:layout_toRightOf="@+id/product_thumb_black"
         android:paddingLeft="10dp"
         android:textColor="@android:color/black"
         android:paddingRight="10dp"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView2"
-        android:layout_toRightOf="@+id/product_thumb"
+        android:layout_toRightOf="@+id/product_thumb_black"
         android:paddingBottom="5dp"
         android:textColor="@android:color/black"
 
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView3"
-        android:layout_toRightOf="@+id/product_thumb"
+        android:layout_toRightOf="@+id/product_thumb_black"
         android:layout_above="@+id/price_layout"
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
@@ -70,8 +70,8 @@
         android:layout_width="match_parent"
         android:id="@+id/price_layout"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/product_thumb"
-        android:layout_alignBottom="@+id/product_thumb"
+        android:layout_toRightOf="@+id/product_thumb_black"
+        android:layout_alignBottom="@+id/product_thumb_black"
         android:gravity="bottom"
         android:orientation="vertical">
         <View
@@ -82,7 +82,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/product_thumb"
+            android:layout_toRightOf="@+id/product_thumb_black"
             android:background="@android:color/black"
             android:padding="10dp"></View>
 
@@ -94,7 +94,7 @@
             android:paddingLeft="10dp"
             android:textColor="@android:color/black"
 
-            android:layout_toRightOf="@+id/product_thumb"
+            android:layout_toRightOf="@+id/product_thumb_black"
             android:layout_above="@+id/separator_bottom"
             />
 
@@ -105,7 +105,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/product_thumb"
+            android:layout_toRightOf="@+id/product_thumb_black"
             android:background="@android:color/black"
             ></View>
 

@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import io.realm.RealmList;
 import retrofit2.Response;
@@ -76,6 +77,7 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
     private RetriveGroupsAdapter adapter;
     private ImageView productImage;
     private String imageData;
+    private Bitmap selfieBitmap;
     private RealmDatabase database;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -197,11 +199,12 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
                 break;
             case CROP_PIC:{
                 // get the returned data
+
                 Bundle extras = imageReturnedIntent.getExtras();
                 if (extras != null){
                     // get the cropped bitmap
-                    Bitmap bitmapPic = extras.getParcelable("data");
-                    productImage.setImageBitmap(bitmapPic);
+                    selfieBitmap = extras.getParcelable("data");
+//                    productImage.setImageBitmap(bitmapPic);
                 }
             }
         }
@@ -241,9 +244,12 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
 
     private byte[] getSelfieByteArray(){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ((BitmapDrawable)productImage.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, stream);
-        return stream.toByteArray();
+        if (selfieBitmap != null){
+            ((BitmapDrawable)productImage.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, stream);
+            return stream.toByteArray();
+        }else return null;
     }
+
 
 
     private void postDataForNewRequest(ArrayList<Integer> selectedGroup) {
@@ -254,9 +260,12 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
         RequestOpinionInput requestOpinionInput = new RequestOpinionInput();
         requestOpinionInput.setRequesterUserId(Integer.valueOf(new AppSharedPreference().getUserID(getActivity().getApplicationContext())));
         Product product = new Product();
-        product.setName("Test606163");
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        product.setImageUrl("http://img.alibaba.com/wsphoto/v0/505207447_1/Baby-Siamese-clothes-Baby-clothes-Winter-baby-clothes.jpg");
+        product.setName(uuid);
         product.setShortDesc("Awesome");
         product.setLongDesc("brilliant");
+
         product.setPrice(22.0);
         requestOpinionInput.setSelfiePic(getSelfieByteArray());
         requestOpinionInput.setProduct(product);
@@ -291,7 +300,6 @@ public class NewRequestFragment extends Fragment implements IRealmDataStoredCall
                     for (ErrorStatus listErrorState : listErrorStatus) {
                         Log.d("Error Message : ", listErrorState.getMessage() + " " + listErrorState.getStatus());
                     }
-
                 }
             }
         });

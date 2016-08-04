@@ -38,12 +38,11 @@
     </string-array>
     <string-array name="side_menu_items">
         <item>""</item>
-        <item>Coupon</item>
+        <item>Home</item>
         <item>Profile</item>
         <item>Settings</item>
         <item>Groups</item>
         <item>New Request</item>
-        <item>Logout</item>
     </string-array>
 
     <string-array name="group_items">

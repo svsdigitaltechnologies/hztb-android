@@ -41,8 +41,9 @@ public class ConfirmRegistration extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_registration);
-        actionBarSettings(R.string.string_confirmRegistration);
         initViews();
+        actionBarSettings(R.string.string_confirmRegistration);
+
     }
 
     private void initViews() {

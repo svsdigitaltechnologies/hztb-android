@@ -13,6 +13,16 @@ public class OpinionData {
 		return product;
 	}
 
+	private String selfieUrl;
+
+	public String getSelfieUrl() {
+		return selfieUrl;
+	}
+
+	public void setSelfieUrl(String selfieUrl) {
+		this.selfieUrl = selfieUrl;
+	}
+
 	public void setProduct(Product product) {
 		this.product = product;
 	}

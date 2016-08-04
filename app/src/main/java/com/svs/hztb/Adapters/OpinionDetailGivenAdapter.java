@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.svs.hztb.Bean.GivenPendingData;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.R;
@@ -57,6 +59,8 @@ public class OpinionDetailGivenAdapter extends BaseAdapter {
         holder.productID = (TextView)convertView.findViewById(R.id.textView3);
         holder.productPrice = (TextView)convertView.findViewById(R.id.product_price);
         holder.textViewdateOpinion = (TextView)convertView.findViewById(R.id.textview_date_getopinion);
+        holder.productImage = (ImageView)convertView.findViewById(R.id.product_thumb_white);
+
 
         holder.buttonOk = (ImageView)convertView.findViewById(R.id.button_double_ok);
         holder.buttonSingleOk = (ImageView)convertView.findViewById(R.id.button_single_ok);
@@ -92,6 +96,13 @@ public class OpinionDetailGivenAdapter extends BaseAdapter {
         holder.productName.setText(givenPendingData.getProduct().getName());
         holder.productPrice.setText("Price : $"+String.valueOf(givenPendingData.getProduct().getPrice()));
         holder.productPrice.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+        if (givenPendingData.getProduct().getImageUrl() != null){
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+            ImageLoader.getInstance().displayImage(givenPendingData.getProduct().getImageUrl(), holder.productImage,options);
+        }
+        if (givenPendingData.getSelfieUrl() == null){
+            holder.viewSelf.setVisibility(View.INVISIBLE);
+        }
         convertView.setTag(holder);
         return convertView;
     }
@@ -108,6 +119,7 @@ public class OpinionDetailGivenAdapter extends BaseAdapter {
         TextView productID;
         TextView productPrice;
         TextView textViewdateOpinion;
+        ImageView productImage;
         ImageView buttonOk;
         ImageView buttonSingleOk;
         ImageView buttonDown;

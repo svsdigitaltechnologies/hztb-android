@@ -114,6 +114,7 @@ public class RealmDatabase {
             opinionData.setOpinionId(realmOpinionData.getOpinionId());
             opinionData.setProductName(realmOpinionData.getProductName());
             opinionData.setRequestedGroupId(realmOpinionData.getRequestedGroupId());
+            opinionData.setSelfieUrl(realmOpinionData.getSelfieUrl());
             HashMap<String,Integer> responseCount = new HashMap<>();
             Iterator<RealmResponseCount> responseIterator = realmOpinionData.getResponseCountList().iterator();
             while (responseIterator.hasNext()){
@@ -205,6 +206,7 @@ public class RealmDatabase {
                         dataToStore.setRequestedGroupId(realmOpinionData.getRequestedGroupId());
                         dataToStore.getResponseCountList().clear();
                         dataToStore.getResponseCountList().addAll(realmOpinionData.getResponseCountList());
+                        dataToStore.setSelfieUrl(realmOpinionData.getSelfieUrl());
                         RealmProduct realmProduct = bgRealm.createObject(RealmProduct.class);
                         realmProduct.setName(realmOpinionData.getProduct().getName());
                         realmProduct.setImageUrl(realmOpinionData.getProduct().getImageUrl());

@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.svs.hztb.Bean.Contact;
 import com.svs.hztb.Bean.OpinionData;
 import com.svs.hztb.R;
@@ -63,6 +65,7 @@ public class GetOpinionAdapter extends BaseAdapter{
         holder.productDescription = (TextView)convertView.findViewById(R.id.product_description);
         holder.productPrice = (TextView)convertView.findViewById(R.id.product_price);
         holder.textViewdateOpinion = (TextView)convertView.findViewById(R.id.textview_date_getopinion);
+        holder.productImage = (ImageView)convertView.findViewById(R.id.product_thumb_black);
 
         holder.textViewOk = (TextView)convertView.findViewById(R.id.textview_ok);
         holder.textViewSingleOk = (TextView)convertView.findViewById(R.id.textView_single_ok);
@@ -93,6 +96,13 @@ public class GetOpinionAdapter extends BaseAdapter{
                 }
             }
         }
+        if (opinionData.getSelfieUrl() == null){
+            holder.viewSelf.setVisibility(View.INVISIBLE);
+        }
+        if (opinionData.getProduct().getImageUrl() != null){
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+            ImageLoader.getInstance().displayImage(opinionData.getProduct().getImageUrl(), holder.productImage,options);
+        }
         holder.productName.setText(opinionData.getProductName());
         holder.productID.setText(String.valueOf(opinionData.getOpinionId()));
 
@@ -110,7 +120,8 @@ public class GetOpinionAdapter extends BaseAdapter{
         TextView textViewSingleOk;
         TextView textViewDown;
         TextView textViewMayBe;
-        TextView viewSelf;
+        ImageView productImage;
+        Button viewSelf;
     }
 
 }
