@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/registration_bg"
+    android:orientation="vertical"
+    tools:context="com.svs.hztb.Fragments.GetOpinionsDetailFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/detail_opinion_layout"
+    android:visibility="visible"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+    <include
+        android:id="@+id/custom_product_item"
+        layout="@layout/custom_product_item_text_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:id="@+id/button_capture_selfie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/custom_product_item"
+        android:background="@mipmap/blue_background"
+        android:text="@string/view_selfie"
+        android:textColor="@android:color/white" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent"
+        android:paddingBottom="2dp"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:background="@color/colorAccent"
+            android:id="@+id/details_responded_button"
+            android:text="@string/details_responded"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:background="@color/light_grey"
+
+            android:id="@+id/details_not_responded_button"
+            android:text="@string/not_responded"/>
+    </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/listview_responded"
+        android:background="@android:color/white"
+        android:visibility="visible"
+        android:layout_height="match_parent"></ListView>
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/listview_not_responded"
+        android:visibility="gone"
+        android:background="@android:color/white"
+        android:layout_height="match_parent"></ListView>
+</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/viewSelfie_layout">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/selfie_imageView"/>
+
+        <com.svs.hztb.CustomViews.WalkWayButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:id="@+id/button_back"
+            android:background="@mipmap/button_crop_bit"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</LinearLayout>

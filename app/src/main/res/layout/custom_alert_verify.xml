@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="20dp"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verify_phone_number"
+        android:textSize="20sp"
+        android:id="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textview_mobile_number"
+        android:layout_below="@+id/textView"
+        android:text="+919032556825"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        />
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textview_alert"
+        android:layout_below="@+id/textview_mobile_number"
+        android:text="@string/verify_ok_or_not"
+        android:textSize="20sp"
+        />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_alert"
+        android:background="@android:color/transparent"
+        android:layout_alignParentLeft="true"
+        android:text="@string/verify_edit"
+        android:id="@+id/button_edit"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/picton_blue"
+        android:textSize="20dp"
+      />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_ok"
+        android:text="@string/verify_ok"
+        android:layout_below="@+id/textview_alert"
+        android:background="@android:color/transparent"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+
+        android:textColor="@color/picton_blue"
+        android:layout_alignParentRight="true"
+/>
+</RelativeLayout>

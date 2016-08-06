@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@mipmap/registration_bg"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/viewSelfie_layout">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/selfie_imageView"/>
+
+        <com.svs.hztb.CustomViews.WalkWayButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:id="@+id/button_back"
+            android:background="@mipmap/button_crop_bit"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/detail_opinion_layout"
+        android:visibility="visible"
+        android:layout_height="match_parent">
+    <include layout="@layout/custom_product_item"/>
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:id="@+id/button_view_selfie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/blue_background"
+        android:text="@string/view_selfie"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/white" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+
+        android:background="@android:color/white">
+    <LinearLayout android:layout_width="match_parent"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/wow"
+            android:layout_weight="1"
+            android:id="@+id/button_double_ok"
+            android:padding="2dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/like"
+            android:layout_weight="1"
+            android:padding="2dp"
+
+            android:id="@+id/button_single_ok"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/button_double_ok" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/neutral"
+            android:layout_weight="1"
+            android:padding="2dp"
+
+            android:id="@+id/button_maybe"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/button_single_ok" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/dont_like"
+            android:padding="2dp"
+            android:id="@+id/button_down"
+            android:layout_weight="1" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="4"
+            android:layout_height="wrap_content">
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wow"
+            android:id="@+id/textView4"
+            android:textColor="@android:color/black"
+            android:textSize="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:layout_alignStart="@+id/button_double_ok"
+            android:layout_below="@+id/button_double_ok"
+            android:layout_toStartOf="@+id/button_single_ok"
+            android:gravity="center" />
+
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Like"
+            android:id="@+id/textView5"
+            android:layout_weight="1"
+            android:textSize="10dp"
+
+            android:textColor="@android:color/black"
+
+            android:layout_alignRight="@+id/button_single_ok"
+            android:layout_below="@+id/button_single_ok"
+            android:layout_toEndOf="@+id/button_double_ok"
+            android:gravity="center" />
+
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Neutral"
+            android:id="@+id/textView6"        android:textColor="@android:color/black"
+            android:textSize="10dp"
+
+            android:layout_weight="1"
+            android:layout_alignTop="@+id/textView5"
+            android:layout_alignLeft="@+id/button_maybe"
+            android:layout_toStartOf="@+id/button_down"
+            android:gravity="center" />
+
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Do not Like"
+            android:id="@+id/textView7"
+            android:textSize="10dp"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:layout_alignEnd="@+id/button_down"
+            android:layout_alignTop="@+id/textView6"
+            android:layout_toEndOf="@+id/textView6"
+            android:gravity="center" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/black"/>
+
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:text="@string/write_your_comment_about_the_product"/>
+
+        <com.svs.hztb.CustomViews.WalkWayEditText
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:lines="3"
+            android:paddingLeft="10dp"
+            android:textColorHint="@android:color/darker_gray"
+            android:gravity="left"
+            android:id="@+id/response_Text"
+            android:hint="@string/enter_comment"
+
+            android:background="@drawable/edittext_background"/>
+
+    </LinearLayout>
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:id="@+id/send_Opinion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/blue_background"
+        android:text="@string/send_your_opinion"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@android:color/white" />
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

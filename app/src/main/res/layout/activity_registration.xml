@@ -1,0 +1,116 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/registration_bg"
+    tools:context=".Activities.RegistrationActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:id="@+id/registration_header1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/string_registration_overview"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+        android:id="@+id/country_code_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registration_header1"
+        android:layout_marginLeft="20dp"
+        android:text="INDIA"
+        android:layout_marginRight="20dp"
+        android:textSize="25dp"
+        android:textColor="@android:color/white"
+        android:gravity="left|center"
+        android:drawableRight="@mipmap/right_arrow"
+        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:onClick="onCountryCodeClick"
+        android:background="@android:color/transparent"
+     />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/country_code_button"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <com.svs.hztb.CustomViews.WalkWayTextView
+            android:id="@+id/textview_registration_countryCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/editText_mobilePhoneNo"
+            android:layout_alignTop="@+id/editText_mobilePhoneNo"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:text="+91" />
+
+        <View
+            android:id="@+id/line_separator"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/editText_mobilePhoneNo"
+            android:layout_alignTop="@+id/editText_mobilePhoneNo"
+            android:layout_toRightOf="@+id/textview_registration_countryCode"
+            android:background="@android:color/background_light"></View>
+
+        <com.svs.hztb.CustomViews.WalkWayEditText
+            android:id="@+id/editText_mobilePhoneNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:padding="10dp"
+            android:inputType="phone"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/white"
+            android:layout_toRightOf="@+id/line_separator" />
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/background_light"
+            android:layout_below="@+id/editText_mobilePhoneNo"></View>
+    </RelativeLayout>
+
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:id="@+id/registration_header3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/relativeLayout"
+        android:layout_alignStart="@+id/relativeLayout"
+        android:layout_below="@+id/relativeLayout"
+        android:gravity="center"
+        android:text="@string/string_registration_vertification_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp" />
+
+    <com.svs.hztb.CustomViews.WalkWayButton
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/string_submit"
+    android:id="@+id/button_submit"
+    android:layout_below="@+id/registration_header3"
+    android:onClick="onSubmitClicked"
+    android:background="@color/picton_blue"
+        android:textColor="@android:color/white"
+    android:layout_marginTop="25dp"
+    android:layout_alignEnd="@+id/registration_header3"
+    android:layout_alignStart="@+id/registration_header3"
+    />
+    </RelativeLayout>
+</ScrollView>

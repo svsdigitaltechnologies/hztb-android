@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="5dp"
+    android:layout_height="match_parent">
+
+
+    <com.svs.hztb.CustomViews.CircularImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/contact_image"
+        android:src="@mipmap/thumb"/>
+
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp"
+        android:layout_margin="5dp"
+        android:paddingTop="5dp"
+        android:layout_toRightOf="@+id/contact_image"
+        android:paddingBottom="5dp"
+        android:textSize="18dp"
+        android:layout_alignBottom="@+id/contact_image"
+        android:layout_alignTop="@+id/contact_image"
+        android:text="@string/string_select_from_contacts"
+        android:gravity="left|center"
+        android:textColor="@android:color/black"
+        android:id="@+id/textview_select_contacts" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageview_tick"
+        android:src="@mipmap/tick"
+        android:layout_marginRight="15dp"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textview_select_contacts"
+        android:layout_alignBottom="@+id/textview_select_contacts"/>
+</RelativeLayout>

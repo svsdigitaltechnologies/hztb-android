@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_product_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/product_thumb_black"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:baselineAlignBottom="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/thumb" />
+
+
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/product_thumb_black"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black"
+        android:paddingRight="10dp"
+
+        android:text="Jumba Sports Shoes"
+        android:textSize="16sp" />
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView2"
+        android:layout_toRightOf="@+id/product_thumb_black"
+        android:paddingBottom="5dp"
+        android:textColor="@android:color/black"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:text="Product ID : 234234"
+        android:textSize="13sp" />
+
+    <com.svs.hztb.CustomViews.WalkWayTextView
+        android:id="@+id/product_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView3"
+        android:layout_toRightOf="@+id/product_thumb_black"
+        android:layout_above="@+id/price_layout"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@android:color/black"
+
+        android:paddingTop="5dp"
+        android:text="Sed auctor newueu rhonous ut elafienft nibh partition. Ut in nulia enuim"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/price_layout"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/product_thumb_black"
+        android:layout_alignBottom="@+id/product_thumb_black"
+        android:gravity="bottom"
+        android:orientation="vertical">
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/product_price"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/product_thumb_black"
+            android:background="@android:color/black"
+            android:padding="10dp"></View>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price:$ 98.99"
+            android:id="@+id/product_price"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/black"
+
+            android:layout_toRightOf="@+id/product_thumb_black"
+            android:layout_above="@+id/separator_bottom"
+            />
+
+        <View
+            android:id="@+id/separator_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/product_thumb_black"
+            android:background="@android:color/black"
+            ></View>
+
+    </LinearLayout>
+</RelativeLayout>

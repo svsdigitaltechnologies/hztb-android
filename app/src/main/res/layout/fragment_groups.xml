@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.svs.hztb.Fragments.GroupsFragment">
+
+  <ListView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentTop="true"
+      android:id="@+id/listview_groups"
+      android:layout_above="@+id/button_add_new_groups"
+      ></ListView>
+
+
+   <com.svs.hztb.CustomViews.WalkWayButton
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:textColor="@android:color/white"
+       android:background="@mipmap/button_crop_bit"
+       android:layout_alignParentBottom="true"
+       android:text="Add Group"
+       android:id="@+id/button_add_new_groups"
+       android:layout_margin="10dp"/>
+</RelativeLayout>

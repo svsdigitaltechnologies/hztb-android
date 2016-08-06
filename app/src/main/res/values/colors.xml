@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="picton_blue">#3EAAF5</color>
+    <color name="light_grey">#d3d3d3</color>
+    <color name="concord">#7D7D7D</color>
+    <color name="mischka">#CECDDE</color>
+    <color name="cerise">#E7478F</color>
 </resources>
