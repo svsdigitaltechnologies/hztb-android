@@ -35,7 +35,8 @@ captures/
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
-/.idea/*
+**/.idea/gradle.xml
+**/.idea/
 
 .DS_Store
 /build
